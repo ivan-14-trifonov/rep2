@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {getAuth, signOut} from "firebase/auth";
+import {Button, Container} from "@mui/material";
 
 export default function User() {
 
   const auth = getAuth();
   let navigate = useNavigate();
 
-  // Проверка авторизации
   const user = auth.currentUser;
   if (user == null) {
     navigate("/login");
@@ -16,12 +16,16 @@ export default function User() {
   const onLogout = () => {
     signOut(auth).then(() => {
       navigate("/login");
-    }).catch((error) => {
-      // An error happened.
     });
   }
 
   return (
-    <h1>User</h1>
+    <Container maxWidth="xs" sx={{mt: 2}}>
+      <h1>Репертуар</h1>
+      <Button variant="contained" color="error" onClick={onLogout} sx={{mt: 3}} fullWidth>
+        Выйти
+      </Button>
+    </Container>
   )
 }
+
