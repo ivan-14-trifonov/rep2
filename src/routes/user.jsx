@@ -1,4 +1,3 @@
-import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {getAuth, signOut} from "firebase/auth";
 import {Button, Container} from "@mui/material";
@@ -14,8 +13,11 @@ export default function User() {
   }
 
   const onLogout = () => {
+    // googleSignInClient.signOut();
     signOut(auth).then(() => {
       navigate("/login");
+    }).catch((error) => {
+      // An error happened.
     });
   }
 
