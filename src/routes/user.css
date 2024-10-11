@@ -1,0 +1,13 @@
+.formAddWork {
+  display: flex;
+  flex-direction: column;
+}
+
+.tadleOfWorks {
+	border: 1px solid #999;
+	border-collapse: collapse;
+}
+
+.tadleOfWorks__td {
+	border: 1px solid #999;
+}
