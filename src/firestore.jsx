@@ -51,7 +51,7 @@ export function GetWorks(db) {
     };
 
     asyncEffect();
-  }, []); // было [navigate]
+  });
 
   return works;
 }
