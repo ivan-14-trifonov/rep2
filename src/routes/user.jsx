@@ -16,6 +16,7 @@ function formAddWork(db) {
     const work = formData.get("work");
     const number = formData.get("number");
     AddWork(work, number, db);
+    e.target.reset();
   }
 
   // const books = GetBooks(db);
