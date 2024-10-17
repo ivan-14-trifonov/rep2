@@ -35,7 +35,7 @@ export async function AddWork(name, number, db) {
   return books;
 }*/
 
-export function GetWorks(db) {
+export function GetWorks(db, flag) {
   const [works, setWorks] = useState([]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export function GetWorks(db) {
     };
 
     asyncEffect();
-  });
+  }, [flag]);
 
   return works;
 }

@@ -1,5 +1,6 @@
 import "./user.css";
 
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {getAuth, signOut} from "firebase/auth";
 import {Button, Container} from "@mui/material";
@@ -8,7 +9,7 @@ import {getFirestore} from "firebase/firestore";
 import {app} from "../firebase";
 import {AddWork, GetWorks} from "../firestore"; // GetBooks
 
-function formAddWork(db) {
+function formAddWork(db, flag, setFlag) {
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
@@ -16,6 +17,7 @@ function formAddWork(db) {
     const work = formData.get("work");
     const number = formData.get("number");
     AddWork(work, number, db);
+    setFlag(!flag);
     e.target.reset();
   }
 
@@ -74,9 +76,11 @@ export default function User() {
 
   const db = getFirestore(app);
 
-  let works = GetWorks(db);
+  const [flag, setFlag] = useState(false);
+
+  let works = GetWorks(db, flag);
   let tadle = tadleOfWorks(works);
-  let form = formAddWork(db);
+  let form = formAddWork(db, flag, setFlag);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
