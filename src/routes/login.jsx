@@ -1,8 +1,8 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {app} from "../firebase";
-import {getAuth, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
-import {Button, Container, Snackbar, Alert} from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { app } from "../firebase";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Button, Container, Snackbar, Alert } from "@mui/material";
 
 export default function Login() {
 

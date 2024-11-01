@@ -3,9 +3,23 @@
   flex-direction: column;
 }
 
+.formAddWork__input {
+	font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	margin-top: 0.4em;
+}
+
+.formAddWork__button {
+	font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	margin-top: 1em;
+}
+
 .tadleOfWorks {
 	border: 1px solid #999;
 	border-collapse: collapse;
+	font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .tadleOfWorks__td {

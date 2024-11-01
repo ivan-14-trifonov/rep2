@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {collection, addDoc, getDocs} from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export async function AddWork(name, number, db) {
   alert(name);

@@ -1,13 +1,13 @@
 import "./user.css";
 
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {getAuth, signOut} from "firebase/auth";
-import {Button, Container} from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import { Button, Container } from "@mui/material";
 
-import {getFirestore} from "firebase/firestore";
-import {app} from "../firebase";
-import {AddWork, GetWorks} from "../firestore"; // GetBooks
+import { getFirestore } from "firebase/firestore";
+import { app } from "../firebase";
+import { AddWork, GetWorks } from "../firestore"; // GetBooks
 
 function formAddWork(db, flag, setFlag) {
 
@@ -25,7 +25,7 @@ function formAddWork(db, flag, setFlag) {
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
-      <input name="work" placeholder="Название" />
+      <input className="formAddWork__input" name="work" placeholder="Название" />
       {/*}<select name="books" id="books-select">
         <option value="">--Выберите сборник--</option>
           {Array(books.length).fill().map((_, i) =>
@@ -33,9 +33,9 @@ function formAddWork(db, flag, setFlag) {
           )}
       </select>
       <input name="page" placeholder="Страница" />{*/}
-      <input name="number" placeholder="Номер" />
+      <input className="formAddWork__input" name="number" placeholder="Номер" />
 
-      <button type="submit">Сохранить</button>
+      <button className="formAddWork__button" type="submit">Сохранить</button>
     </form>
   );
 }

@@ -1,5 +1,5 @@
-import {useRouteError} from "react-router-dom";
-import {Container, Typography} from "@mui/material";
+import { useRouteError } from "react-router-dom";
+import { Container, Typography } from "@mui/material";
 
 export default function ErrorPage() {
 
