@@ -14,7 +14,7 @@ export async function AddWork(name, number, db) {
   }
 }
 
-/*export function GetBooks(db) {
+export function GetBooks(db) {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export async function AddWork(name, number, db) {
   }, []);
 
   return books;
-}*/
+}
 
 export function GetWorks(db, flag) {
   const [works, setWorks] = useState([]);

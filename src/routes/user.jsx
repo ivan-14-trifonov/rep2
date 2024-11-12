@@ -7,7 +7,7 @@ import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { AddWork, GetWorks } from "../firestore"; // GetBooks
+import { AddWork, GetWorks, GetBooks } from "../firestore";
 
 function formAddWork(db, flag, setFlag) {
 
@@ -21,18 +21,18 @@ function formAddWork(db, flag, setFlag) {
     e.target.reset();
   }
 
-  // const books = GetBooks(db);
+  const books = GetBooks(db);
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
       <input className="formAddWork__input" name="work" placeholder="Название" />
-      {/*}<select name="books" id="books-select">
+      <select name="books" id="books-select">
         <option value="">--Выберите сборник--</option>
           {Array(books.length).fill().map((_, i) =>
             <option value={books[i].name}>{books[i].name}</option>
           )}
       </select>
-      <input name="page" placeholder="Страница" />{*/}
+      <input name="page" placeholder="Страница" />
       <input className="formAddWork__input" name="number" placeholder="Номер" />
 
       <button className="formAddWork__button" type="submit">Сохранить</button>
@@ -41,8 +41,6 @@ function formAddWork(db, flag, setFlag) {
 }
 
 function tadleOfWorks(works) {
-  // alert(JSON.stringify(works));
-
   return (
     <table className="tadleOfWorks">
       {Array(works.length).fill().map((_, i) =>
