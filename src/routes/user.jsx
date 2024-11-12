@@ -26,13 +26,13 @@ function formAddWork(db, flag, setFlag) {
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
       <input className="formAddWork__input" name="work" placeholder="Название" />
-      <select name="books" id="books-select">
+      <select className="formAddWork__select" name="books" id="books-select">
         <option value="">--Выберите сборник--</option>
           {Array(books.length).fill().map((_, i) =>
             <option value={books[i].name}>{books[i].name}</option>
           )}
       </select>
-      <input name="page" placeholder="Страница" />
+      <input className="formAddWork__input" name="page" placeholder="Страница" />
       <input className="formAddWork__input" name="number" placeholder="Номер" />
 
       <button className="formAddWork__button" type="submit">Сохранить</button>
