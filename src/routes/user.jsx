@@ -3,7 +3,7 @@ import "./user.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import { Button, Container } from "@mui/material";
+import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
@@ -56,12 +56,12 @@ function tadleOfWorks(works) {
   }
 
   return (
-    <div className="workCard">
+    <div>
       {Array(works.length).fill().map((_, i) =>
-        <div name={works[i][0]}>
+        <Card variant="outlined" className="workCard" name={works[i][0]}>
           <p className="workCard__name">{works[i][1].name}</p>
           <p className="workCard__book">{works[i][1].book}, {inBook(works[i][1])}</p>
-      </div>
+      </Card>
       )}
     </div>
   )
