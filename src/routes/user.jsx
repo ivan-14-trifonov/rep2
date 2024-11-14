@@ -7,42 +7,9 @@ import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { AddWork, GetWorks, GetBooks } from "../firestore";
+import { GetWorks } from "../firestore";
 
-function formAddWork(db, flag, setFlag) {
-
-  async function submitAddWork(e: React.FormEvent) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const work = formData.get("work");
-    const book = formData.get("book");
-    const number = formData.get("number");
-    const page = formData.get("page");
-    AddWork(work, book, number, page, db);
-    setFlag(!flag);
-    e.target.reset();
-  }
-
-  const books = GetBooks(db);
-
-  return (
-    <form onSubmit={submitAddWork} className="formAddWork">
-      <input className="formAddWork__input" name="work" placeholder="Название" />
-      <select className="formAddWork__select" name="book" id="books-select">
-        <option value="">--Выберите сборник--</option>
-          {Array(books.length).fill().map((_, i) =>
-            <option value={books[i].name}>{books[i].name}</option>
-          )}
-      </select>
-      <input className="formAddWork__input" name="number" placeholder="Номер" />
-      <input className="formAddWork__input" name="page" placeholder="Страница" />
-
-      <button className="formAddWork__button" type="submit">Сохранить</button>
-    </form>
-  );
-}
-
-function tadleOfWorks(works) {
+function cardsOfWorks(works) {
 
   function inBook(work) {
     if (work.number) {
@@ -77,6 +44,10 @@ export default function User() {
     navigate("/login");
   }
 
+  const onAdd = () => {
+    navigate("/user-add-work");
+  }
+
   const onLogout = () => {
     signOut(auth).then(() => {
       navigate("/login");
@@ -87,19 +58,15 @@ export default function User() {
 
   const db = getFirestore(app);
 
-  const [flag, setFlag] = useState(false);
-
-  let works = GetWorks(db, flag);
+  let works = GetWorks(db);
   // alert(JSON.stringify(works));
-  let tadle = tadleOfWorks(works);
-  let form = formAddWork(db, flag, setFlag);
+  let cards = cardsOfWorks(works);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
       <h1>Репертуар</h1>
-      <div>{tadle}</div>
-      <h2>Добавить произведение</h2>
-      <div>{form}</div>
+      <div>{cards}</div>
+      <Button variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
       <Button variant="contained" color="error" onClick={onLogout} sx={{mt: 3}} fullWidth>
         Выйти
       </Button>

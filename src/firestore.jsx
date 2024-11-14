@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export async function AddWork(name, book, number, page, db) {
-  alert(name);
   try {
     const docRef = await addDoc(collection(db, "work"), {
       name: name,
@@ -37,7 +36,7 @@ export function GetBooks(db) {
   return books;
 }
 
-export function GetWorks(db, flag) {
+export function GetWorks(db) {
   const [works, setWorks] = useState([]);
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export function GetWorks(db, flag) {
     };
 
     asyncEffect();
-  }, [flag]);
+  }, []);
 
   return works;
 }
