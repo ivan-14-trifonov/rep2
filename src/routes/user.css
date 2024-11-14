@@ -23,7 +23,22 @@
 	margin-top: 1em;
 }
 
-.tadleOfWorks {
+.workCard {
+	font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.workCard__name {
+	margin: 1em 0 0.5em;
+}
+
+.workCard__book {
+	font-size: 0.8em;
+	color: #696969;
+	margin: 0;
+}
+
+/*.tadleOfWorks {
 	border: 1px solid #999;
 	border-collapse: collapse;
 	font-size: 1em;
@@ -32,4 +47,4 @@
 
 .tadleOfWorks__td {
 	border: 1px solid #999;
-}
+}*/

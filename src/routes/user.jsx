@@ -15,8 +15,10 @@ function formAddWork(db, flag, setFlag) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const work = formData.get("work");
+    const book = formData.get("book");
     const number = formData.get("number");
-    AddWork(work, number, db);
+    const page = formData.get("page");
+    AddWork(work, book, number, page, db);
     setFlag(!flag);
     e.target.reset();
   }
@@ -26,14 +28,14 @@ function formAddWork(db, flag, setFlag) {
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
       <input className="formAddWork__input" name="work" placeholder="Название" />
-      <select className="formAddWork__select" name="books" id="books-select">
+      <select className="formAddWork__select" name="book" id="books-select">
         <option value="">--Выберите сборник--</option>
           {Array(books.length).fill().map((_, i) =>
             <option value={books[i].name}>{books[i].name}</option>
           )}
       </select>
-      <input className="formAddWork__input" name="page" placeholder="Страница" />
       <input className="formAddWork__input" name="number" placeholder="Номер" />
+      <input className="formAddWork__input" name="page" placeholder="Страница" />
 
       <button className="formAddWork__button" type="submit">Сохранить</button>
     </form>
@@ -41,16 +43,27 @@ function formAddWork(db, flag, setFlag) {
 }
 
 function tadleOfWorks(works) {
+
+  function inBook(work) {
+    if (work.number) {
+      
+      return `№${work.number}`;
+    } else if (work.page) {
+      return `стр. ${work.page}`;
+    } else {
+      return "";
+    };
+  }
+
   return (
-    <table className="tadleOfWorks">
+    <div className="workCard">
       {Array(works.length).fill().map((_, i) =>
-        <tr>
-          <td className="tadleOfWorks__td">{works[i][0]}</td>
-          <td className="tadleOfWorks__td">{works[i][1].name}</td>
-          <td className="tadleOfWorks__td">{works[i][1].number}</td>
-        </tr>
+        <div name={works[i][0]}>
+          <p className="workCard__name">{works[i][1].name}</p>
+          <p className="workCard__book">{works[i][1].book}, {inBook(works[i][1])}</p>
+      </div>
       )}
-    </table>
+    </div>
   )
 }
 
@@ -77,6 +90,7 @@ export default function User() {
   const [flag, setFlag] = useState(false);
 
   let works = GetWorks(db, flag);
+  // alert(JSON.stringify(works));
   let tadle = tadleOfWorks(works);
   let form = formAddWork(db, flag, setFlag);
 

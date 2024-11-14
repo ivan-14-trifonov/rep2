@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 
-export async function AddWork(name, number, db) {
+export async function AddWork(name, book, number, page, db) {
   alert(name);
   try {
     const docRef = await addDoc(collection(db, "work"), {
       name: name,
+      book: book,
       number: number,
+      page: page,
     });
   } catch (e) {
     // An error happened.
