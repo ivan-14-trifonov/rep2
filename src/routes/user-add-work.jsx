@@ -14,12 +14,14 @@ function formAddWork(db, navigate) {
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const work = formData.get("work");
-    const book = formData.get("book");
-    const number = formData.get("number");
-    const page = formData.get("page");
-    const event = formData.get("event");
-    AddWork(work, book, number, page, event, db);
+    const fields = {
+      name: formData.get("name"),
+      book: formData.get("book"),
+      number: formData.get("number"),
+      page: formData.get("page"),
+      event: formData.get("event"),
+    }
+    AddWork(db, fields);
     e.target.reset();
 
     navigate("/user");
@@ -30,7 +32,7 @@ function formAddWork(db, navigate) {
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
-      <input className="formAddWork__input" name="work" placeholder="Название" />
+      <input className="formAddWork__input" name="name" placeholder="Название" />
       <select className="formAddWork__select" name="book" id="books-select">
         <option value="">--Выберите сборник--</option>
           {Array(books.length).fill().map((_, i) =>
