@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 
-export async function AddWork(name, book, number, page, db) {
+export async function AddWork(name, book, number, page, event, db) {
   try {
     const docRef = await addDoc(collection(db, "work"), {
       name: name,
       book: book,
       number: number,
       page: page,
+      event: event,
     });
   } catch (e) {
     // An error happened.
@@ -15,25 +16,25 @@ export async function AddWork(name, book, number, page, db) {
   }
 }
 
-export function GetBooks(db) {
-  const [books, setBooks] = useState([]);
+export function GetElements(db, tadle) {
+  const [elements, setElements] = useState([]);
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const querySnapshot = await getDocs(collection(db, "book"));
+      const querySnapshot = await getDocs(collection(db, tadle));
 
       let result = [];
       querySnapshot.forEach((doc) => {
         result.push(doc.data());
       });
 
-      setBooks(result);
+      setElements(result);
     };
 
     asyncEffect();
   }, []);
 
-  return books;
+  return elements;
 }
 
 export function GetWorks(db) {

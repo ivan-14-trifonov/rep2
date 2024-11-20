@@ -13,7 +13,6 @@ function cardsOfWorks(works) {
 
   function inBook(work) {
     if (work.number) {
-      
       return `№${work.number}`;
     } else if (work.page) {
       return `стр. ${work.page}`;
@@ -22,12 +21,25 @@ function cardsOfWorks(works) {
     };
   }
 
+  function ifBook(work) {
+    if (work.book) {
+      return <p className="workCard__book">{work.book}, {inBook(work)}</p>;
+    }
+  }
+
+  function ifEvent(work) {
+    if (work.event) {
+      return <p className="workCard__event">{work.event}</p>;
+    }
+  }
+
   return (
     <div>
       {Array(works.length).fill().map((_, i) =>
         <Card variant="outlined" className="workCard" name={works[i][0]}>
           <p className="workCard__name">{works[i][1].name}</p>
-          <p className="workCard__book">{works[i][1].book}, {inBook(works[i][1])}</p>
+          {ifBook(works[i][1])}
+          {ifEvent(works[i][1])}
       </Card>
       )}
     </div>

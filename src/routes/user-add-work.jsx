@@ -7,7 +7,7 @@ import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { AddWork, GetBooks } from "../firestore";
+import { AddWork, GetElements } from "../firestore";
 
 function formAddWork(db, navigate) {
 
@@ -18,13 +18,15 @@ function formAddWork(db, navigate) {
     const book = formData.get("book");
     const number = formData.get("number");
     const page = formData.get("page");
-    AddWork(work, book, number, page, db);
+    const event = formData.get("event");
+    AddWork(work, book, number, page, event, db);
     e.target.reset();
 
     navigate("/user");
   }
 
-  const books = GetBooks(db);
+  const books = GetElements(db, "book");
+  const events = GetElements(db, "event");
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
@@ -37,6 +39,12 @@ function formAddWork(db, navigate) {
       </select>
       <input className="formAddWork__input" name="number" placeholder="Номер" />
       <input className="formAddWork__input" name="page" placeholder="Страница" />
+      <select className="formAddWork__select" name="event" id="events-select">
+        <option value="">--Выберите событие--</option>
+          {Array(events.length).fill().map((_, i) =>
+            <option value={events[i].name}>{events[i].name}</option>
+          )}
+      </select>
 
       <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>Сохранить</Button>
     </form>
