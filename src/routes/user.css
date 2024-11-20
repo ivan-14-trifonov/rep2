@@ -18,8 +18,18 @@
 .workCard__event {
 	font-size: 0.8em;
 	color: #FFF;
-	margin: 0.25em 0 0;
+	margin: 0.25em 0.25em 0;
 	background-color: #D32F2F;
+	border-radius: 0.5em;
+	padding: 0.25em 0.5em;
+	display: inline-block;
+}
+
+.workCard__theme {
+	font-size: 0.8em;
+	color: #FFF;
+	margin: 0.25em 0.25em 0;
+	background-color: #1976D2;
 	border-radius: 0.5em;
 	padding: 0.25em 0.5em;
 	display: inline-block;

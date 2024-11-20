@@ -19,6 +19,7 @@ function formAddWork(db, navigate) {
       book: formData.get("book"),
       number: formData.get("number"),
       page: formData.get("page"),
+      theme: formData.get("theme"),
       event: formData.get("event"),
     }
     AddWork(db, fields);
@@ -29,6 +30,7 @@ function formAddWork(db, navigate) {
 
   const books = GetElements(db, "book");
   const events = GetElements(db, "event");
+  const themes = GetElements(db, "theme");
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
@@ -41,6 +43,12 @@ function formAddWork(db, navigate) {
       </select>
       <input className="formAddWork__input" name="number" placeholder="Номер" />
       <input className="formAddWork__input" name="page" placeholder="Страница" />
+      <select className="formAddWork__select" name="theme" id="themes-select">
+        <option value="">--Выберите тему--</option>
+          {Array(themes.length).fill().map((_, i) =>
+            <option value={themes[i].name}>{themes[i].name}</option>
+          )}
+      </select>
       <select className="formAddWork__select" name="event" id="events-select">
         <option value="">--Выберите событие--</option>
           {Array(events.length).fill().map((_, i) =>

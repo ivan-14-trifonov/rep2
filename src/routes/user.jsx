@@ -33,6 +33,12 @@ function cardsOfWorks(works) {
     }
   }
 
+  function ifTheme(work) {
+    if (work.theme) {
+      return <p className="workCard__theme">{work.theme}</p>;
+    }
+  }
+
   return (
     <div>
       {Array(works.length).fill().map((_, i) =>
@@ -40,6 +46,7 @@ function cardsOfWorks(works) {
           <p className="workCard__name">{works[i][1].name}</p>
           {ifBook(works[i][1])}
           {ifEvent(works[i][1])}
+          {ifTheme(works[i][1])}
       </Card>
       )}
     </div>
