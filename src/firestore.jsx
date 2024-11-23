@@ -4,7 +4,7 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export async function AddWork(db, fields) {
   try {
-    const docRef = await addDoc(collection(db, "work"), fields);
+    const docRef = await addDoc(collection(db, "user", "6gKLtjBQl7pKpoyQwQfU", "musical_group", "zC3PEO9XUNz7YoswJqE6", "work"), fields);
   } catch (e) {
     // An error happened.
     // console.error("Error adding document: ", e);
@@ -38,7 +38,7 @@ export function GetWorks(db) {
   useEffect(() => {
     const asyncEffect = async () => {
       const querySnapshot = await getDocs(collection(db, "user", "6gKLtjBQl7pKpoyQwQfU", "musical_group", "zC3PEO9XUNz7YoswJqE6", "work"));
-      alert(JSON.stringify(querySnapshot));
+      
       let result = [];
       querySnapshot.forEach((doc) => {
         result.push([doc.id, doc.data()]);
@@ -72,4 +72,25 @@ export function GetUsers(db) {
   }, []);
 
   return users;
+}
+
+export function GetBooks(db) {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const querySnapshot = await getDocs(collection(db, "user", "6gKLtjBQl7pKpoyQwQfU", "musical_group", "zC3PEO9XUNz7YoswJqE6", "book"));
+      
+      let result = [];
+      querySnapshot.forEach((doc) => {
+        result.push(doc.data());
+      });
+
+      setBooks(result);
+    };
+
+    asyncEffect();
+  }, []);
+
+  return books;
 }

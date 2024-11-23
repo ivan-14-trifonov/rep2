@@ -7,7 +7,7 @@ import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { AddWork, GetElements } from "../firestore";
+import { AddWork, GetElements, GetBooks } from "../firestore";
 
 function formAddWork(db, navigate) {
 
@@ -28,7 +28,7 @@ function formAddWork(db, navigate) {
     navigate("/user");
   }
 
-  const books = GetElements(db, "book");
+  const books = GetBooks(db);
   const events = GetElements(db, "event");
   const themes = GetElements(db, "theme");
 
