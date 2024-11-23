@@ -7,7 +7,7 @@ import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetWorks } from "../firestore";
+import { GetWorks, GetUsers } from "../firestore";
 
 function cardsOfWorks(works) {
 
@@ -80,6 +80,9 @@ export default function User() {
   let works = GetWorks(db);
   // alert(JSON.stringify(works));
   let cards = cardsOfWorks(works);
+
+  let users = GetUsers(db);
+  // alert(JSON.stringify(users));
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
