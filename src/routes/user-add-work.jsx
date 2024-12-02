@@ -9,7 +9,7 @@ import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
 import { AddWork, GetElements, GetBooks } from "../firestore";
 
-function formAddWork(db, navigate) {
+function formAddWork(connect, navigate) {
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
@@ -22,15 +22,15 @@ function formAddWork(db, navigate) {
       theme: formData.get("theme"),
       event: formData.get("event"),
     }
-    AddWork(db, fields);
+    AddWork(connect, fields);
     e.target.reset();
 
     navigate("/user");
   }
 
-  const books = GetBooks(db);
-  const events = GetElements(db, "event");
-  const themes = GetElements(db, "theme");
+  const books = GetBooks(connect);
+  const events = GetElements(connect, "event");
+  const themes = GetElements(connect, "theme");
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
@@ -71,9 +71,13 @@ export default function UserAddWork() {
     navigate("/login");
   }
 
-  const db = getFirestore(app);
+  const connect = {
+    db: getFirestore(app),
+    user: "6gKLtjBQl7pKpoyQwQfU",
+    musical_group: "zC3PEO9XUNz7YoswJqE6",
+  };
 
-  let form = formAddWork(db, navigate);
+  let form = formAddWork(connect, navigate);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>

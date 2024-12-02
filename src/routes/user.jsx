@@ -75,13 +75,17 @@ export default function User() {
     });
   }
 
-  const db = getFirestore(app);
+  const connect = {
+    db: getFirestore(app),
+    user: "6gKLtjBQl7pKpoyQwQfU",
+    musical_group: "zC3PEO9XUNz7YoswJqE6",
+  };
 
-  let works = GetWorks(db);
+  let works = GetWorks(connect);
   // alert(JSON.stringify(works));
   let cards = cardsOfWorks(works);
 
-  let users = GetUsers(db);
+  let users = GetUsers(connect);
   // alert(JSON.stringify(users));
 
   return (
