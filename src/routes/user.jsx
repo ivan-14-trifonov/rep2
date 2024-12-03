@@ -62,6 +62,7 @@ export default function User() {
   if (user == null) {
     navigate("/login");
   }
+  //alert (JSON.stringify(user));
 
   const onAdd = () => {
     navigate("/user-add-work");
@@ -77,8 +78,8 @@ export default function User() {
 
   const connect = {
     db: getFirestore(app),
-    user: "6gKLtjBQl7pKpoyQwQfU",
-    musical_group: "zC3PEO9XUNz7YoswJqE6",
+    space: "x6mEjT4w6nSE1xbyPNFa",
+    musical_group: "PjrFQebwtExFEGZvJCt4",
   };
 
   let works = GetWorks(connect);

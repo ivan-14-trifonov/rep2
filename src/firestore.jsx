@@ -4,7 +4,7 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export async function AddWork(connect, fields) {
   try {
-    const docRef = await addDoc(collection(connect.db, "user", connect.user, "musical_group", connect.musical_group, "work"), fields);
+    const docRef = await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musical_group, "work"), fields);
   } catch (e) {
     // An error happened.
     // console.error("Error adding document: ", e);
@@ -37,7 +37,7 @@ export function GetWorks(connect) {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const querySnapshot = await getDocs(collection(connect.db, "user", connect.user, "musical_group", connect.musical_group, "work"));
+      const querySnapshot = await getDocs(collection(connect.db, "space", connect.space, "musical_group", connect.musical_group, "work"));
       
       let result = [];
       querySnapshot.forEach((doc) => {
@@ -79,7 +79,7 @@ export function GetBooks(connect) {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const querySnapshot = await getDocs(collection(connect.db, "user", connect.user, "musical_group", connect.musical_group, "book"));
+      const querySnapshot = await getDocs(collection(connect.db, "space", connect.space, "musical_group", connect.musical_group, "book"));
       
       let result = [];
       querySnapshot.forEach((doc) => {

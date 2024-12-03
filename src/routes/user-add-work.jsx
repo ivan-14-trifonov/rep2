@@ -73,8 +73,8 @@ export default function UserAddWork() {
 
   const connect = {
     db: getFirestore(app),
-    user: "6gKLtjBQl7pKpoyQwQfU",
-    musical_group: "zC3PEO9XUNz7YoswJqE6",
+    space: "x6mEjT4w6nSE1xbyPNFa",
+    musical_group: "PjrFQebwtExFEGZvJCt4",
   };
 
   let form = formAddWork(connect, navigate);
