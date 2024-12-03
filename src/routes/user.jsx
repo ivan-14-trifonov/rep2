@@ -78,8 +78,8 @@ export default function User() {
 
   const connect = {
     db: getFirestore(app),
-    space: "x6mEjT4w6nSE1xbyPNFa",
-    musical_group: "PjrFQebwtExFEGZvJCt4",
+    space: "Go2Aiju3Nuq9wuFqhFha",
+    musical_group: "IJQZkACyMCfYNoCjiHqS",
   };
 
   let works = GetWorks(connect);
