@@ -1,3 +1,44 @@
+.userBox {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.userBox_name {
+	margin: 2px 0;
+	font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.userBox_email {
+	margin: 2px 0;
+	font-size: 0.8em;
+	color: #696969;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.userBox_exit {
+	margin: 0.5em 0;
+	font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.spaceInfo {
+	margin: 0.25em 0;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	color: #696969;
+}
+
+.worksList {
+	margin-bottom: 0;
+}
+
+.addWork {
+	margin: 2em 0 1em !important;
+}
+
 .workCard {
 	font-size: 1em;
 	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -34,14 +75,3 @@
 	padding: 0.25em 0.5em;
 	display: inline-block;
 }
-
-/*.tadleOfWorks {
-	border: 1px solid #999;
-	border-collapse: collapse;
-	font-size: 1em;
-	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-}
-
-.tadleOfWorks__td {
-	border: 1px solid #999;
-}*/

@@ -7,7 +7,7 @@ import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { AddWork, GetElements, GetBooks } from "../firestore";
+import { AddWork, GetElements } from "../firestore";
 
 function formAddWork(connect, navigate) {
 
@@ -28,7 +28,7 @@ function formAddWork(connect, navigate) {
     navigate("/user");
   }
 
-  const books = GetBooks(connect);
+  const books = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/book");
   const events = GetElements(connect, "event");
   const themes = GetElements(connect, "theme");
 
@@ -74,7 +74,7 @@ export default function UserAddWork() {
   const connect = {
     db: getFirestore(app),
     space: "Go2Aiju3Nuq9wuFqhFha",
-    musical_group: "IJQZkACyMCfYNoCjiHqS",
+    musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
   let form = formAddWork(connect, navigate);

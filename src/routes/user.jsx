@@ -1,13 +1,13 @@
 import "./user.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetWorks, GetUsers } from "../firestore";
+import { GetElements, GetEl } from "../firestore";
 
 function cardsOfWorks(works) {
 
@@ -43,10 +43,10 @@ function cardsOfWorks(works) {
     <div>
       {Array(works.length).fill().map((_, i) =>
         <Card variant="outlined" className="workCard" name={works[i][0]}>
-          <p className="workCard__name">{works[i][1].name}</p>
-          {ifBook(works[i][1])}
-          {ifEvent(works[i][1])}
-          {ifTheme(works[i][1])}
+          <p className="workCard__name">{works[i].name}</p>
+          {ifBook(works[i])}
+          {ifEvent(works[i])}
+          {ifTheme(works[i])}
       </Card>
       )}
     </div>
@@ -62,7 +62,6 @@ export default function User() {
   if (user == null) {
     navigate("/login");
   }
-  //alert (JSON.stringify(user));
 
   const onAdd = () => {
     navigate("/user-add-work");
@@ -76,27 +75,55 @@ export default function User() {
     });
   }
 
+  const db = getFirestore(app);
+
   const connect = {
-    db: getFirestore(app),
+    db: db,
     space: "Go2Aiju3Nuq9wuFqhFha",
-    musical_group: "IJQZkACyMCfYNoCjiHqS",
+    musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
-  let works = GetWorks(connect);
+  const users = GetElements(connect, "space/" + connect.space + "/users")
+
+  if (user && (users.length != 0)) {
+    if (!users.map(i => i.uid).includes(user.uid)) {
+      return (
+        <Container maxWidth="xs" sx={{mt: 2}}>
+          <h1>Недостаточно прав</h1>
+          <p>У вас нет доступа к данному пространству.</p>
+        </Container>
+      )
+      
+    }
+  }
+
+  const space = GetEl(connect, "space", connect.space);
+  const musicalGroup = GetEl(connect, "space/" + connect.space + "/musical_group", connect.musicalGroup);
+
+  const connectInfo = {
+    space: space.name,
+    musicalGroup: musicalGroup.name,
+  };
+
+  let works = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work");
   // alert(JSON.stringify(works));
   let cards = cardsOfWorks(works);
 
-  let users = GetUsers(connect);
-  // alert(JSON.stringify(users));
-
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
-      <h1>Репертуар</h1>
+      {user &&
+        <div className="userBox">
+          <p className="userBox_name">{user.displayName}</p>
+          <p className="userBox_email">{user.email}</p>
+          <p className="userBox_exit" onClick={onLogout}>Выйти</p>
+        </div>
+      }
+      <h1 className="worksList">Cписок произведений</h1>
+      {(connectInfo.space && connectInfo.musicalGroup) &&
+        <p className="spaceInfo">{connectInfo.space} &bull; {connectInfo.musicalGroup}</p>
+      }
+      <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
       <div>{cards}</div>
-      <Button variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
-      <Button variant="contained" color="error" onClick={onLogout} sx={{mt: 3}} fullWidth>
-        Выйти
-      </Button>
     </Container>
   )
 }

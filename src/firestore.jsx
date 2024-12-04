@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
-// const { collection, getDocs } = require("firebase/firestore");
+import { collection, addDoc, getDocs, doc, getDoc } from "firebase/firestore";
 
 export async function AddWork(connect, fields) {
   try {
-    const docRef = await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musical_group, "work"), fields);
+    const docRef = await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musicalGroup, "work"), fields);
   } catch (e) {
     // An error happened.
     // console.error("Error adding document: ", e);
@@ -32,65 +31,18 @@ export function GetElements(connect, tadle) {
   return elements;
 }
 
-export function GetWorks(connect) {
-  const [works, setWorks] = useState([]);
+export function GetEl(connect, tadle, idEl) {
+  const [el, setEl] = useState([]);
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const querySnapshot = await getDocs(collection(connect.db, "space", connect.space, "musical_group", connect.musical_group, "work"));
-      
-      let result = [];
-      querySnapshot.forEach((doc) => {
-        result.push([doc.id, doc.data()]);
-      });
-
-      setWorks(result);
+      const docRef = doc(connect.db, tadle, idEl);
+      const docSnap = await getDoc(docRef);
+      setEl(docSnap.data());
     };
 
     asyncEffect();
   }, []);
 
-  return works;
-}
-
-export function GetUsers(connect) {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const querySnapshot = await getDocs(collection(connect.db, "user"));
-
-      let result = [];
-      querySnapshot.forEach((doc) => {
-        result.push([doc.id, doc.data()]);
-      });
-
-      setUsers(result);
-    };
-
-    asyncEffect();
-  }, []);
-
-  return users;
-}
-
-export function GetBooks(connect) {
-  const [books, setBooks] = useState([]);
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const querySnapshot = await getDocs(collection(connect.db, "space", connect.space, "musical_group", connect.musical_group, "book"));
-      
-      let result = [];
-      querySnapshot.forEach((doc) => {
-        result.push(doc.data());
-      });
-
-      setBooks(result);
-    };
-
-    asyncEffect();
-  }, []);
-
-  return books;
+  return el;
 }
