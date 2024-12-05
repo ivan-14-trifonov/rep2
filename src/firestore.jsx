@@ -10,6 +10,16 @@ export async function AddWork(connect, fields) {
   }
 }
 
+export async function AddPerform(connect, id, fields) {
+  alert(JSON.stringify(fields));
+  try {
+    // const docRef = await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musicalGroup, "work"), fields);
+  } catch (e) {
+    // An error happened.
+    // console.error("Error adding document: ", e);
+  }
+}
+
 export function GetElements(connect, tadle) {
   const [elements, setElements] = useState([]);
 

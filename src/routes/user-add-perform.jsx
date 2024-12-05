@@ -7,19 +7,23 @@ import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { AddWork, GetElements, GetEl } from "../firestore";
+import { GetElements, GetEl, AddPerform } from "../firestore";
 
 function formAddPerform(connect, navigate, id) {
 
-  let work = GetEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", id);
+  const work = GetEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", id);
+  const events = GetElements(connect, "event");
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const fields = {
-      name: formData.get("name"),
+      date: formData.get("date"),
+      time: formData.get("time"),
+      event: formData.get("event"),
+      note: formData.get("note"),
     }
-    // AddPerform(connect, id, fields);
+    AddPerform(connect, id, fields);
     e.target.reset();
 
     navigate("/user");
@@ -28,7 +32,22 @@ function formAddPerform(connect, navigate, id) {
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
       <p>{work.name}</p>
-      <input className="formAddWork__input" name="name" placeholder="Название" />
+      <label for="date">Дата исполнения:</label>
+      <input type="date" id="date" name="date" />
+      <p>Собрание:</p>
+      <select className="formAddWork__select" name="time" id="time-select">
+        <option value="">--Не определено--</option>
+        <option value="утро">утро</option>
+        <option value="вечер">вечер</option>
+      </select>
+      <p>Событие:</p>
+      <select className="formAddWork__select" name="event" id="events-select">
+        <option value="">--Не определено--</option>
+          {Array(events.length).fill().map((_, i) =>
+            <option value={events[i].name}>{events[i].name}</option>
+          )}
+      </select>
+      <input className="formAddWork__input" name="note" placeholder="Примечание" />
       <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>Добавить</Button>
     </form>
   );
