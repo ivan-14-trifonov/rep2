@@ -11,9 +11,8 @@ export async function AddWork(connect, fields) {
 }
 
 export async function AddPerform(connect, id, fields) {
-  alert(JSON.stringify(fields));
   try {
-    // const docRef = await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musicalGroup, "work"), fields);
+    const docRef = await addDoc(collection(connect.db, "/space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work/" + id + "/perform"), fields);
   } catch (e) {
     // An error happened.
     // console.error("Error adding document: ", e);
