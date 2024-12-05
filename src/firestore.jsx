@@ -68,9 +68,12 @@ export function GetWorks(connect) {
 
   let performs = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform");
 
+  for (let i = 0; i < performs.length; i++) {
+    works[performs[i].work].perform = [];
+  }
   // временно
   for (let i = 0; i < performs.length; i++) {
-    works[performs[i].work].perform = performs[i];
+    works[performs[i].work].perform.push(performs[i]);
   }
 
   return res;

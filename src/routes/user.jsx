@@ -52,9 +52,12 @@ function cardsOfWorks(works, navigate) {
           {ifBook(works[i])}
           {ifEvent(works[i])}
           {ifTheme(works[i])}
-          {works[i].perform &&
+          {works[i].perform && Array(works[i].perform.length).fill().map((_, j) => 
+            <p className="perform">{works[i].perform[j].date} {works[i].perform[j].time} {works[i].perform[j].event} {works[i].perform[j].note}</p>
+          )}
+          {/*works[i].perform &&
             <p className="perform">{works[i].perform.date} {works[i].perform.time} {works[i].perform.event} {works[i].perform.note}</p>
-          }
+          */}
           <button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
       </Card>
       )}
