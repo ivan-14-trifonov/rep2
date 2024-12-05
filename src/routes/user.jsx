@@ -7,7 +7,7 @@ import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements, GetEl } from "../firestore";
+import { GetElements, GetEl, GetWorks } from "../firestore";
 
 function cardsOfWorks(works, navigate) {
 
@@ -52,6 +52,9 @@ function cardsOfWorks(works, navigate) {
           {ifBook(works[i])}
           {ifEvent(works[i])}
           {ifTheme(works[i])}
+          {works[i].perform &&
+            <p className="perform">{works[i].perform.date} {works[i].perform.time} {works[i].perform.event} {works[i].perform.note}</p>
+          }
           <button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
       </Card>
       )}
@@ -111,8 +114,9 @@ export default function User() {
     musicalGroup: musicalGroup.name,
   };
 
-  let works = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work");
+  let works = GetWorks(connect);
   // alert(JSON.stringify(works));
+
   let cards = cardsOfWorks(works, navigate);
 
   return (

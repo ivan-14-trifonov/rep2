@@ -12,7 +12,7 @@ export async function AddWork(connect, fields) {
 
 export async function AddPerform(connect, id, fields) {
   try {
-    const docRef = await addDoc(collection(connect.db, "/space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work/" + id + "/perform"), fields);
+    const docRef = await addDoc(collection(connect.db, "/space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform"), fields);
   } catch (e) {
     // An error happened.
     // console.error("Error adding document: ", e);
@@ -56,4 +56,22 @@ export function GetEl(connect, tadle, idEl) {
   }, []);
 
   return el;
+}
+
+export function GetWorks(connect) {
+  let res = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work");
+  let works = {};
+  for (let i = 0; i < res.length; i++) {
+    let id = res[i].id;
+    works[id] = res[i];
+  }
+
+  let performs = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform");
+
+  // временно
+  for (let i = 0; i < performs.length; i++) {
+    works[performs[i].work].perform = performs[i];
+  }
+
+  return res;
 }

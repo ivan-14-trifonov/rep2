@@ -18,6 +18,7 @@ function formAddPerform(connect, navigate, id) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const fields = {
+      work: id,
       date: formData.get("date"),
       time: formData.get("time"),
       event: formData.get("event"),
