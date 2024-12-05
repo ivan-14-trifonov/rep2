@@ -9,7 +9,7 @@ import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
 import { GetElements, GetEl } from "../firestore";
 
-function cardsOfWorks(works) {
+function cardsOfWorks(works, navigate) {
 
   function inBook(work) {
     if (work.number) {
@@ -39,6 +39,11 @@ function cardsOfWorks(works) {
     }
   }
 
+  const onAddPerform = event => {
+    let idWork = event.currentTarget.getAttribute("idWork");
+    navigate(`/user-add-perform?id=${idWork}`);
+  }
+
   return (
     <div>
       {Array(works.length).fill().map((_, i) =>
@@ -47,6 +52,7 @@ function cardsOfWorks(works) {
           {ifBook(works[i])}
           {ifEvent(works[i])}
           {ifTheme(works[i])}
+          <button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
       </Card>
       )}
     </div>
@@ -107,7 +113,7 @@ export default function User() {
 
   let works = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work");
   // alert(JSON.stringify(works));
-  let cards = cardsOfWorks(works);
+  let cards = cardsOfWorks(works, navigate);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>

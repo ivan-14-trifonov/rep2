@@ -9,6 +9,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import Login from "./routes/login";
 import User from "./routes/user";
 import UserAddWork from "./routes/user-add-work";
+import UserAddPerform from "./routes/user-add-perform";
 import ErrorPage from "./error-page";
 
 const router = createBrowserRouter([
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/user-add-work",
     element: <UserAddWork/>,
+  },
+  {
+    path: "/user-add-perform",
+    element: <UserAddPerform/>,
   },
 ]);
 

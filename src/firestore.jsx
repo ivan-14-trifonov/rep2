@@ -19,7 +19,9 @@ export function GetElements(connect, tadle) {
 
       let result = [];
       querySnapshot.forEach((doc) => {
-        result.push(doc.data());
+        let el = doc.data();
+        el.id = doc.id;
+        result.push(el);
       });
 
       setElements(result);

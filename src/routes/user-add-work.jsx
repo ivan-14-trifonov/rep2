@@ -77,6 +77,20 @@ export default function UserAddWork() {
     musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
+  const users = GetElements(connect, "space/" + connect.space + "/users")
+
+  if (user && (users.length != 0)) {
+    if (!users.map(i => i.uid).includes(user.uid)) {
+      return (
+        <Container maxWidth="xs" sx={{mt: 2}}>
+          <h1>Недостаточно прав</h1>
+          <p>У вас нет доступа к данному пространству.</p>
+        </Container>
+      )
+      
+    }
+  }
+
   let form = formAddWork(connect, navigate);
 
   return (
