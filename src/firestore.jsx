@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, addDoc, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 
 export async function AddWork(connect, fields) {
   try {
@@ -77,4 +77,14 @@ export function GetWorks(connect) {
   }
 
   return res;
+}
+
+export function Status4(connect, idWork) {
+
+  const workRef = doc(connect.db, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", idWork);
+
+  // должно быть await !!!
+  updateDoc(workRef, {
+    status: "4"
+  });
 }

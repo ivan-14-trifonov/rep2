@@ -7,9 +7,9 @@ import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements, GetEl, GetWorks } from "../firestore";
+import { GetElements, GetEl, GetWorks, Status4 } from "../firestore";
 
-function cardsOfWorks(works, navigate) {
+function cardsOfWorks(works, navigate, connect) {
 
   function inBook(work) {
     if (work.number) {
@@ -44,10 +44,15 @@ function cardsOfWorks(works, navigate) {
     navigate(`/user-add-perform?id=${idWork}`);
   }
 
+  const onStatus4 = event => {
+    let idWork = event.currentTarget.getAttribute("idWork");
+    Status4(connect, idWork);
+  }
+
   return (
     <div>
       {Array(works.length).fill().map((_, i) =>
-        <Card variant="outlined" className="workCard" name={works[i][0]}>
+        <Card variant="outlined" className="workCard" name={works[i][0]} hidden={(works[i].status == 4)}>
           <p className="workCard__name">{works[i].name}</p>
           {ifBook(works[i])}
           {ifEvent(works[i])}
@@ -59,6 +64,7 @@ function cardsOfWorks(works, navigate) {
             <p className="perform">{works[i].perform.date} {works[i].perform.time} {works[i].perform.event} {works[i].perform.note}</p>
           */}
           <button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
+          <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>
       </Card>
       )}
     </div>
@@ -120,7 +126,7 @@ export default function User() {
   let works = GetWorks(connect);
   // alert(JSON.stringify(works));
 
-  let cards = cardsOfWorks(works, navigate);
+  let cards = cardsOfWorks(works, navigate, connect);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
