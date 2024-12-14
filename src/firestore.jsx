@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, addDoc, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, getDoc, updateDoc, query, orderBy } from "firebase/firestore";
 
 export async function AddWork(connect, fields) {
   try {
@@ -19,12 +19,14 @@ export async function AddPerform(connect, id, fields) {
   }
 }
 
-export function GetElements(connect, tadle) {
+export function GetElements(connect, tadle, sort) {
   const [elements, setElements] = useState([]);
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const querySnapshot = await getDocs(collection(connect.db, tadle));
+      const elRef = collection(connect.db, tadle);
+      const q = query(elRef, orderBy(sort));
+      const querySnapshot = await getDocs(q);
 
       let result = [];
       querySnapshot.forEach((doc) => {
@@ -59,14 +61,14 @@ export function GetEl(connect, tadle, idEl) {
 }
 
 export function GetWorks(connect) {
-  let res = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work");
+  let res = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", "name");
   let works = {};
   for (let i = 0; i < res.length; i++) {
     let id = res[i].id;
     works[id] = res[i];
   }
 
-  let performs = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform");
+  let performs = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform", "date");
 
   for (let i = 0; i < performs.length; i++) {
     works[performs[i].work].perform = [];

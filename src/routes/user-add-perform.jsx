@@ -12,7 +12,7 @@ import { GetElements, GetEl, AddPerform } from "../firestore";
 function formAddPerform(connect, navigate, id) {
 
   const work = GetEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", id);
-  const events = GetElements(connect, "event");
+  const events = GetElements(connect, "event", "name");
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
@@ -74,7 +74,7 @@ export default function UserAddPerform() {
     musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
-  const users = GetElements(connect, "space/" + connect.space + "/users")
+  const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
 
   if (user && (users.length != 0)) {
     if (!users.map(i => i.uid).includes(user.uid)) {

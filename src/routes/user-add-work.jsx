@@ -28,9 +28,9 @@ function formAddWork(connect, navigate) {
     navigate("/user");
   }
 
-  const books = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/book");
-  const events = GetElements(connect, "event");
-  const themes = GetElements(connect, "theme");
+  const books = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/book", "name");
+  const events = GetElements(connect, "event", "name");
+  const themes = GetElements(connect, "theme", "name");
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
@@ -77,7 +77,7 @@ export default function UserAddWork() {
     musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
-  const users = GetElements(connect, "space/" + connect.space + "/users")
+  const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
 
   if (user && (users.length != 0)) {
     if (!users.map(i => i.uid).includes(user.uid)) {

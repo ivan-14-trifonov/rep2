@@ -126,7 +126,7 @@ export default function User() {
     musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
-  const users = GetElements(connect, "space/" + connect.space + "/users")
+  const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
 
   if (user && (users.length != 0)) {
     if (!users.map(i => i.uid).includes(user.uid)) {
