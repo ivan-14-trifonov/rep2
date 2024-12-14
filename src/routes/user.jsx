@@ -39,6 +39,31 @@ function cardsOfWorks(works, navigate, connect) {
     }
   }
 
+  function performs(p) {
+
+    let date = "";
+    if (p.date) {
+      date = " " + p.date;
+    }
+
+    let time = "";
+    if (p.time) {
+      time = " " + p.time;
+    }
+
+    let event = "";
+    if (p.event) {
+      event = ", " + p.event;
+    }
+
+    let note = "";
+    if (p.note) {
+      note = " [" + p.note + "]";
+    }
+
+    return <p className="perform">&#10149;<b>{date}{time}{event}{note}</b></p>;
+  }
+
   const onAddPerform = event => {
     let idWork = event.currentTarget.getAttribute("idWork");
     navigate(`/user-add-perform?id=${idWork}`);
@@ -58,13 +83,13 @@ function cardsOfWorks(works, navigate, connect) {
           {ifEvent(works[i])}
           {ifTheme(works[i])}
           {works[i].perform && Array(works[i].perform.length).fill().map((_, j) => 
-            <p className="perform">{works[i].perform[j].date} {works[i].perform[j].time} {works[i].perform[j].event} {works[i].perform[j].note}</p>
+            performs(works[i].perform[j])
           )}
           {/*works[i].perform &&
             <p className="perform">{works[i].perform.date} {works[i].perform.time} {works[i].perform.event} {works[i].perform.note}</p>
           */}
-          <button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
-          <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>
+          {/*}<button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
+          <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>{*/}
       </Card>
       )}
     </div>

@@ -47,35 +47,34 @@
 }
 
 .workCard__name {
-	margin: 0 0 0.5em;
+	margin: 0;
 }
 
 .workCard__book {
 	font-size: 0.8em;
 	color: #696969;
-	margin: 0;
+	margin: 0.25em 0 0;
 }
 
-.workCard__event {
+.workCard__event, .workCard__theme {
 	font-size: 0.8em;
 	color: #FFF;
-	margin: 0.25em 0.25em 0;
-	background-color: #D32F2F;
+	margin: 0.5em 0.25em 0.25em;
 	border-radius: 0.5em;
 	padding: 0.25em 0.5em;
 	display: inline-block;
+}
+
+.workCard__event, .workCard__theme {
+	background-color: #D32F2F;
 }
 
 .workCard__theme {
-	font-size: 0.8em;
-	color: #FFF;
-	margin: 0.25em 0.25em 0;
 	background-color: #1976D2;
-	border-radius: 0.5em;
-	padding: 0.25em 0.5em;
-	display: inline-block;
 }
 
 .perform {
-	color: red;
+	margin: 0.25em 0 0;
+	/*font-size: 0.8em;*/
+	/*color: #404040;*/
 }
