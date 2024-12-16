@@ -10,7 +10,7 @@ export async function AddWork(connect, fields) {
   }
 }
 
-export async function AddPerform(connect, id, fields) {
+export async function AddPerform(connect, fields) {
   try {
     const docRef = await addDoc(collection(connect.db, "/space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform"), fields);
   } catch (e) {
@@ -44,12 +44,12 @@ export function GetElements(connect, tadle, sort) {
   return elements;
 }
 
-export function GetEl(connect, tadle, idEl) {
+export function GetEl(connect, tadle, id) {
   const [el, setEl] = useState([]);
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const docRef = doc(connect.db, tadle, idEl);
+      const docRef = doc(connect.db, tadle, id);
       const docSnap = await getDoc(docRef);
       setEl(docSnap.data());
     };

@@ -24,7 +24,7 @@ function formAddPerform(connect, navigate, id) {
       event: formData.get("event"),
       note: formData.get("note"),
     }
-    AddPerform(connect, id, fields);
+    AddPerform(connect, fields);
     e.target.reset();
 
     navigate("/user");
