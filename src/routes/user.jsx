@@ -7,7 +7,7 @@ import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements, GetEl, GetWorks, Status4 } from "../firestore";
+import { GetElements, GetEl, GetWorkBySections, Status4 } from "../firestore";
 
 function cardsOfWorks(works, navigate, connect) {
 
@@ -85,9 +85,6 @@ function cardsOfWorks(works, navigate, connect) {
           {works[i].perform && Array(works[i].perform.length).fill().map((_, j) => 
             performs(works[i].perform[j])
           )}
-          {/*works[i].perform &&
-            <p className="perform">{works[i].perform.date} {works[i].perform.time} {works[i].perform.event} {works[i].perform.note}</p>
-          */}
           {/*}<button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
           <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>{*/}
       </Card>
@@ -148,10 +145,22 @@ export default function User() {
     musicalGroup: musicalGroup.name,
   };
 
-  let works = GetWorks(connect);
-  // alert(JSON.stringify(works));
+  const sections = [
+    {name: "Молитвенные",
+    filter: (work) => {return (work.theme == "Молитвенные")},
+    },
+    {name: "Разные темы",
+    filter: (work) => {return ((work.event == "") && (work.theme != "Молитвенные"))},
+    },
+    {name: "Праздничные",
+    filter: (work) => {return (work.event != "")},
+    },
+  ];
 
-  let cards = cardsOfWorks(works, navigate, connect);
+  let workBySections = GetWorkBySections(connect, sections);
+  //alert(JSON.stringify(workBySections[0]));
+
+  //let cards = cardsOfWorks(workBySections[0].works, navigate, connect);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
@@ -167,7 +176,12 @@ export default function User() {
         <p className="spaceInfo">{connectInfo.space} &bull; {connectInfo.musicalGroup}</p>
       }
       <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
-      <div>{cards}</div>
+      {Array(sections.length).fill().map((_, i) => 
+        <div>
+          <p>{workBySections[i].name}</p>
+          <div>{cardsOfWorks(workBySections[i].works, navigate, connect)}</div>
+        </div>
+      )}
     </Container>
   )
 }

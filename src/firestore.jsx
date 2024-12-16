@@ -60,7 +60,7 @@ export function GetEl(connect, tadle, idEl) {
   return el;
 }
 
-export function GetWorks(connect) {
+export function GetWorkBySections(connect, sections) {
   let res = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", "name");
   let works = {};
   for (let i = 0; i < res.length; i++) {
@@ -73,12 +73,27 @@ export function GetWorks(connect) {
   for (let i = 0; i < performs.length; i++) {
     works[performs[i].work].perform = [];
   }
-  // временно
   for (let i = 0; i < performs.length; i++) {
     works[performs[i].work].perform.push(performs[i]);
   }
 
-  return res;
+  let workBySections = [];
+
+  for (let i = 0; i < sections.length; i++) {
+    workBySections[i] = {
+      name: sections[i].name,
+      works: [],
+    }
+  }
+  for (let key in works) {
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i].filter(works[key])) {
+        workBySections[i].works.push(works[key]);
+      }
+    }
+  };
+
+  return workBySections;
 }
 
 export function Status4(connect, idWork) {
