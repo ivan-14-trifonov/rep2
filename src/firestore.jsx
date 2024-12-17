@@ -60,6 +60,36 @@ export function GetEl(connect, tadle, id) {
   return el;
 }
 
+export function WorkFilter(works, include, exclude) {
+
+  function flag(el, include, exclude) {
+    for (let key in include) {
+      if (include[key].length > 0) {
+        if (include[key].findIndex((i) => i === el[key]) == -1) {
+          return false;
+        }
+      }
+    }
+    for (let key in exclude) {
+      if (exclude[key].length > 0) {
+        if (exclude[key].findIndex((i) => i === el[key]) != -1) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  let res = [];
+  for (let key in works) {
+    if (flag(works[key], include, exclude)) {
+      res.push(works[key]);
+    }
+  }
+
+  return res;
+}
+
 export function GetWorkBySections(connect, sections) {
   let res = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", "name");
   let works = {};
@@ -85,13 +115,28 @@ export function GetWorkBySections(connect, sections) {
       works: [],
     }
   }
-  for (let key in works) {
-    for (let i = 0; i < sections.length; i++) {
+
+  //
+  let include = {
+    book: [],
+    theme: [],
+    event: [],
+  };
+  let exclude = {
+    book: [],
+    theme: [],
+    event: [""],
+  };
+
+  /*for (let key in works) {
+    for (let i = 0; i < sections.length - 1; i++) { //
       if (sections[i].filter(works[key])) {
         workBySections[i].works.push(works[key]);
       }
     }
-  };
+  };*/
+
+  workBySections[2].works = WorkFilter(works, include, exclude);
 
   return workBySections;
 }
@@ -103,5 +148,6 @@ export function Status4(connect, idWork) {
   // должно быть await !!!
   updateDoc(workRef, {
     status: "4"
+
   });
 }
