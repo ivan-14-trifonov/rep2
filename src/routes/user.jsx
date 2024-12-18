@@ -7,7 +7,7 @@ import { Button, Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements, GetEl, GetWorkBySections, Status4 } from "../firestore";
+import { GetElements, GetEl, GetWorkInSections, Status4 } from "../firestore";
 
 function cardsOfWorks(works, navigate, connect) {
 
@@ -107,6 +107,11 @@ export default function User() {
     navigate("/user-add-work");
   }
 
+  const onSection = event => {
+    let section = event.currentTarget.getAttribute("value");
+    setNumberSection(section);
+  }
+
   const onLogout = () => {
     signOut(auth).then(() => {
       navigate("/login");
@@ -122,6 +127,36 @@ export default function User() {
     space: "Go2Aiju3Nuq9wuFqhFha",
     musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
+
+  const sections = [
+    {
+      name: "Молитвенные",
+      sort: "name",
+      include: { book: [], theme: ["Молитвенные"], event: [] },
+      exclude: { book: [], theme: [], event: [] },
+    },
+    {
+      name: "Разные темы",
+      sort: "name",
+      include: { book: [], theme: [], event: [] },
+      exclude: { book: [], theme: ["Молитвенные", ""], event: [] },
+    },
+    {
+      name: "Праздничные",
+      sort: "event",
+      include: { book: [], theme: [], event: [] },
+      exclude: { book: [], theme: [], event: [""] },
+    },
+    /*{
+      name: "(Весь репертуар в одном списке)",
+      sort: "name",
+      include: { book: [], theme: [], event: [] },
+      exclude: { book: [], theme: [], event: [] },
+    },*/
+
+  ];
+
+  const [numberSection, setNumberSection] = useState(0);
 
   const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
 
@@ -145,22 +180,11 @@ export default function User() {
     musicalGroup: musicalGroup.name,
   };
 
-  const sections = [
-    {name: "Молитвенные",
-    filter: (work) => {return (work.theme == "Молитвенные")},
-    },
-    {name: "Разные темы",
-    filter: (work) => {return ((work.event == "") && (work.theme != "Молитвенные"))},
-    },
-    {name: "Праздничные",
-    filter: (work) => {return (work.event != "")},
-    },
-  ];
+  let workInSections = GetWorkInSections(connect, sections[numberSection]);
 
-  let workBySections = GetWorkBySections(connect, sections);
   //alert(JSON.stringify(workBySections[0]));
 
-  //let cards = cardsOfWorks(workBySections[0].works, navigate, connect);
+  let cards = cardsOfWorks(workInSections, navigate, connect);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
@@ -176,13 +200,21 @@ export default function User() {
         <p className="spaceInfo">{connectInfo.space} &bull; {connectInfo.musicalGroup}</p>
       }
       <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
-      {Array(sections.length).fill().map((_, i) => 
-        <div>
-          <p>{workBySections[i].name}</p>
-          <div>{cardsOfWorks(workBySections[i].works, navigate, connect)}</div>
-        </div>
-      )}
+      <div className="sections">
+        {Array(sections.length).fill().map((_, i) =>
+          <p className="sections__p">
+            <button className="sections__button" className={(i == numberSection) ? "sections__button_active" : "sections__button"} value={i} onClick={onSection}>{sections[i].name}</button>
+            {(i != sections.length - 1) &&
+              <b> | </b>
+            }
+          </p> 
+        )}
+      </div>
+      <div>
+        {cards}
+      </div>
     </Container>
   )
 }
+
 

@@ -31,6 +31,35 @@
 	color: #696969;
 }
 
+.sections {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0 0 1em;
+}
+
+.sections__p {
+	margin: 0.25em 0;
+}
+
+.sections__button {
+	background: none;
+	border: 0;
+    border-radius: 0;
+    font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	color: #696969;
+}
+
+.sections__button_active {
+	background: none;
+	border: 0;
+    border-radius: 0;
+    font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	font-weight: 500;
+}
+
 .worksList {
 	margin-bottom: 0;
 }
