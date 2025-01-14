@@ -64,11 +64,6 @@ function cardsOfWorks(works, navigate, connect) {
     return <p className="perform">&#10149;<b>{date}{time}{event}{note}</b></p>;
   }
 
-  const onAddPerform = event => {
-    let idWork = event.currentTarget.getAttribute("idWork");
-    navigate(`/user-add-perform?id=${idWork}`);
-  }
-
   const onStatus4 = event => {
     let idWork = event.currentTarget.getAttribute("idWork");
     Status4(connect, idWork);
@@ -105,6 +100,11 @@ export default function User() {
 
   const onAdd = () => {
     navigate("/user-add-work");
+  }
+
+  const onAddPerform = event => {
+    let idWork = event.currentTarget.getAttribute("idWork");
+    navigate(`/user-add-perform?id=${idWork}`);
   }
 
   const onSection = event => {
@@ -147,12 +147,12 @@ export default function User() {
       include: { book: [], theme: [], event: [] },
       exclude: { book: [], theme: [], event: [""] },
     },
-    /*{
+    {
       name: "(Весь репертуар в одном списке)",
       sort: "name",
       include: { book: [], theme: [], event: [] },
       exclude: { book: [], theme: [], event: [] },
-    },*/
+    },
 
   ];
 
@@ -200,6 +200,7 @@ export default function User() {
         <p className="spaceInfo">{connectInfo.space} &bull; {connectInfo.musicalGroup}</p>
       }
       <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
+      <Button className="addWork" variant="contained" onClick={onAddPerform} sx={{mt: 3}} fullWidth>Добавить исполнение</Button>
       <div className="sections">
         {Array(sections.length).fill().map((_, i) =>
           <p className="sections__p">

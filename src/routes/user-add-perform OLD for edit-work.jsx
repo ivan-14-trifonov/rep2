@@ -7,28 +7,18 @@ import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements, GetWorkInSections, AddPerform } from "../firestore";
+import { GetElements, GetEl, AddPerform } from "../firestore";
 
 function formAddPerform(connect, navigate, id) {
 
-  let works = GetWorkInSections(
-    connect,
-    {
-      name: "(Весь репертуар в одном списке)",
-      sort: "name",
-      include: { book: [], theme: [], event: [] },
-      exclude: { book: [], theme: [], event: [] },
-    }
-  );
-
-  //const work = GetEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", id);
+  const work = GetEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", id);
   const events = GetElements(connect, "event", "name");
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const fields = {
-      work: formData.get("work"),
+      work: id,
       date: formData.get("date"),
       time: formData.get("time"),
       event: formData.get("event"),
@@ -42,14 +32,7 @@ function formAddPerform(connect, navigate, id) {
 
   return (
     <form onSubmit={submitAddWork} className="formAddWork">
-      <p>{/*work.name*/}</p>
-      <p>Произведение:</p>
-      <select className="formAddWork__select" name="work" id="works-select">
-        <option value="">--Не определено--</option>
-          {Array(works.length).fill().map((_, i) =>
-            <option value={works[i].id}>{works[i].name}</option>
-          )}
-      </select>
+      <p>{work.name}</p>
       <label for="date">Дата исполнения:</label>
       <input type="date" id="date" name="date" />
       <p>Собрание:</p>
