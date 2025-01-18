@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { collection, addDoc, getDocs, doc, getDoc, updateDoc, query, orderBy } from "firebase/firestore";
 
 export async function AddWork(connect, fields) {
@@ -19,45 +19,26 @@ export async function AddPerform(connect, fields) {
   }
 }
 
-export function GetElements(connect, tadle, sort) {
-  const [elements, setElements] = useState([]);
+export async function GetElements(connect, tadle, sort) {
+  const elRef = collection(connect.db, tadle);
+  const q = query(elRef, orderBy(sort));
+  const querySnapshot = await getDocs(q);
 
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const elRef = collection(connect.db, tadle);
-      const q = query(elRef, orderBy(sort));
-      const querySnapshot = await getDocs(q);
+  let result = [];
+  querySnapshot.forEach((doc) => {
+    let el = doc.data();
+    el.id = doc.id;
+    result.push(el);
+  });
 
-      let result = [];
-      querySnapshot.forEach((doc) => {
-        let el = doc.data();
-        el.id = doc.id;
-        result.push(el);
-      });
-
-      setElements(result);
-    };
-
-    asyncEffect();
-  }, []);
-
-  return elements;
+  return result;
 }
 
-export function GetEl(connect, tadle, id) {
-  const [el, setEl] = useState([]);
+export async function GetEl(connect, tadle, id) {
+  const docRef = doc(connect.db, tadle, id);
+  const docSnap = await getDoc(docRef);
 
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const docRef = doc(connect.db, tadle, id);
-      const docSnap = await getDoc(docRef);
-      setEl(docSnap.data());
-    };
-
-    asyncEffect();
-  }, []);
-
-  return el;
+  return docSnap.data();
 }
 
 export function WorksFilter(works, include, exclude) {
@@ -113,10 +94,10 @@ export function WorksWithPerforms(works, performs) {
   return res;
 }
 
+export async function GetWorkInSections(connect, section) {
 
-export function GetWorkInSections(connect, section) {
-  let works = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", section.sort);
-  let performs = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform", "date");
+  let works = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", section.sort);
+  let performs = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform", "date");
   let join = WorksWithPerforms(works, performs);
   let workInSection = WorksFilter(join, section.include, section.exclude);
 

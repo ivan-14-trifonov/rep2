@@ -158,7 +158,50 @@ export default function User() {
 
   const [numberSection, setNumberSection] = useState(0);
 
-  const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      let result = await GetElements(connect, "space/" + connect.space + "/users", "uid");
+      setUsers(result);
+    };
+    asyncEffect();
+  }, []);
+
+  const [space, setSpace] = useState([]);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      let result = await GetEl(connect, "space", connect.space);
+      setSpace(result);
+    };
+    asyncEffect();
+  }, []);
+
+  const [musicalGroup, setMusicalGroup] = useState([]);
+  
+  useEffect(() => {
+    const asyncEffect = async () => {
+      let result = await GetEl(connect, "space/" + connect.space + "/musical_group", connect.musicalGroup);
+      setMusicalGroup(result);
+    };
+    asyncEffect();
+  }, []);
+
+  const connectInfo = {
+    space: space.name,
+    musicalGroup: musicalGroup.name,
+  };
+
+  const [workInSections, setWorkInSections] = useState([]);
+  
+  useEffect(() => {
+    const asyncEffect = async () => {
+      let result = await GetWorkInSections(connect, sections[numberSection]);
+      setWorkInSections(result);
+    };
+    asyncEffect();
+  }, [numberSection]);
 
   if (user && (users.length != 0)) {
     if (!users.map(i => i.uid).includes(user.uid)) {
@@ -171,16 +214,6 @@ export default function User() {
       
     }
   }
-
-  const space = GetEl(connect, "space", connect.space);
-  const musicalGroup = GetEl(connect, "space/" + connect.space + "/musical_group", connect.musicalGroup);
-
-  const connectInfo = {
-    space: space.name,
-    musicalGroup: musicalGroup.name,
-  };
-
-  let workInSections = GetWorkInSections(connect, sections[numberSection]);
 
   //alert(JSON.stringify(workBySections[0]));
 
