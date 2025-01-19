@@ -10,6 +10,7 @@ import Login from "./routes/login";
 import User from "./routes/user";
 import UserAddWork from "./routes/user-add-work";
 import UserAddPerform from "./routes/user-add-perform";
+import UserRights from "./routes/user-rights";
 import ErrorPage from "./error-page";
 
 const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: "/user-add-perform",
     element: <UserAddPerform/>,
+  },
+  {
+    path: "/user-rights",
+    element: <UserRights/>,
   },
 ]);
 
