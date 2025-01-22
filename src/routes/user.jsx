@@ -1,6 +1,6 @@
 import "./user.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { Container } from "@mui/material";
@@ -9,35 +9,31 @@ import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
 import { GetElements } from "../firestore";
 
+/*import "./user.css";
+
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import { Button, Container, Card } from "@mui/material";
+
+import { getFirestore } from "firebase/firestore";
+import { app } from "../firebase";
+import { GetElements, GetEl, GetWorkInSections, Status4 } from "../firestore";*/
+
 export default function User() {
 
   // подключение
 
-  // данные о пользователе не будут перерисовываться, если не будет ни одного useEffect
-  // надо убрать в useEffect, но как отличить null после попытки и до???
-  // вроде можно, но не получается!
   const auth = getAuth();
   let navigate = useNavigate();
 
   const user = auth.currentUser;
-  if (user == null) {
+
+  // этот код всё равно не работает
+  // ПОЧИНИТЬ!!!
+  /*if (user == null) {
     navigate("/login");
-  }
-
-  // const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   const asyncEffect = async () => {
-  //     const result = await auth.currentUser;
-  //     setUser(result);
-  //   };
-  //   asyncEffect();
-  // }, []);
-
-  // если перешли по ссылке без авторизации
-  // if (user == null) {
-  //   navigate("/login");
-  // }
+  }*/
 
   const db = getFirestore(app);
 
@@ -46,8 +42,6 @@ export default function User() {
   };
 
   // выбор "пространства"
-
-  // так ошибки нет, но всё равно при перезагрузке не перегружаются данные пользователя!!!
 
   const [userSpace, setUserSpace] = useState([]);
 
@@ -61,7 +55,6 @@ export default function User() {
     asyncEffect();
   }, [user]);
 
-  //ТОЛЬКО ЭТОТ КОД ДАЁТ ПЕРЕРИСОВКУ!!!!
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -92,7 +85,7 @@ export default function User() {
         </div>
       }
       <p>{JSON.stringify(userSpace)}</p>
-      <h1 className="worksList">Выберите простанство</h1>
+      <h1 className="worksList">Выберите пространство</h1>
     </Container>
   )
 }
