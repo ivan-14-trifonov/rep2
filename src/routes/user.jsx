@@ -7,18 +7,11 @@ import { Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements } from "../firestore";
+import { GetElements, SyncGetElements } from "../firestore";
 
-/*import "./user.css";
+function spaces() {
 
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
-import { Button, Container, Card } from "@mui/material";
-
-import { getFirestore } from "firebase/firestore";
-import { app } from "../firebase";
-import { GetElements, GetEl, GetWorkInSections, Status4 } from "../firestore";*/
+}
 
 export default function User() {
 
@@ -27,10 +20,15 @@ export default function User() {
   const auth = getAuth();
   let navigate = useNavigate();
 
-  const user = auth.currentUser;
+  const [user, setUser] = useState(auth.currentUser);
+
+  // по сути, это заглушка, без которой пока не работает...
+  setTimeout(() => setUser(auth.currentUser), 400);
+  setTimeout(() => setUser(auth.currentUser), 1000);
 
   // этот код всё равно не работает
   // ПОЧИНИТЬ!!!
+  // проблема в том, что auth.currentUser возвращает сначала null!!!
   /*if (user == null) {
     navigate("/login");
   }*/
@@ -53,17 +51,25 @@ export default function User() {
       }
     };
     asyncEffect();
-  }, [user]);
+  }, [user]); // что будет, если убрать setTimeout(() => setUser... ?
 
-  const [users, setUsers] = useState([]);
+  const [spaces, setSpaces] = useState([]);
 
   useEffect(() => {
     const asyncEffect = async () => {
-      let result = await GetElements(connect, "space/" + connect.space + "/users", "uid");
-      setUsers(result);
+      let result = [];
+      for (let el of userSpace) {
+        let response = await GetElements(connect, "space/" + el.uid + "/users", "uid");
+        if (response.map((r) => r.uid == user.uid).includes(true)) {
+          result.push(el);
+        }
+      }
+      setSpaces(result);
     };
     asyncEffect();
-  }, []);
+  }, [userSpace]);
+
+  console.log(JSON.stringify(spaces));
 
   // события
 
@@ -77,6 +83,13 @@ export default function User() {
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
+      {!user &&
+        <div className="userBox">
+          <p className="userBox_name">загрузка...</p>
+          <p className="userBox_email">загрузка...</p>
+          <p className="userBox_exit" onClick={onLogout}>Выйти</p>
+        </div>
+      }
       {user &&
         <div className="userBox">
           <p className="userBox_name">{user.displayName}</p>
