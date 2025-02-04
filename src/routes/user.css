@@ -25,6 +25,14 @@
 	cursor: pointer;
 }
 
+.spaceCard {
+	font-size: 1em;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	padding: 0.5em;
+	margin: 0.5em 0 0;
+	cursor: pointer;
+}
+
 .spaceInfo {
 	margin: 0.25em 0;
 	font-family: "Roboto", "Helvetica", "Arial", sans-serif;

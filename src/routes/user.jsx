@@ -3,14 +3,25 @@ import "./user.css";
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import { Container } from "@mui/material";
+import { Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
 import { GetElements, SyncGetElements } from "../firestore";
 
-function spaces() {
-
+function chooseSpace(spaces, onSpace) {
+  return (
+    <div>
+      <h1 className="worksList">Выберите пространство</h1>
+      {Array(spaces.length).fill().map((_, i) =>
+        <Card variant="outlined" onClick={onSpace} className="spaceCard" name={spaces[i].uid}>
+          <p>{spaces[i].name}</p>
+          {/*}<button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
+          <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>{*/}
+      </Card>
+      )}
+    </div>
+  )
 }
 
 export default function User() {
@@ -81,6 +92,21 @@ export default function User() {
     });
   }
 
+  const onSpace = () => {
+    signOut(auth).then(() => {
+      // setContent(chooseSpace(spaces, onSpace));
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
+
+  /*const [content, setContent] = useState([]);
+  useEffect(() => {
+    if (spaces) {
+    setContent(chooseSpace(spaces, onSpace));
+  }
+  }, [spaces]);*/
+
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
       {!user &&
@@ -97,8 +123,7 @@ export default function User() {
           <p className="userBox_exit" onClick={onLogout}>Выйти</p>
         </div>
       }
-      <p>{JSON.stringify(userSpace)}</p>
-      <h1 className="worksList">Выберите пространство</h1>
+      <div>{chooseSpace(spaces, onSpace)}</div>
     </Container>
   )
 }
