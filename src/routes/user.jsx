@@ -36,6 +36,8 @@ export default function User() {
   // по сути, это заглушка, без которой пока не работает...
   setTimeout(() => setUser(auth.currentUser), 400);
   setTimeout(() => setUser(auth.currentUser), 1000);
+  setTimeout(() => setUser(auth.currentUser), 2000);
+  setTimeout(() => setUser(auth.currentUser), 5000);
 
   // этот код всё равно не работает
   // ПОЧИНИТЬ!!!
@@ -93,19 +95,15 @@ export default function User() {
   }
 
   const onSpace = () => {
-    signOut(auth).then(() => {
-      // setContent(chooseSpace(spaces, onSpace));
-    }).catch((error) => {
-      // An error happened.
-    });
+    setContent(chooseSpace(spaces, onSpace));
   }
 
-  /*const [content, setContent] = useState([]);
+  const [content, setContent] = useState([]);
   useEffect(() => {
     if (spaces) {
     setContent(chooseSpace(spaces, onSpace));
   }
-  }, [spaces]);*/
+  }, [spaces]);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
@@ -123,7 +121,7 @@ export default function User() {
           <p className="userBox_exit" onClick={onLogout}>Выйти</p>
         </div>
       }
-      <div>{chooseSpace(spaces, onSpace)}</div>
+      <div>{content}</div>
     </Container>
   )
 }
