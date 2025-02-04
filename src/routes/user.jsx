@@ -9,15 +9,30 @@ import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
 import { GetElements, SyncGetElements } from "../firestore";
 
+// worksList ЗАМЕНИТЬ!!!!!!
 function chooseSpace(spaces, onSpace) {
   return (
     <div>
       <h1 className="worksList">Выберите пространство</h1>
       {Array(spaces.length).fill().map((_, i) =>
-        <Card variant="outlined" onClick={onSpace} className="spaceCard" name={spaces[i].uid}>
+        <Card variant="outlined" onClick={onSpace} className="spaceCard" spaceUid={spaces[i].uid}>
           <p>{spaces[i].name}</p>
           {/*}<button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
           <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>{*/}
+      </Card>
+      )}
+    </div>
+  )
+}
+
+// worksList spaceCard ЗАМЕНИТЬ! два!!!!!
+function chooseMusicalGroup(musGroups, onMusGr) {
+  return (
+    <div>
+      <h1 className="worksList">Выберите музыкальный коллектив</h1>
+      {Array(musGroups.length).fill().map((_, i) =>
+        <Card variant="outlined" onClick={onMusGr} className="spaceCard" spaceUid={musGroups[i].uid}>
+          <p>{musGroups[i].name}</p>
       </Card>
       )}
     </div>
@@ -52,10 +67,12 @@ export default function User() {
     db: db,
   };
 
-  // выбор "пространства"
+  /*
+    выбор "пространства"
+  */
 
+  // Простанства, сохранённые для этого пользователя
   const [userSpace, setUserSpace] = useState([]);
-
   useEffect(() => {
     const asyncEffect = async () => {
       if (user) {
@@ -66,8 +83,8 @@ export default function User() {
     asyncEffect();
   }, [user]); // что будет, если убрать setTimeout(() => setUser... ?
 
+  // Оставляем только те пространства, к которым пользователь имеет доступ
   const [spaces, setSpaces] = useState([]);
-
   useEffect(() => {
     const asyncEffect = async () => {
       let result = [];
@@ -82,7 +99,24 @@ export default function User() {
     asyncEffect();
   }, [userSpace]);
 
-  console.log(JSON.stringify(spaces));
+  // выбранное пространство
+  const [spaceUid, setSpaceUid] = useState();
+
+  /*
+    выбор музыкальной группы
+  */
+
+  // список групп в простанстве
+  const [musicalGroups, setMusicalGroups] = useState([]);
+  useEffect(() => {
+    const asyncEffect = async () => {
+      if (spaceUid) {
+        const result = await GetElements(connect, "space/" + spaceUid + "/musicalGroup", "uid");
+        setMusicalGroups(result);
+      }
+    };
+    asyncEffect();
+  }, [spaceUid]);
 
   // события
 
@@ -94,8 +128,20 @@ export default function User() {
     });
   }
 
-  const onSpace = () => {
-    setContent(chooseSpace(spaces, onSpace));
+  const onMusGr = event => {
+    // let selectedSpace = event.currentTarget.getAttribute("spaceUid");;
+    // alert(selectedSpace);
+    // setSpaceUid(selectedSpace);
+    // chooseMusicalGroup(musicalGroups, onMusGr)
+  }
+
+  const onSpace = event => {
+    let selectedSpace = event.currentTarget.getAttribute("spaceUid");;
+    setSpaceUid(selectedSpace);
+    alert(JSON.stringify(musicalGroups));
+
+    // ТОЧКА ОСТАНОВА: как изменять, когда musicalGroups подгрузится???
+    setContent(chooseMusicalGroup(musicalGroups, onMusGr));
   }
 
   const [content, setContent] = useState([]);
