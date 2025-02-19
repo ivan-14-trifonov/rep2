@@ -1,6 +1,6 @@
 import "./user-add-work.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { Button, Container } from "@mui/material";
@@ -77,20 +77,23 @@ export default function UserAddWork() {
     musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
-  const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
+  const [spaceUsers, setSpaceUsers] = useState(null);
 
-  if (user && (users.length != 0)) {
-    if (!users.map(i => i.uid).includes(user.uid)) {
-      return (
-        <Container maxWidth="xs" sx={{mt: 2}}>
-          <h1>Недостаточно прав</h1>
-          <p>У вас нет доступа к данному пространству.</p>
-        </Container>
-      )
-      
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/users", "uid");
+      setSpaceUsers(result);
+    };
+    asyncEffect();
+  }, []);
+
+  if (user && spaceUsers) {
+    if (!spaceUsers.map(i => i.uid).includes(user.uid)) {
+      navigate("/user-rights"); 
     }
   }
 
+  alert("Привет");
   let form = formAddWork(connect, navigate);
 
   return (

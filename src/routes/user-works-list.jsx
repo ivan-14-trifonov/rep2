@@ -1,6 +1,7 @@
 import "./user.css";
 
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { Button, Container, Card } from "@mui/material";
@@ -115,10 +116,13 @@ export default function UserWorksList() {
 
   // ДАЛЬШЕ
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
   const connect = {
     db: db,
-    space: "Go2Aiju3Nuq9wuFqhFha",
-    musicalGroup: "IJQZkACyMCfYNoCjiHqS",
+    space: queryParams.get('space'),
+    musicalGroup: queryParams.get('musicalGroup'),
   };
 
   const [spaceUsers, setSpaceUsers] = useState(null);

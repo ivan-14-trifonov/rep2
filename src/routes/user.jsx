@@ -31,7 +31,7 @@ function chooseMusicalGroup(musGroups, onMusGr) {
     <div>
       <h1 className="worksList">Выберите музыкальный коллектив</h1>
       {Array(musGroups.length).fill().map((_, i) =>
-        <Card variant="outlined" onClick={onMusGr} className="spaceCard" spaceUid={musGroups[i].uid}>
+        <Card variant="outlined" onClick={onMusGr} className="spaceCard" musGrId={musGroups[i].id}>
           <p>{musGroups[i].name}</p>
       </Card>
       )}
@@ -111,7 +111,7 @@ export default function User() {
   useEffect(() => {
     const asyncEffect = async () => {
       if (spaceUid) {
-        const result = await GetElements(connect, "space/" + spaceUid + "/musicalGroup", "uid");
+        const result = await GetElements(connect, "space/" + spaceUid + "/musical_group", "name");
         setMusicalGroups(result);
       }
     };
@@ -129,8 +129,9 @@ export default function User() {
   }
 
   const onMusGr = event => {
-    // let selectedSpace = event.currentTarget.getAttribute("spaceUid");;
-    // alert(selectedSpace);
+    let selectedMusGr = event.currentTarget.getAttribute("musGrId");;
+    let url = `/user-works-list?space=${spaceUid}&musicalGroup=${selectedMusGr}`;
+    navigate(url);
     // setSpaceUid(selectedSpace);
     // chooseMusicalGroup(musicalGroups, onMusGr)
   }
@@ -138,10 +139,10 @@ export default function User() {
   const onSpace = event => {
     let selectedSpace = event.currentTarget.getAttribute("spaceUid");;
     setSpaceUid(selectedSpace);
-    alert(JSON.stringify(musicalGroups));
+    // alert(JSON.stringify(musicalGroups));
 
     // ТОЧКА ОСТАНОВА: как изменять, когда musicalGroups подгрузится???
-    setContent(chooseMusicalGroup(musicalGroups, onMusGr));
+    // setContent(chooseMusicalGroup(musicalGroups, onMusGr));
   }
 
   const [content, setContent] = useState([]);
@@ -150,6 +151,11 @@ export default function User() {
     setContent(chooseSpace(spaces, onSpace));
   }
   }, [spaces]);
+  useEffect(() => {
+    if (musicalGroups) {
+      setContent(chooseMusicalGroup(musicalGroups, onMusGr));
+    }
+  }, [spaceUid, musicalGroups]);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>

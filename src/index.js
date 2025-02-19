@@ -8,6 +8,7 @@ import '@fontsource/roboto/700.css';
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Login from "./routes/login";
 import User from "./routes/user";
+import UserWorksList from "./routes/user-works-list";
 import UserAddWork from "./routes/user-add-work";
 import UserAddPerform from "./routes/user-add-perform";
 import UserRights from "./routes/user-rights";
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/user",
     element: <User/>,
+  },
+  {
+    path: "/user-works-list",
+    element: <UserWorksList/>,
   },
   {
     path: "/user-add-work",
