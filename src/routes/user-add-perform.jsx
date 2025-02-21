@@ -9,20 +9,35 @@ import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
 import { GetElements, GetWorkInSections, AddPerform } from "../firestore";
 
-function formAddPerform(connect, navigate, id) {
+function FormAddPerform(connect, navigate, id) {
 
-  let works = GetWorkInSections(
-    connect,
-    {
-      name: "(Весь репертуар в одном списке)",
-      sort: "name",
-      include: { book: [], theme: [], event: [] },
-      exclude: { book: [], theme: [], event: [] },
-    }
-  );
+  const [works, setWorks] = useState();
 
-  //const work = GetEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", id);
-  const events = GetElements(connect, "event", "name");
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetWorkInSections(
+        connect,
+        {
+          name: "(Весь репертуар в одном списке)",
+          sort: "name",
+          include: { book: [], theme: [], event: [] },
+          exclude: { book: [], theme: [], event: [] },
+        }
+      );
+      setWorks(result);
+    };
+    asyncEffect();
+  }, []);
+
+  const [events, setEvents] = useState();
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "event", "name");
+      setEvents(result);
+    };
+    asyncEffect();
+  }, []);
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
@@ -41,13 +56,13 @@ function formAddPerform(connect, navigate, id) {
   }
 
   return (
+    (works && events) &&
     <form onSubmit={submitAddWork} className="formAddWork">
-      <p>{/*work.name*/}</p>
       <p>Произведение:</p>
       <select className="formAddWork__select" name="work" id="works-select">
         <option value="">--Не определено--</option>
           {Array(works.length).fill().map((_, i) =>
-            <option value={works[i].id}>{works[i].name}</option>
+            <option value={works[i][0]}>{works[i].name}</option>
           )}
       </select>
       <label for="date">Дата исполнения:</label>
@@ -91,21 +106,23 @@ export default function UserAddPerform() {
     musicalGroup: "IJQZkACyMCfYNoCjiHqS",
   };
 
-  const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
+  const [spaceUsers, setSpaceUsers] = useState(null);
 
-  if (user && (users.length != 0)) {
-    if (!users.map(i => i.uid).includes(user.uid)) {
-      return (
-        <Container maxWidth="xs" sx={{mt: 2}}>
-          <h1>Недостаточно прав</h1>
-          <p>У вас нет доступа к данному пространству.</p>
-        </Container>
-      )
-      
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/users", "uid");
+      setSpaceUsers(result);
+    };
+    asyncEffect();
+  }, []);
+
+  if (user && spaceUsers) {
+    if (!spaceUsers.map(i => i.uid).includes(user.uid)) {
+      navigate("/user-rights"); 
     }
   }
 
-  let form = formAddPerform(connect, navigate, id);
+  let form = FormAddPerform(connect, navigate, id);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>

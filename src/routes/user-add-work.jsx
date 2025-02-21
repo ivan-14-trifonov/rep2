@@ -9,7 +9,7 @@ import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
 import { AddWork, GetElements } from "../firestore";
 
-function formAddWork(connect, navigate) {
+function FormAddWork(connect, navigate) {
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
@@ -28,11 +28,38 @@ function formAddWork(connect, navigate) {
     navigate("/user");
   }
 
-  const books = GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/book", "name");
-  const events = GetElements(connect, "event", "name");
-  const themes = GetElements(connect, "theme", "name");
+  const [books, setBooks] = useState();
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/book", "name");
+      setBooks(result);
+    };
+    asyncEffect();
+  }, []);
+
+  const [events, setEvents] = useState();
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "event", "name");
+      setEvents(result);
+    };
+    asyncEffect();
+  }, []);
+
+  const [themes, setThemes] = useState();
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "theme", "name");
+      setThemes(result);
+    };
+    asyncEffect();
+  }, []);
 
   return (
+    (books && events && themes) &&
     <form onSubmit={submitAddWork} className="formAddWork">
       <input className="formAddWork__input" name="name" placeholder="Название" />
       <select className="formAddWork__select" name="book" id="books-select">
@@ -93,8 +120,7 @@ export default function UserAddWork() {
     }
   }
 
-  alert("Привет");
-  let form = formAddWork(connect, navigate);
+  let form = FormAddWork(connect, navigate);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
