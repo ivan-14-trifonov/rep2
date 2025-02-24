@@ -83,6 +83,9 @@ export default function User() {
     asyncEffect();
   }, [user]); // что будет, если убрать setTimeout(() => setUser... ?
 
+  // выбранное пространство
+  const [spaceUid, setSpaceUid] = useState();
+
   // Оставляем только те пространства, к которым пользователь имеет доступ
   const [spaces, setSpaces] = useState([]);
   useEffect(() => {
@@ -94,13 +97,11 @@ export default function User() {
           result.push(el);
         }
       }
+      if (result.length === 1) setSpaceUid(result[0].uid);
       setSpaces(result);
     };
     asyncEffect();
   }, [userSpace]);
-
-  // выбранное пространство
-  const [spaceUid, setSpaceUid] = useState();
 
   /*
     выбор музыкальной группы
@@ -112,6 +113,12 @@ export default function User() {
     const asyncEffect = async () => {
       if (spaceUid) {
         const result = await GetElements(connect, "space/" + spaceUid + "/musical_group", "name");
+        if (result.length === 1) 
+          {
+            let mg = result[0].id;
+            let url = `/user-works-list?space=${spaceUid}&musicalGroup=${mg}`;
+            navigate(url);
+          }
         setMusicalGroups(result);
       }
     };
@@ -155,7 +162,7 @@ export default function User() {
     if (musicalGroups) {
       setContent(chooseMusicalGroup(musicalGroups, onMusGr));
     }
-  }, [spaceUid, musicalGroups]);
+  }, [musicalGroups]);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
