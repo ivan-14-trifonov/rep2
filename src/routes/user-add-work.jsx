@@ -1,6 +1,7 @@
 import "./user-add-work.css";
 
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { Button, Container } from "@mui/material";
@@ -25,7 +26,8 @@ function FormAddWork(connect, navigate) {
     AddWork(connect, fields);
     e.target.reset();
 
-    navigate("/user-works-list");
+    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    navigate(url);
   }
 
   const [books, setBooks] = useState();
@@ -98,10 +100,15 @@ export default function UserAddWork() {
     navigate("/login");
   }
 
+  const db = getFirestore(app);
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
   const connect = {
-    db: getFirestore(app),
-    space: "Go2Aiju3Nuq9wuFqhFha",
-    musicalGroup: "IJQZkACyMCfYNoCjiHqS",
+    db: db,
+    space: queryParams.get('space'),
+    musicalGroup: queryParams.get('musicalGroup'),
   };
 
   const [spaceUsers, setSpaceUsers] = useState(null);

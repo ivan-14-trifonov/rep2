@@ -229,12 +229,15 @@ export default function UserWorksList() {
   // события
 
   const onAdd = () => {
-    navigate("/user-add-work");
+    let url = `/user-add-work?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    navigate(url);
   }
 
   const onAddPerform = event => {
-    let idWork = event.currentTarget.getAttribute("idWork");
-    navigate(`/user-add-perform?id=${idWork}`);
+    //let idWork = event.currentTarget.getAttribute("idWork");
+    //navigate(`/user-add-perform?id=${idWork}`);
+    let url = `/user-add-perform?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    navigate(url);
   }
 
   const onSection = event => {
