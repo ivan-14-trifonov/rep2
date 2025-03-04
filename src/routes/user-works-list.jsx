@@ -145,41 +145,24 @@ export default function UserWorksList() {
     }
   }
 
+  const [sections, setSections] = useState(null);
 
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "id");
+      for (let i = 0; i < result.length; i++) {
+        result[i].include = JSON.parse(result[i].include);
+        result[i].exclude = JSON.parse(result[i].exclude);
+      }
+      setSections(result);
+    };
+    asyncEffect();
+  }, []);
 
+  /*
+     реализовать работу с секциями
+  */
 
-
-
-  // СДЕЛАТЬ таблицу для хранения секций
-  // и вообще реализовать работу с секциями
-
-  const sections = [
-    {
-      name: "Молитвенные",
-      sort: "name",
-      include: { book: [], theme: ["Молитвенные"], event: [] },
-      exclude: { book: [], theme: [], event: [] },
-    },
-    {
-      name: "Разные темы",
-      sort: "name",
-      include: { book: [], theme: [], event: [] },
-      exclude: { book: [], theme: ["Молитвенные", ""], event: [] },
-    },
-    {
-      name: "Праздничные",
-      sort: "event",
-      include: { book: [], theme: [], event: [] },
-      exclude: { book: [], theme: [], event: [""] },
-    },
-    {
-      name: "(Весь репертуар в одном списке)",
-      sort: "name",
-      include: { book: [], theme: [], event: [] },
-      exclude: { book: [], theme: [], event: [] },
-    },
-
-  ];
 
   const [numberSection, setNumberSection] = useState(0);
 
@@ -216,11 +199,13 @@ export default function UserWorksList() {
   
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetWorkInSections(connect, sections[numberSection]);
-      setWorkInSections(result);
+      if (sections) {
+        const result = await GetWorkInSections(connect, sections[numberSection]);
+        setWorkInSections(result);
+      }
     };
     asyncEffect();
-  }, [numberSection]);
+  }, [numberSection, sections]);
 
   //alert(JSON.stringify(workBySections[0]));
 
@@ -268,16 +253,18 @@ export default function UserWorksList() {
       }
       <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
       <Button className="addWork" variant="contained" onClick={onAddPerform} sx={{mt: 3}} fullWidth>Добавить исполнение</Button>
-      <div className="sections">
-        {Array(sections.length).fill().map((_, i) =>
-          <p className="sections__p">
-            <button className="sections__button" className={(i == numberSection) ? "sections__button_active" : "sections__button"} value={i} onClick={onSection}>{sections[i].name}</button>
-            {(i != sections.length - 1) &&
-              <b> | </b>
-            }
-          </p> 
-        )}
-      </div>
+      {sections &&
+        <div className="sections">
+          {Array(sections.length).fill().map((_, i) =>
+            <p className="sections__p">
+              <button className="sections__button" className={(i == numberSection) ? "sections__button_active" : "sections__button"} value={i} onClick={onSection}>{sections[i].name}</button>
+              {(i != sections.length - 1) &&
+                <b> | </b>
+              }
+            </p> 
+          )}
+        </div>
+      }
       <div>
         {cards}
       </div>
