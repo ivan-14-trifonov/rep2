@@ -113,7 +113,7 @@ export default function User() {
     const asyncEffect = async () => {
       if (spaceUid) {
         const result = await GetElements(connect, "space/" + spaceUid + "/musical_group", "name");
-        if (result.length === 1) 
+        if (result.length === 1)
           {
             let mg = result[0].id;
             let url = `/user-works-list?space=${spaceUid}&musicalGroup=${mg}`;

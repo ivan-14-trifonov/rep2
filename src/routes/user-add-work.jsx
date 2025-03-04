@@ -25,7 +25,7 @@ function FormAddWork(connect, navigate) {
     AddWork(connect, fields);
     e.target.reset();
 
-    navigate("/user");
+    navigate("/user-works-list");
   }
 
   const [books, setBooks] = useState();

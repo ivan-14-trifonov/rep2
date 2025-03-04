@@ -52,7 +52,7 @@ function FormAddPerform(connect, navigate, id) {
     AddPerform(connect, fields);
     e.target.reset();
 
-    navigate("/user");
+    navigate("/user-works-list");
   }
 
   return (
