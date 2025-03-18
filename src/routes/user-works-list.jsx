@@ -70,10 +70,13 @@ function cardsOfWorks(works, navigate, connect) {
     Status4(connect, idWork);
   }
 
+  const status = {"1": "в репертуаре"};
+
   return (
     <div>
       {Array(works.length).fill().map((_, i) =>
-        <Card variant="outlined" className="workCard" name={works[i][0]} hidden={(works[i].status == 4)}>
+        <Card variant="outlined" className={`workCard ${works[i].status && 'status' + works[i].status}`} name={works[i][0]} hidden={(works[i].status == 4)}>
+          {works[i].status && <p className="status">{status[works[i].status]}</p>}
           <p className="workCard__name">{works[i].name}</p>
           {ifBook(works[i])}
           {ifEvent(works[i])}

@@ -115,3 +115,13 @@
 	/*font-size: 0.8em;*/
 	/*color: #404040;*/
 }
+
+.status {
+	margin: 0 0 0.5em;
+	color: #696969;
+	font-size: 0.8em;
+}
+
+.status1 {
+	background-color: #99CCFF !important;
+}

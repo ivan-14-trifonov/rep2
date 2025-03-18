@@ -22,6 +22,7 @@ function FormAddWork(connect, navigate) {
       page: formData.get("page"),
       theme: formData.get("theme"),
       event: formData.get("event"),
+      status: formData.get("status"),
     }
     AddWork(connect, fields);
     e.target.reset();
@@ -84,6 +85,7 @@ function FormAddWork(connect, navigate) {
             <option value={events[i].name}>{events[i].name}</option>
           )}
       </select>
+      <input className="formAddWork__input" name="status" placeholder="Статус" />
 
       <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>Сохранить</Button>
     </form>
