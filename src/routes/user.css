@@ -118,10 +118,24 @@
 
 .status {
 	margin: 0 0 0.5em;
+	display: inline-block;
 	color: #696969;
 	font-size: 0.8em;
+	text-decoration: underline;
 }
 
 .status1 {
 	background-color: #99CCFF !important;
+}
+
+.status2, .status3 {
+	background-color: #FF6666 !important;
+}
+
+.status4, .status5 {
+	background-color: #66FF99 !important;
+}
+
+.status6 {
+	background-color: #999999 !important;
 }

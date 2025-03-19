@@ -70,12 +70,19 @@ function cardsOfWorks(works, navigate, connect) {
     Status4(connect, idWork);
   }
 
-  const status = {"1": "в репертуаре"};
+  const status = {
+    "1": "в репертуаре",
+    "2": "актуализировать",
+    "3": "переучить",
+    "4": "без подготовки",
+    "5": "наизусть",
+    "6": "в плане",
+  };
 
   return (
     <div>
       {Array(works.length).fill().map((_, i) =>
-        <Card variant="outlined" className={`workCard ${works[i].status && 'status' + works[i].status}`} name={works[i][0]} hidden={(works[i].status == 4)}>
+        <Card variant="outlined" className={`workCard ${works[i].status && 'status' + works[i].status}`} name={works[i][0]}>
           {works[i].status && <p className="status">{status[works[i].status]}</p>}
           <p className="workCard__name">{works[i].name}</p>
           {ifBook(works[i])}
