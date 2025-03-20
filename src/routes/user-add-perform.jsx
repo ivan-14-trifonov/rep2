@@ -64,7 +64,7 @@ function FormAddPerform(connect, navigate, id) {
       <select className="formAddWork__select" name="work" id="works-select">
         <option value="">--Не определено--</option>
           {Array(works.length).fill().map((_, i) =>
-            <option value={works[i][0]}>{works[i].name}</option>
+            <option value={works[i].id}>{works[i].name}</option>
           )}
       </select>
       <label for="date">Дата исполнения:</label>
