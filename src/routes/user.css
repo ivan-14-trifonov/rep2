@@ -110,6 +110,21 @@
 	background-color: #1976D2;
 }
 
+.workCard__panel {
+  display: flex;
+  justify-content: space-between;
+}
+
+.workCard__edit {
+  margin: 0;
+}
+
+.workCard__button {
+  max-width: 1.5em;
+  margin: 0 0.5em;
+  cursor: pointer;
+}
+
 .perform {
 	margin: 0.25em 0 0;
 	/*font-size: 0.8em;*/
