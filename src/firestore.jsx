@@ -41,6 +41,13 @@ export async function GetEl(connect, tadle, id) {
   return docSnap.data();
 }
 
+export async function updateEl(connect, tadle, id, fields) {
+  const washingtonRef = doc(connect.db, tadle, id);
+
+  await updateDoc(washingtonRef, fields);
+  
+}
+
 export function WorksFilter(works, include, exclude) {
 
   function flag(el, include, exclude) {

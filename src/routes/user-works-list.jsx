@@ -8,13 +8,13 @@ import { Button, Container, Card, TextField, Modal, Box } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements, GetEl, GetWorkInSections, Status4, AddWork } from "../firestore";
+import { GetElements, GetEl, GetWorkInSections, Status4, AddWork, updateEl } from "../firestore";
 
 import edit from './images/edit.png';
 import del from './images/delete.png';
 
 // Модальное окно редактирования произведения
-const EditWorkModal = ({ connect, work_id, isOpen, onClose, onSave }) => {
+const EditWorkModal = ({ connect, work_id, isOpen, onClose }) => {
 
   async function submitEditWork(e: React.FormEvent) {
     e.preventDefault();
@@ -28,10 +28,11 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose, onSave }) => {
       event: formData.get("event"),
       status: formData.get("status"),
     }
-    //AddWork(connect, fields);
+    updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", work_id, fields);
     e.target.reset();
 
     onClose();
+
     //let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
     //navigate(url);
   }
@@ -127,7 +128,7 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose, onSave }) => {
         }}
       >
         <h2>Редактирование</h2>
-        {(books && events && themes) &&
+        {(books && events && themes && allStatuses) &&
         <form onSubmit={submitEditWork} className="formAddWork">
           <input className="formAddWork__input" name="name" value={name} onChange={(e) => setName(e.target.value)} />
           <select className="formAddWork__select" name="book" id="books-select" value={book} onChange={(e) => setBook(e.target.value)}>
@@ -498,6 +499,8 @@ export default function UserWorksList() {
     musicalGroup: musicalGroup.name,
   };
 
+  const [changeFlag, setChangeFlag] = useState(false);
+
   const [workInSections, setWorkInSections] = useState([]);
   
   useEffect(() => {
@@ -508,7 +511,7 @@ export default function UserWorksList() {
       }
     };
     asyncEffect();
-  }, [numberSection, sections]);
+  }, [numberSection, sections, changeFlag]);
 
   const [status, setStatus] = useState(null);
 
@@ -536,10 +539,14 @@ export default function UserWorksList() {
   const closeModal = () => {
     setIsModalOpen(false);
     setIdWorkEdit(false);
+    setChangeFlag(!changeFlag);
+
+    // по сути, это заглушка, без которой пока не работает...
+    setTimeout(() => setChangeFlag(!changeFlag), 10000);
   };
 
-  // Изменение произведения // НЕ РЕАЛИЗОВАНО
-  const handleSave = (updatedSeminar) => {
+  // Пример // НЕ РЕАЛИЗОВАНО
+  const handleSave_ = (updatedSeminar) => {
     const res = true; // updateSeminar(updatedSeminar.id, updatedSeminar);
     if (res) {
       alert('Запись успешно обновлена');
@@ -614,7 +621,6 @@ export default function UserWorksList() {
         work_id={idWorkEdit}
         isOpen={isModalOpen}
         onClose={closeModal}
-        onSave={handleSave}
       />}
     </Container>
   )
