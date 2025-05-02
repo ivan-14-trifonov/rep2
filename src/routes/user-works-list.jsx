@@ -66,6 +66,22 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose, onSave }) => {
     asyncEffect();
   }, []);
 
+  const [allStatuses, setAllStatuses] = useState(null);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/status", "number");
+      
+      let arr = []
+      for (let i = 0; i < result.length; i++) {
+        arr[i + 1] = result[i].name;
+      }
+
+      setAllStatuses(arr);
+    };
+    asyncEffect();
+  }, []);
+
   const [name, setName] = useState("");
   const [book, setBook] = useState("");
   const [number, setNumber] = useState("");
@@ -134,7 +150,12 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose, onSave }) => {
                 <option value={events[i].name}>{events[i].name}</option>
               )}
           </select>
-          <input className="formAddWork__input" name="status" value={status} onChange={(e) => setStatus(e.target.value)} />
+          <select className="formAddWork__select" name="status" id="status-select" value={status} onChange={(e) => setStatus(e.target.value)} >
+            <option value="">--Выберите статус--</option>
+              {Array(allStatuses.length - 1).fill().map((_, i) =>
+                <option value={i + 1}>{allStatuses[i + 1]}</option>
+              )}
+          </select>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
             <Button onClick={onClose} sx={{ mr: 2 }}>
               Отменить
@@ -272,7 +293,7 @@ const AddWorkModal = ({ connect, isOpen, onClose, onSave }) => {
   );
 };
 
-function cardsOfWorks(works, navigate, connect, openModal) {
+function cardsOfWorks(works, status, navigate, connect, openModal) {
 
   function inBook(work) {
     if (work.number) {
@@ -331,15 +352,6 @@ function cardsOfWorks(works, navigate, connect, openModal) {
     let idWork = event.currentTarget.getAttribute("idWork");
     Status4(connect, idWork);
   }
-
-  const status = {
-    "1": "в репертуаре",
-    "2": "актуализировать",
-    "3": "переучить",
-    "4": "без подготовки",
-    "5": "наизусть",
-    "6": "в плане",
-  };
 
   return (
     <div>
@@ -498,7 +510,21 @@ export default function UserWorksList() {
     asyncEffect();
   }, [numberSection, sections]);
 
-  //alert(JSON.stringify(workBySections[0]));
+  const [status, setStatus] = useState(null);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/status", "number");
+      
+      let arr = []
+      for (let i = 0; i < result.length; i++) {
+        arr[i + 1] = result[i].name;
+      }
+
+      setStatus(arr);
+    };
+    asyncEffect();
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idWorkEdit, setIdWorkEdit] = useState(false);
@@ -524,7 +550,7 @@ export default function UserWorksList() {
     };
   };
 
-  let cards = cardsOfWorks(workInSections, navigate, connect, openModal);
+  let cards = cardsOfWorks(workInSections, status, navigate, connect, openModal);
 
   // события
 

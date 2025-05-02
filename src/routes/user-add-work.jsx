@@ -61,8 +61,24 @@ function FormAddWork(connect, navigate) {
     asyncEffect();
   }, []);
 
+  const [status, setStatus] = useState(null);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/status", "number");
+      
+      let arr = []
+      for (let i = 0; i < result.length; i++) {
+        arr[i + 1] = result[i].name;
+      }
+
+      setStatus(arr);
+    };
+    asyncEffect();
+  }, []);
+
   return (
-    (books && events && themes) &&
+    (books && events && themes && status) &&
     <form onSubmit={submitAddWork} className="formAddWork">
       <input className="formAddWork__input" name="name" placeholder="Название" />
       <select className="formAddWork__select" name="book" id="books-select">
@@ -85,7 +101,12 @@ function FormAddWork(connect, navigate) {
             <option value={events[i].name}>{events[i].name}</option>
           )}
       </select>
-      <input className="formAddWork__input" name="status" placeholder="Статус" />
+      <select className="formAddWork__select" name="status" id="status-select">
+        <option value="">--Выберите статус--</option>
+          {Array(status.length - 1).fill().map((_, i) =>
+            <option value={i + 1}>{status[i + 1]}</option>
+          )}
+      </select>
 
       <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>Сохранить</Button>
     </form>
