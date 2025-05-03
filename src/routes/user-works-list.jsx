@@ -8,7 +8,7 @@ import { Button, Container, Card, TextField, Modal, Box } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../firebase";
-import { GetElements, GetEl, GetWorkInSections, Status4, AddWork, updateEl } from "../firestore";
+import { GetElements, GetEl, GetWorkInSections, Status4, AddWork, updateEl, deleteEl } from "../firestore";
 
 import edit from './images/edit.png';
 import del from './images/delete.png';
@@ -27,6 +27,7 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose }) => {
       theme: formData.get("theme"),
       event: formData.get("event"),
       status: formData.get("status"),
+      comment: formData.get("comment"),
     }
     updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", work_id, fields);
     e.target.reset();
@@ -90,6 +91,7 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose }) => {
   const [theme, setTheme] = useState("");
   const [event, setEvent] = useState("");
   const [status, setStatus] = useState("");
+  const [comment, setComment] = useState("");
 
   const [work, setWork] = useState();
 
@@ -110,6 +112,7 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose }) => {
       setTheme(work.theme);
       setEvent(work.event);
       setStatus(work.status);
+      setComment(work.comment);
     }
   }, [work]);
 
@@ -157,6 +160,7 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose }) => {
                 <option value={i + 1}>{allStatuses[i + 1]}</option>
               )}
           </select>
+          <input className="formAddWork__input" name="comment" value={comment} onChange={(e) => setComment(e.target.value)} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
             <Button onClick={onClose} sx={{ mr: 2 }}>
               Отменить
@@ -294,7 +298,7 @@ const AddWorkModal = ({ connect, isOpen, onClose, onSave }) => {
   );
 };
 
-function cardsOfWorks(works, status, navigate, connect, openModal) {
+function cardsOfWorks(works, status, navigate, connect, openModal, onDelete) {
 
   function inBook(work) {
     if (work.number) {
@@ -321,6 +325,12 @@ function cardsOfWorks(works, status, navigate, connect, openModal) {
   function ifTheme(work) {
     if (work.theme) {
       return <p className="workCard__theme">{work.theme}</p>;
+    }
+  }
+
+  function ifComment(work) {
+    if (work.comment) {
+      return <p className="workCard__comment">{work.comment}</p>;
     }
   }
 
@@ -365,6 +375,8 @@ function cardsOfWorks(works, status, navigate, connect, openModal) {
                 //value={seminars[i].title}
                 //id={seminars[i].id}
                 //onClick={onDelete}
+                work_id={works[i].id}
+                onClick={onDelete}
                 className="workCard__button"
                 src={del}
                 alt="Удалить"
@@ -382,6 +394,7 @@ function cardsOfWorks(works, status, navigate, connect, openModal) {
           {ifBook(works[i])}
           {ifEvent(works[i])}
           {ifTheme(works[i])}
+          {ifComment(works[i])}
           {works[i].perform && Array(works[i].perform.length).fill().map((_, j) => 
             performs(works[i].perform[j])
           )}
@@ -531,11 +544,12 @@ export default function UserWorksList() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idWorkEdit, setIdWorkEdit] = useState(false);
-
+  
   const openModal = (event) => {
     setIdWorkEdit(event.currentTarget.getAttribute("work_id"));
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setIdWorkEdit(false);
@@ -543,6 +557,19 @@ export default function UserWorksList() {
 
     // по сути, это заглушка, без которой пока не работает...
     setTimeout(() => setChangeFlag(!changeFlag), 10000);
+  };
+
+  const onDelete = (event) => {
+    let idWorkDelete = event.currentTarget.getAttribute("work_id");
+    if (window.confirm("Вы действительно хотите удалить запись о данном произведении?")) {
+      deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", idWorkDelete);
+      alert("Запись удалена.");
+
+      setChangeFlag(!changeFlag);
+
+      // по сути, это заглушка, без которой пока не работает...
+      setTimeout(() => setChangeFlag(!changeFlag), 10000);
+    }
   };
 
   // Пример // НЕ РЕАЛИЗОВАНО
@@ -557,7 +584,7 @@ export default function UserWorksList() {
     };
   };
 
-  let cards = cardsOfWorks(workInSections, status, navigate, connect, openModal);
+  let cards = cardsOfWorks(workInSections, status, navigate, connect, openModal, onDelete);
 
   // события
 

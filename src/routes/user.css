@@ -110,6 +110,11 @@
 	background-color: #1976D2;
 }
 
+.workCard__comment {
+	color: #D32F2F;
+	margin: 0;
+}
+
 .workCard__panel {
   display: flex;
   justify-content: space-between;

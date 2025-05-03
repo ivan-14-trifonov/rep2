@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { collection, addDoc, getDocs, doc, getDoc, updateDoc, query, orderBy } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, getDoc, updateDoc, query, orderBy, deleteDoc } from "firebase/firestore";
 
 export async function AddWork(connect, fields) {
   try {
@@ -45,6 +45,12 @@ export async function updateEl(connect, tadle, id, fields) {
   const washingtonRef = doc(connect.db, tadle, id);
 
   await updateDoc(washingtonRef, fields);
+
+}
+
+export async function deleteEl(connect, tadle, id) {
+
+  await deleteDoc(doc(connect.db, tadle, id));
   
 }
 

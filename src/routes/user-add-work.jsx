@@ -23,6 +23,7 @@ function FormAddWork(connect, navigate) {
       theme: formData.get("theme"),
       event: formData.get("event"),
       status: formData.get("status"),
+      comment: formData.get("comment"),
     }
     AddWork(connect, fields);
     e.target.reset();
@@ -107,6 +108,7 @@ function FormAddWork(connect, navigate) {
             <option value={i + 1}>{status[i + 1]}</option>
           )}
       </select>
+      <input className="formAddWork__input" name="comment" placeholder="Комментарий" />
 
       <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>Сохранить</Button>
     </form>
