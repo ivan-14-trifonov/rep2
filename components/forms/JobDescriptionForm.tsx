@@ -13,6 +13,7 @@ import { X, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/hooks/use-translation';
 
 const jobDescriptionSchema = z.object({
   title: z.string().min(1, 'Job title is required').min(3, 'Job title must be at least 3 characters'),
@@ -29,6 +30,7 @@ export function JobDescriptionForm() {
   const [skillInput, setSkillInput] = useState('');
   const { setJobDescription, isLoading, setLoading } = useAppStore();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -75,19 +77,19 @@ export function JobDescriptionForm() {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Find Your Perfect Candidate</CardTitle>
+        <CardTitle className="text-2xl">{t('jobDescriptionForm.title')}</CardTitle>
         <CardDescription>
-          Describe your job requirements and we&apos;ll match you with the best candidates
+          {t('jobDescriptionForm.description')}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Job Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Job Title</Label>
+            <Label htmlFor="title">{t('jobDescriptionForm.jobTitle')}</Label>
             <Input
               id="title"
-              placeholder="e.g., Senior Full Stack Developer"
+              placeholder={t('jobDescriptionForm.jobTitlePlaceholder')}
               {...register('title')}
               className={errors.title ? 'border-destructive' : ''}
             />
@@ -98,10 +100,10 @@ export function JobDescriptionForm() {
 
           {/* Company */}
           <div className="space-y-2">
-            <Label htmlFor="company">Company</Label>
+            <Label htmlFor="company">{t('jobDescriptionForm.company')}</Label>
             <Input
               id="company"
-              placeholder="e.g., Tech Solutions Inc."
+              placeholder={t('jobDescriptionForm.companyPlaceholder')}
               {...register('company')}
               className={errors.company ? 'border-destructive' : ''}
             />
@@ -112,10 +114,10 @@ export function JobDescriptionForm() {
 
           {/* Location */}
           <div className="space-y-2">
-            <Label htmlFor="location">Location</Label>
+            <Label htmlFor="location">{t('jobDescriptionForm.location')}</Label>
             <Input
               id="location"
-              placeholder="e.g., San Francisco, CA or Remote"
+              placeholder={t('jobDescriptionForm.locationPlaceholder')}
               {...register('location')}
               className={errors.location ? 'border-destructive' : ''}
             />
@@ -126,10 +128,10 @@ export function JobDescriptionForm() {
 
           {/* Job Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Job Description</Label>
+            <Label htmlFor="description">{t('jobDescriptionForm.jobDescription')}</Label>
             <Textarea
               id="description"
-              placeholder="Describe the role, responsibilities, and what you're looking for..."
+              placeholder={t('jobDescriptionForm.jobDescriptionPlaceholder')}
               rows={4}
               {...register('description')}
               className={errors.description ? 'border-destructive' : ''}
@@ -141,10 +143,10 @@ export function JobDescriptionForm() {
 
           {/* Requirements */}
           <div className="space-y-2">
-            <Label htmlFor="requirements">Requirements</Label>
+            <Label htmlFor="requirements">{t('jobDescriptionForm.requirements')}</Label>
             <Textarea
               id="requirements"
-              placeholder="List the required qualifications, experience, and skills..."
+              placeholder={t('jobDescriptionForm.requirementsPlaceholder')}
               rows={4}
               {...register('requirements')}
               className={errors.requirements ? 'border-destructive' : ''}
@@ -156,11 +158,11 @@ export function JobDescriptionForm() {
 
           {/* Skills */}
           <div className="space-y-2">
-            <Label htmlFor="skills">Key Skills</Label>
+            <Label htmlFor="skills">{t('jobDescriptionForm.keySkills')}</Label>
             <div className="flex space-x-2">
               <Input
                 id="skills"
-                placeholder="e.g., React, Node.js, Python"
+                placeholder={t('jobDescriptionForm.keySkillsPlaceholder')}
                 value={skillInput}
                 onChange={(e) => setSkillInput(e.target.value)}
                 onKeyPress={handleKeyPress}
@@ -191,7 +193,7 @@ export function JobDescriptionForm() {
             disabled={!isValid || isLoading}
             size="lg"
           >
-            {isLoading ? 'Searching Candidates...' : 'Find Candidates'}
+            {isLoading ? t('jobDescriptionForm.searchingCandidates') : t('jobDescriptionForm.findCandidates')}
           </Button>
         </form>
       </CardContent>

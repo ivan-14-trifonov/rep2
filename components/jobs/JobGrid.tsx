@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Briefcase } from 'lucide-react';
 import type { Job } from '@/lib/types';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface JobGridProps {
   jobs: Job[];
@@ -12,6 +13,8 @@ interface JobGridProps {
 }
 
 export function JobGrid({ jobs, isLoading }: JobGridProps) {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -60,12 +63,8 @@ export function JobGrid({ jobs, isLoading }: JobGridProps) {
     return (
       <div className="text-center py-12">
         <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-muted-foreground mb-2">
-          No jobs found
-        </h3>
-        <p className="text-muted-foreground">
-          Try adjusting your search criteria or filters to find more job opportunities.
-        </p>
+        <h3 className="text-lg font-semibold text-muted-foreground mb-2">{t('jobs.noJobsFound')}</h3>
+        <p className="text-muted-foreground">{t('jobs.tryAdjustingSearch')}</p>
       </div>
     );
   }

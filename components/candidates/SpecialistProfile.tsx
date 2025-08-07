@@ -17,12 +17,15 @@ import {
   Award
 } from 'lucide-react';
 import type { Candidate } from '@/lib/types';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface SpecialistProfileProps {
   candidate: Candidate;
 }
 
 export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
+  const { t } = useTranslation();
+
   const getMatchScoreColor = (score: number) => {
     if (score >= 90) return 'text-green-600 bg-green-50 border-green-200';
     if (score >= 80) return 'text-blue-600 bg-blue-50 border-blue-200';
@@ -48,7 +51,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
                 <h1 className="text-3xl font-bold">{candidate.name}</h1>
                 <div className={`px-4 py-2 rounded-lg text-sm font-medium border ${getMatchScoreColor(candidate.matchScore)} mt-2 md:mt-0`}>
                   <Star className="h-4 w-4 inline mr-2" />
-                  {candidate.matchScore}% Match
+                  {candidate.matchScore}% {t('specialistProfile.match')}
                 </div>
               </div>
               
@@ -61,7 +64,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
                 </div>
                 <div className="flex items-center">
                   <Award className="h-4 w-4 mr-1" />
-                  {candidate.experience} years experience
+                  {candidate.experience} {t('specialistProfile.yearsExperience')}
                 </div>
               </div>
 
@@ -69,19 +72,19 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
                 <Button size="lg" asChild>
                   <a href={`mailto:${candidate.email}`}>
                     <Mail className="h-4 w-4 mr-2" />
-                    Contact
+                    {t('specialistProfile.contact')}
                   </a>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
                   <a href={`tel:${candidate.phone}`}>
                     <Phone className="h-4 w-4 mr-2" />
-                    Call
+                    {t('specialistProfile.call')}
                   </a>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
                   <a href={candidate.linkedin} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4 mr-2" />
-                    LinkedIn
+                    {t('specialistProfile.linkedin')}
                   </a>
                 </Button>
               </div>
@@ -98,7 +101,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Star className="h-5 w-5 mr-2" />
-                Why This Candidate Matches
+                {t('specialistProfile.whyThisCandidateMatches')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -111,7 +114,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
           {/* Professional Summary */}
           <Card>
             <CardHeader>
-              <CardTitle>Professional Summary</CardTitle>
+              <CardTitle>{t('specialistProfile.professionalSummary')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed">
@@ -125,7 +128,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Building className="h-5 w-5 mr-2" />
-                Work Experience
+                {t('specialistProfile.workExperience')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -155,7 +158,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <GraduationCap className="h-5 w-5 mr-2" />
-                Education
+                {t('specialistProfile.education')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -177,7 +180,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
           {/* Contact Information */}
           <Card>
             <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
+              <CardTitle>{t('specialistProfile.contactInformation')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center space-x-3">
@@ -206,7 +209,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
                   rel="noopener noreferrer"
                   className="text-sm hover:text-primary transition-colors"
                 >
-                  LinkedIn Profile
+                  {t('specialistProfile.linkedinProfile')}
                 </a>
               </div>
             </CardContent>
@@ -215,7 +218,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
           {/* Skills */}
           <Card>
             <CardHeader>
-              <CardTitle>Key Skills</CardTitle>
+              <CardTitle>{t('specialistProfile.keySkills')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
@@ -231,19 +234,19 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
           {/* Quick Stats */}
           <Card>
             <CardHeader>
-              <CardTitle>Quick Stats</CardTitle>
+              <CardTitle>{t('specialistProfile.quickStats')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Experience</span>
+                <span className="text-sm text-muted-foreground">{t('specialistProfile.experience')}</span>
                 <span className="font-semibold">{candidate.experience} years</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Match Score</span>
+                <span className="text-sm text-muted-foreground">{t('specialistProfile.matchScore')}</span>
                 <span className="font-semibold">{candidate.matchScore}%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Skills</span>
+                <span className="text-sm text-muted-foreground">{t('specialistProfile.skills')}</span>
                 <span className="font-semibold">{candidate.skills.length}</span>
               </div>
             </CardContent>

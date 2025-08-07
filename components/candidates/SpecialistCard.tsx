@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MapPin, Star, Mail, ExternalLink } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useAppStore } from "@/lib/store";
-import type { Candidate } from "@/lib/types";
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { MapPin, Star, Mail, ExternalLink } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useAppStore } from '@/lib/store';
+import type { Candidate } from '@/lib/types';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface SpecialistCardProps {
   candidate: Candidate;
@@ -16,6 +17,7 @@ interface SpecialistCardProps {
 export function SpecialistCard({ candidate }: SpecialistCardProps) {
   const router = useRouter();
   const { setSelectedCandidate } = useAppStore();
+  const { t } = useTranslation();
 
   const handleViewProfile = () => {
     setSelectedCandidate(candidate);
@@ -23,10 +25,10 @@ export function SpecialistCard({ candidate }: SpecialistCardProps) {
   };
 
   const getMatchScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-600 bg-green-50";
-    if (score >= 80) return "text-blue-600 bg-blue-50";
-    if (score >= 70) return "text-yellow-600 bg-yellow-50";
-    return "text-gray-600 bg-gray-50";
+    if (score >= 90) return 'text-green-600 bg-green-50';
+    if (score >= 80) return 'text-blue-600 bg-blue-50';
+    if (score >= 70) return 'text-yellow-600 bg-yellow-50';
+    return 'text-gray-600 bg-gray-50';
   };
 
   return (
@@ -39,9 +41,9 @@ export function SpecialistCard({ candidate }: SpecialistCardProps) {
               <AvatarImage src={candidate.avatar} alt={candidate.name} />
               <AvatarFallback className="bg-primary text-primary-foreground">
                 {candidate.name
-                  .split(" ")
+                  .split(' ')
                   .map((n) => n[0])
-                  .join("")}
+                  .join('')}
               </AvatarFallback>
             </Avatar>
             <div>
@@ -67,7 +69,7 @@ export function SpecialistCard({ candidate }: SpecialistCardProps) {
             <MapPin className="h-4 w-4 mr-1" />
             {candidate.location}
           </div>
-          <div>{candidate.experience} years exp.</div>
+          <div>{`${candidate.experience} ${t('candidateCard.yearsExperience')}`}</div>
         </div>
 
         {/* Skills */}
@@ -80,7 +82,7 @@ export function SpecialistCard({ candidate }: SpecialistCardProps) {
             ))}
             {candidate.skills.length > 4 && (
               <Badge variant="outline" className="text-xs">
-                +{candidate.skills.length - 4} more
+                +{candidate.skills.length - 4} {t('candidateCard.more')}
               </Badge>
             )}
           </div>
@@ -94,7 +96,7 @@ export function SpecialistCard({ candidate }: SpecialistCardProps) {
         {/* Actions */}
         <div className="flex space-x-2">
           <Button onClick={handleViewProfile} className="flex-1" size="sm">
-            View Profile
+            {t('candidateCard.viewProfile')}
           </Button>
           <Button variant="outline" size="sm" asChild>
             <a href={`mailto:${candidate.email}`}>

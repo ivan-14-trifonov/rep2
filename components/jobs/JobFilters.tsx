@@ -12,23 +12,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { X, Filter } from 'lucide-react';
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
+import { useTranslation } from '@/hooks/use-translation';
 
 const popularSkills = [
-  'React', 'Node.js', 'TypeScript', 'Python', 'AWS',
-  'Docker', 'Kubernetes', 'GraphQL', 'MongoDB', 'PostgreSQL',
-  'Vue.js', 'Angular', 'Express', 'Next.js', 'TailwindCSS'
+  'React',
+  'Node.js',
+  'TypeScript',
+  'Python',
+  'AWS',
+  'Docker',
+  'Kubernetes',
+  'GraphQL',
+  'MongoDB',
+  'PostgreSQL',
+  'Vue.js',
+  'Angular',
+  'Express',
+  'Next.js',
+  'TailwindCSS',
 ];
 
-const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Remote'];
-
 export function JobFilters() {
-  const { 
-    jobSearchQuery, 
-    jobFilters, 
-    setJobSearchQuery, 
-    setJobFilters,
-    filteredJobs 
-  } = useAppStore();
+  const { jobSearchQuery, jobFilters, setJobSearchQuery, setJobFilters, filteredJobs } = useAppStore();
+  const { t } = useTranslation();
+
+  const jobTypes = [
+    { value: 'Full-time', label: t('jobFilters.jobTypes.fullTime') },
+    { value: 'Part-time', label: t('jobFilters.jobTypes.partTime') },
+    { value: 'Contract', label: t('jobFilters.jobTypes.contract') },
+    { value: 'Remote', label: t('jobFilters.jobTypes.remote') },
+  ];
 
   const [skillInput, setSkillInput] = useState('');
 
@@ -40,8 +53,8 @@ export function JobFilters() {
   };
 
   const removeSkill = (skillToRemove: string) => {
-    setJobFilters({ 
-      skills: jobFilters.skills.filter(skill => skill !== skillToRemove) 
+    setJobFilters({
+      skills: jobFilters.skills.filter((skill) => skill !== skillToRemove),
     });
   };
 
@@ -59,13 +72,13 @@ export function JobFilters() {
     });
   };
 
-  const hasActiveFilters = 
-    jobSearchQuery || 
-    jobFilters.location || 
+  const hasActiveFilters =
+    jobSearchQuery ||
+    jobFilters.location ||
     jobFilters.jobType ||
-    jobFilters.minSalary > 0 || 
-    jobFilters.maxSalary < 500000 || 
-    jobFilters.skills.length > 0 || 
+    jobFilters.minSalary > 0 ||
+    jobFilters.maxSalary < 500000 ||
+    jobFilters.skills.length > 0 ||
     jobFilters.remote ||
     jobFilters.minExperience > 0 ||
     jobFilters.maxExperience < 20;
@@ -76,11 +89,11 @@ export function JobFilters() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center">
             <Filter className="h-5 w-5 mr-2" />
-            Job Filters
+            {t('jobFilters.title')}
           </CardTitle>
           {hasActiveFilters && (
             <Button variant="outline" size="sm" onClick={clearAllFilters}>
-              Clear All
+              {t('jobFilters.clearAll')}
             </Button>
           )}
         </div>
@@ -88,10 +101,10 @@ export function JobFilters() {
       <CardContent className="space-y-6">
         {/* Search Query */}
         <div className="space-y-2">
-          <Label htmlFor="jobSearch">Search Jobs</Label>
+          <Label htmlFor="jobSearch">{t('jobFilters.searchLabel')}</Label>
           <Input
             id="jobSearch"
-            placeholder="Search by title, company, or skills..."
+            placeholder={t('jobFilters.searchPlaceholder')}
             value={jobSearchQuery}
             onChange={(e) => setJobSearchQuery(e.target.value)}
           />
@@ -101,10 +114,10 @@ export function JobFilters() {
 
         {/* Location Filter */}
         <div className="space-y-2">
-          <Label htmlFor="location">Location</Label>
+          <Label htmlFor="location">{t('jobFilters.locationLabel')}</Label>
           <Input
             id="location"
-            placeholder="e.g., San Francisco, Remote"
+            placeholder={t('jobFilters.locationPlaceholder')}
             value={jobFilters.location}
             onChange={(e) => setJobFilters({ location: e.target.value })}
           />
@@ -112,21 +125,16 @@ export function JobFilters() {
 
         {/* Job Type Filter */}
         <div className="space-y-2">
-          <Label>Job Type</Label>
-          <Select
-            value={jobFilters.jobType || 'all'}
-            onValueChange={(value) =>
-              setJobFilters({ jobType: value === 'all' ? '' : value })
-            }
-          >
+          <Label>{t('jobFilters.jobTypeLabel')}</Label>
+          <Select value={jobFilters.jobType || 'all'} onValueChange={(value) => setJobFilters({ jobType: value === 'all' ? '' : value })}>
             <SelectTrigger>
-              <SelectValue placeholder="Select job type" />
+              <SelectValue placeholder={t('jobFilters.jobTypePlaceholder')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="all">{t('jobFilters.allTypes')}</SelectItem>
               {jobTypes.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type}
+                <SelectItem key={type.value} value={type.value}>
+                  {type.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -135,23 +143,17 @@ export function JobFilters() {
 
         {/* Remote Work */}
         <div className="flex items-center justify-between">
-          <Label htmlFor="remote">Remote Work Only</Label>
-          <Switch
-            id="remote"
-            checked={jobFilters.remote}
-            onCheckedChange={(checked) => setJobFilters({ remote: checked })}
-          />
+          <Label htmlFor="remote">{t('jobFilters.remoteOnlyLabel')}</Label>
+          <Switch id="remote" checked={jobFilters.remote} onCheckedChange={(checked) => setJobFilters({ remote: checked })} />
         </div>
 
         {/* Salary Range */}
         <div className="space-y-3">
-          <Label>Salary Range (Annual)</Label>
+          <Label>{t('jobFilters.salaryRangeLabel')}</Label>
           <div className="px-2">
             <Slider
               value={[jobFilters.minSalary, jobFilters.maxSalary]}
-              onValueChange={([min, max]) => 
-                setJobFilters({ minSalary: min, maxSalary: max })
-              }
+              onValueChange={([min, max]) => setJobFilters({ minSalary: min, maxSalary: max })}
               max={500000}
               min={0}
               step={5000}
@@ -166,13 +168,11 @@ export function JobFilters() {
 
         {/* Experience Range */}
         <div className="space-y-3">
-          <Label>Experience Range</Label>
+          <Label>{t('jobFilters.experienceRangeLabel')}</Label>
           <div className="px-2">
             <Slider
               value={[jobFilters.minExperience, jobFilters.maxExperience]}
-              onValueChange={([min, max]) => 
-                setJobFilters({ minExperience: min, maxExperience: max })
-              }
+              onValueChange={([min, max]) => setJobFilters({ minExperience: min, maxExperience: max })}
               max={20}
               min={0}
               step={1}
@@ -180,8 +180,12 @@ export function JobFilters() {
             />
           </div>
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>{jobFilters.minExperience} years</span>
-            <span>{jobFilters.maxExperience}+ years</span>
+            <span>
+              {jobFilters.minExperience} {t('jobFilters.years')}
+            </span>
+            <span>
+              {jobFilters.maxExperience}+ {t('jobFilters.years')}
+            </span>
           </div>
         </div>
 
@@ -189,11 +193,11 @@ export function JobFilters() {
 
         {/* Skills Filter */}
         <div className="space-y-3">
-          <Label htmlFor="skills">Required Skills</Label>
+          <Label htmlFor="skills">{t('jobFilters.requiredSkillsLabel')}</Label>
           <div className="flex space-x-2">
             <Input
               id="skills"
-              placeholder="Add skill..."
+              placeholder={t('jobFilters.addSkillPlaceholder')}
               value={skillInput}
               onChange={(e) => setSkillInput(e.target.value)}
               onKeyPress={(e) => {
@@ -203,28 +207,20 @@ export function JobFilters() {
                 }
               }}
             />
-            <Button 
-              type="button" 
-              onClick={() => addSkill(skillInput)}
-              disabled={!skillInput.trim()}
-              size="sm"
-            >
-              Add
+            <Button type="button" onClick={() => addSkill(skillInput)} disabled={!skillInput.trim()} size="sm">
+              {t('jobFilters.addSkillButton')}
             </Button>
           </div>
 
           {/* Selected Skills */}
           {jobFilters.skills.length > 0 && (
             <div className="space-y-2">
-              <div className="text-sm font-medium">Selected Skills:</div>
+              <div className="text-sm font-medium">{t('jobFilters.selectedSkillsLabel')}</div>
               <div className="flex flex-wrap gap-2">
                 {jobFilters.skills.map((skill) => (
                   <Badge key={skill} variant="secondary" className="flex items-center gap-1">
                     {skill}
-                    <X
-                      className="h-3 w-3 cursor-pointer hover:text-destructive"
-                      onClick={() => removeSkill(skill)}
-                    />
+                    <X className="h-3 w-3 cursor-pointer hover:text-destructive" onClick={() => removeSkill(skill)} />
                   </Badge>
                 ))}
               </div>
@@ -233,18 +229,13 @@ export function JobFilters() {
 
           {/* Popular Skills */}
           <div className="space-y-2">
-            <div className="text-sm font-medium">Popular Skills:</div>
+            <div className="text-sm font-medium">{t('jobFilters.popularSkillsLabel')}</div>
             <div className="flex flex-wrap gap-2">
               {popularSkills
-                .filter(skill => !jobFilters.skills.includes(skill))
+                .filter((skill) => !jobFilters.skills.includes(skill))
                 .slice(0, 8)
                 .map((skill) => (
-                  <Badge
-                    key={skill}
-                    variant="outline"
-                    className="cursor-pointer hover:bg-secondary"
-                    onClick={() => addSkill(skill)}
-                  >
+                  <Badge key={skill} variant="outline" className="cursor-pointer hover:bg-secondary" onClick={() => addSkill(skill)}>
                     {skill}
                   </Badge>
                 ))}
@@ -257,11 +248,11 @@ export function JobFilters() {
         {/* Results Count */}
         <div className="text-center py-2">
           <div className="text-lg font-semibold">
-            {filteredJobs.length} job{filteredJobs.length !== 1 ? 's' : ''} found
+            {t(filteredJobs.length === 1 ? 'jobFilters.jobsFound_one' : 'jobFilters.jobsFound_other', {
+              count: filteredJobs.length,
+            })}
           </div>
-          <div className="text-sm text-muted-foreground">
-            Matching your criteria
-          </div>
+          <div className="text-sm text-muted-foreground">{t('jobFilters.matchingCriteria')}</div>
         </div>
       </CardContent>
     </Card>

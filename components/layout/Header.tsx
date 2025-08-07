@@ -4,15 +4,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Search, LogOut, User, Menu } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useTranslation } from '@/hooks/use-translation';
 
 export function Header() {
   const { user, isAuthenticated, logout } = useAppStore();
@@ -24,10 +20,12 @@ export function Header() {
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Dashboard', href: '/' },
     { name: 'Candidates', href: '/dashboard' },
     { name: 'Jobs', href: '/jobs' },
   ];
+
+  const { t } = useTranslation();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
@@ -43,11 +41,7 @@ export function Header() {
           {isAuthenticated && (
             <nav className="hidden md:flex items-center space-x-6">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                >
+                <Link key={item.name} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                   {item.name}
                 </Link>
               ))}
@@ -68,11 +62,7 @@ export function Header() {
                   <SheetContent side="right" className="w-64">
                     <nav className="flex flex-col space-y-4 mt-8">
                       {navigation.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                        >
+                        <Link key={item.name} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                           {item.name}
                         </Link>
                       ))}
@@ -85,9 +75,7 @@ export function Header() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-primary text-primary-foreground">
-                          {user.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
+                        <AvatarFallback className="bg-primary text-primary-foreground">{user.name.charAt(0).toUpperCase()}</AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
@@ -95,14 +83,12 @@ export function Header() {
                     <div className="flex items-center justify-start gap-2 p-2">
                       <div className="flex flex-col space-y-1 leading-none">
                         <p className="font-medium">{user.name}</p>
-                        <p className="w-[200px] truncate text-sm text-muted-foreground">
-                          {user.email}
-                        </p>
+                        <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>
                       </div>
                     </div>
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
+                      <span>{t('header.logout')}</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -110,10 +96,10 @@ export function Header() {
             ) : (
               <div className="flex items-center space-x-2">
                 <Button variant="ghost" asChild>
-                  <Link href="/login">Sign In</Link>
+                  <Link href="/login">{t('header.signIn')}</Link>
                 </Button>
                 <Button asChild>
-                  <Link href="/login">Get Started</Link>
+                  <Link href="/login">{t('header.getStarted')}</Link>
                 </Button>
               </div>
             )}

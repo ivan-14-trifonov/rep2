@@ -1,25 +1,26 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { SpecialistProfile } from "@/components/candidates/SpecialistProfile";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import { useAppStore } from "@/lib/store";
-import { mockCandidates } from "@/lib/mock-data";
+import { useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { PageLayout } from '@/components/layout/PageLayout';
+import { SpecialistProfile } from '@/components/candidates/SpecialistProfile';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { useAppStore } from '@/lib/store';
+import { mockCandidates } from '@/lib/mock-data';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function CandidatePage() {
   const params = useParams<{ id: string }>();
-  const { isAuthenticated, selectedCandidate, setSelectedCandidate } =
-    useAppStore();
+  const { isAuthenticated, selectedCandidate, setSelectedCandidate } = useAppStore();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login");
-      return;
-    }
+    // if (!isAuthenticated) {
+    //   router.push('/login');
+    //   return;
+    // }
 
     // If no selected candidate, try to find by ID
     if (!selectedCandidate) {
@@ -27,18 +28,16 @@ export default function CandidatePage() {
       if (candidate) {
         setSelectedCandidate(candidate);
       } else {
-        router.push("/dashboard");
+        router.push('/dashboard');
       }
     }
-  }, [
-    isAuthenticated,
-    selectedCandidate,
-    params.id,
-    router,
-    setSelectedCandidate,
-  ]);
+  }, [isAuthenticated, selectedCandidate, params.id, router, setSelectedCandidate]);
 
-  if (!isAuthenticated || !selectedCandidate) {
+  // if (!isAuthenticated || !selectedCandidate) {
+  //   return null;
+  // }
+
+  if (!selectedCandidate) {
     return null;
   }
 
@@ -46,13 +45,9 @@ export default function CandidatePage() {
     <PageLayout>
       <div className="space-y-6">
         {/* Back Button */}
-        <Button
-          variant="outline"
-          onClick={() => router.back()}
-          className="flex items-center"
-        >
+        <Button variant="outline" onClick={() => router.back()} className="flex items-center">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Results
+          {t('backToResults')}
         </Button>
 
         {/* Candidate Profile */}

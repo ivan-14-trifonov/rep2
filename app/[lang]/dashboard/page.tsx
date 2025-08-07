@@ -11,16 +11,19 @@ import { Badge } from '@/components/ui/badge';
 import { Edit, MapPin, Building, Users } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { mockCandidates } from '@/lib/mock-data';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function DashboardPage() {
   const { isAuthenticated, jobDescription, filteredCandidates, setCandidates, isLoading, setLoading } = useAppStore();
   const router = useRouter();
+  const { t } = useTranslation();
 
+  console.log('jobDescription', jobDescription, !jobDescription);
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-      return;
-    }
+    // if (!isAuthenticated) {
+    //   router.push('/login');
+    //   return;
+    // }
 
     if (!jobDescription) {
       router.push('/');
@@ -40,7 +43,11 @@ export default function DashboardPage() {
     }
   }, [isAuthenticated, jobDescription, router, setCandidates, setLoading, filteredCandidates.length]);
 
-  if (!isAuthenticated || !jobDescription) {
+  // if (!isAuthenticated || !jobDescription) {
+  //   return null;
+  // }
+
+  if (!jobDescription) {
     return null;
   }
 
@@ -50,12 +57,12 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
           <div>
-            <h1 className="text-3xl font-bold">Candidate Search Results</h1>
-            <p className="text-muted-foreground">Found {filteredCandidates.length} candidates matching your requirements</p>
+            <h1 className="text-3xl font-bold">{t('dashboard.candidateSearchResults')}</h1>
+            <p className="text-muted-foreground">{t('dashboard.foundCandidates', { count: filteredCandidates.length })}</p>
           </div>
           <Button variant="outline" onClick={() => router.push('/')}>
             <Edit className="h-4 w-4 mr-2" />
-            Edit Job Description
+            {t('dashboard.editJobDescription')}
           </Button>
         </div>
 
@@ -64,7 +71,7 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Building className="h-5 w-5 mr-2" />
-              Job Summary
+              {t('dashboard.jobSummary')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -80,7 +87,7 @@ export default function DashboardPage() {
 
               {jobDescription.skills.length > 0 && (
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Required Skills:</div>
+                  <div className="text-sm font-medium">{t('dashboard.requiredSkills')}</div>
                   <div className="flex flex-wrap gap-2">
                     {jobDescription.skills.map((skill) => (
                       <Badge key={skill} variant="outline">

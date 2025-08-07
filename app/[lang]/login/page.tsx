@@ -1,24 +1,23 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { LoginForm } from '@/components/forms/LoginForm';
 import { Search } from 'lucide-react';
-import { useAppStore } from '@/lib/store';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function LoginPage() {
-  const { isAuthenticated } = useAppStore();
-  const router = useRouter();
+  // const { isAuthenticated } = useAppStore();
+  // const router = useRouter();
+  const { t } = useTranslation();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/');
-    }
-  }, [isAuthenticated, router]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     router.push('/');
+  //   }
+  // }, [isAuthenticated, router]);
 
-  if (isAuthenticated) {
-    return null;
-  }
+  // if (isAuthenticated) {
+  //   return null;
+  // }
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -27,11 +26,9 @@ export default function LoginPage() {
         <div className="text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Search className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">TalentFind</span>
+            <span className="text-2xl font-bold">{t('login.brandName')}</span>
           </div>
-          <p className="text-muted-foreground">
-            The smartest way to find top talent
-          </p>
+          <p className="text-muted-foreground">{t('login.slogan')}</p>
         </div>
 
         {/* Login Form */}
@@ -39,7 +36,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center text-sm text-muted-foreground">
-          <p>© 2025 TalentFind. All rights reserved.</p>
+          <p>{t('login.copyright')}</p>
         </div>
       </div>
     </div>

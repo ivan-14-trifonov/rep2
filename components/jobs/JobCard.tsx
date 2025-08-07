@@ -1,20 +1,13 @@
-"use client";
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  MapPin,
-  Building,
-  DollarSign,
-  Clock,
-  Users,
-  Calendar,
-  ExternalLink,
-} from "lucide-react";
-import type { Job } from "@/lib/types";
-import { useRouter } from "next/navigation";
-import { useAppStore } from "@/lib/store";
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { MapPin, Building, DollarSign, Clock, Users, Calendar, ExternalLink } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useAppStore } from '@/lib/store';
+import { useTranslation } from '@/hooks/use-translation';
+import type { Job } from '@/lib/types';
 
 interface JobCardProps {
   job: Job;
@@ -23,31 +16,47 @@ interface JobCardProps {
 export function JobCard({ job }: JobCardProps) {
   const router = useRouter();
   const { setSelectedJob } = useAppStore();
+  const { t } = useTranslation();
 
   const handleViewJob = () => {
     setSelectedJob(job);
     router.push(`/job/${job.id}`);
   };
 
+  const getJobTypeTranslation = (type: string) => {
+    switch (type) {
+      case 'Full-time':
+        return t('jobCard.fullTime');
+      case 'Part-time':
+        return t('jobCard.partTime');
+      case 'Contract':
+        return t('jobCard.contract');
+      case 'Remote':
+        return t('jobCard.remote');
+      default:
+        return type;
+    }
+  };
+
   const getJobTypeColor = (type: string) => {
     switch (type) {
-      case "Full-time":
-        return "bg-green-50 text-green-700 border-green-200";
-      case "Part-time":
-        return "bg-blue-50 text-blue-700 border-blue-200";
-      case "Contract":
-        return "bg-orange-50 text-orange-700 border-orange-200";
-      case "Remote":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+      case 'Full-time':
+        return 'bg-green-50 text-green-700 border-green-200';
+      case 'Part-time':
+        return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'Contract':
+        return 'bg-orange-50 text-orange-700 border-orange-200';
+      case 'Remote':
+        return 'bg-purple-50 text-purple-700 border-purple-200';
       default:
-        return "bg-gray-50 text-gray-700 border-gray-200";
+        return 'bg-gray-50 text-gray-700 border-gray-200';
     }
   };
 
   const formatSalary = (job: Job) => {
     const { min, max, currency } = job.salary;
-    if (job.type === "Contract") {
-      return `$${min}-${max}/hr`;
+    if (job.type === 'Contract') {
+      return `$${min}-${max}${t('jobCard.perHour')}`;
     }
     return `$${(min / 1000).toFixed(0)}k-${(max / 1000).toFixed(0)}k`;
   };
@@ -58,10 +67,14 @@ export function JobCard({ job }: JobCardProps) {
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 1) return "1 day ago";
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
-    return `${Math.ceil(diffDays / 30)} months ago`;
+    if (diffDays === 1) return `1 ${t('jobCard.dayAgo')}`;
+    if (diffDays < 7) return `${diffDays} ${t('jobCard.daysAgo')}`;
+    if (diffDays < 30) {
+      const weeks = Math.ceil(diffDays / 7);
+      return `${weeks} ${weeks === 1 ? t('jobCard.weekAgo') : t('jobCard.weeksAgo')}`;
+    }
+    const months = Math.ceil(diffDays / 30);
+    return `${months} ${months === 1 ? t('jobCard.monthAgo') : t('jobCard.monthsAgo')}`;
   };
 
   return (
@@ -71,21 +84,13 @@ export function JobCard({ job }: JobCardProps) {
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors mb-1">
-                {job.title}
-              </h3>
+              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors mb-1">{job.title}</h3>
               <div className="flex items-center text-muted-foreground text-sm mb-2">
                 <Building className="h-4 w-4 mr-1" />
                 {job.company}
               </div>
             </div>
-            <div
-              className={`px-2 py-1 rounded-lg text-xs font-medium border ${getJobTypeColor(
-                job.type
-              )}`}
-            >
-              {job.type}
-            </div>
+            <div className={`px-2 py-1 rounded-lg text-xs font-medium border ${getJobTypeColor(job.type)}`}>{getJobTypeTranslation(job.type)}</div>
           </div>
 
           {/* Location & Remote */}
@@ -96,7 +101,7 @@ export function JobCard({ job }: JobCardProps) {
             </div>
             {job.remote && (
               <Badge variant="outline" className="text-xs">
-                Remote
+                {t('jobCard.remote')}
               </Badge>
             )}
           </div>
@@ -109,7 +114,7 @@ export function JobCard({ job }: JobCardProps) {
             </div>
             <div className="flex items-center text-muted-foreground">
               <Clock className="h-4 w-4 mr-1" />
-              {job.experience.min}-{job.experience.max} years
+              {job.experience.min}-{job.experience.max} {t('jobCard.years')} {t('jobCard.experience')}
             </div>
           </div>
 
@@ -123,16 +128,14 @@ export function JobCard({ job }: JobCardProps) {
               ))}
               {job.skills.length > 4 && (
                 <Badge variant="outline" className="text-xs">
-                  +{job.skills.length - 4} more
+                  +{job.skills.length - 4} {t('candidateCard.more')}
                 </Badge>
               )}
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-            {job.description}
-          </p>
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{job.description}</p>
         </div>
 
         {/* Footer */}
@@ -141,7 +144,7 @@ export function JobCard({ job }: JobCardProps) {
             <div className="flex items-center space-x-4 text-xs text-muted-foreground">
               <div className="flex items-center">
                 <Users className="h-3 w-3 mr-1" />
-                {job.applicants} applicants
+                {job.applicants} {t('jobCard.applicants')}
               </div>
               <div className="flex items-center">
                 <Calendar className="h-3 w-3 mr-1" />
@@ -152,7 +155,7 @@ export function JobCard({ job }: JobCardProps) {
 
           <div className="flex space-x-2">
             <Button className="flex-1" size="sm" onClick={handleViewJob}>
-              View Details
+              {t('jobCard.viewDetails')}
             </Button>
             <Button variant="outline" size="sm" asChild>
               <a target="_blank" rel="noopener noreferrer">

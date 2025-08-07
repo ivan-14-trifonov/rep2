@@ -10,15 +10,27 @@ export function useTranslation() {
 
   if (!dictionary) throw new Error('useTranslation must be used within a DictionaryProvider');
 
-  const t = (path: ObjectPaths<Dictionary>): string => {
+  const t = (path: ObjectPaths<Dictionary>, params?: Record<string, string | number>): string => {
     const keys = path.split('.');
     let result: any = dictionary;
+
+    // Находим перевод по пути
     for (const key of keys) {
       result = result?.[key];
       if (result === undefined) {
         return path; // Возвращаем ключ, если перевод не найден
       }
     }
+
+    // Если есть параметры, заменяем их в строке
+    if (params && typeof result === 'string') {
+      let translatedString = result;
+      for (const [key, value] of Object.entries(params)) {
+        translatedString = translatedString.replace(new RegExp(`\\{${key}\\}`, 'g'), String(value));
+      }
+      return translatedString;
+    }
+
     return result;
   };
 

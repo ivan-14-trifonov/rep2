@@ -10,21 +10,28 @@ import { Separator } from '@/components/ui/separator';
 import { X, Filter } from 'lucide-react';
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
+import { useTranslation } from '@/hooks/use-translation';
 
 const popularSkills = [
-  'React', 'Node.js', 'TypeScript', 'Python', 'AWS',
-  'Docker', 'Kubernetes', 'GraphQL', 'MongoDB', 'PostgreSQL',
-  'Vue.js', 'Angular', 'Express', 'Next.js', 'TailwindCSS'
+  'React',
+  'Node.js',
+  'TypeScript',
+  'Python',
+  'AWS',
+  'Docker',
+  'Kubernetes',
+  'GraphQL',
+  'MongoDB',
+  'PostgreSQL',
+  'Vue.js',
+  'Angular',
+  'Express',
+  'Next.js',
+  'TailwindCSS',
 ];
 
 export function SearchFilters() {
-  const { 
-    searchQuery, 
-    filters, 
-    setSearchQuery, 
-    setFilters,
-    filteredCandidates 
-  } = useAppStore();
+  const { searchQuery, filters, setSearchQuery, setFilters, filteredCandidates } = useAppStore();
 
   const [skillInput, setSkillInput] = useState('');
 
@@ -36,8 +43,8 @@ export function SearchFilters() {
   };
 
   const removeSkill = (skillToRemove: string) => {
-    setFilters({ 
-      skills: filters.skills.filter(skill => skill !== skillToRemove) 
+    setFilters({
+      skills: filters.skills.filter((skill) => skill !== skillToRemove),
     });
   };
 
@@ -52,13 +59,10 @@ export function SearchFilters() {
     });
   };
 
-  const hasActiveFilters = 
-    searchQuery || 
-    filters.location || 
-    filters.minExperience > 0 || 
-    filters.maxExperience < 20 || 
-    filters.skills.length > 0 || 
-    filters.minMatchScore > 0;
+  const hasActiveFilters =
+    searchQuery || filters.location || filters.minExperience > 0 || filters.maxExperience < 20 || filters.skills.length > 0 || filters.minMatchScore > 0;
+
+  const { t } = useTranslation();
 
   return (
     <Card>
@@ -66,11 +70,11 @@ export function SearchFilters() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center">
             <Filter className="h-5 w-5 mr-2" />
-            Search & Filters
+            {t('searchFilters.title')}
           </CardTitle>
           {hasActiveFilters && (
             <Button variant="outline" size="sm" onClick={clearAllFilters}>
-              Clear All
+              {t('searchFilters.clearAll')}
             </Button>
           )}
         </div>
@@ -78,10 +82,10 @@ export function SearchFilters() {
       <CardContent className="space-y-6">
         {/* Search Query */}
         <div className="space-y-2">
-          <Label htmlFor="search">Search Candidates</Label>
+          <Label htmlFor="search">{t('searchFilters.searchCandidatesLabel')}</Label>
           <Input
             id="search"
-            placeholder="Search by name, title, or skills..."
+            placeholder={t('searchFilters.searchCandidatesPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -91,10 +95,10 @@ export function SearchFilters() {
 
         {/* Location Filter */}
         <div className="space-y-2">
-          <Label htmlFor="location">Location</Label>
+          <Label htmlFor="location">{t('searchFilters.locationLabel')}</Label>
           <Input
             id="location"
-            placeholder="e.g., San Francisco, Remote"
+            placeholder={t('searchFilters.locationPlaceholder')}
             value={filters.location}
             onChange={(e) => setFilters({ location: e.target.value })}
           />
@@ -102,13 +106,11 @@ export function SearchFilters() {
 
         {/* Experience Range */}
         <div className="space-y-3">
-          <Label>Experience Range</Label>
+          <Label>{t('searchFilters.experienceRangeLabel')}</Label>
           <div className="px-2">
             <Slider
               value={[filters.minExperience, filters.maxExperience]}
-              onValueChange={([min, max]) => 
-                setFilters({ minExperience: min, maxExperience: max })
-              }
+              onValueChange={([min, max]) => setFilters({ minExperience: min, maxExperience: max })}
               max={20}
               min={0}
               step={1}
@@ -116,14 +118,18 @@ export function SearchFilters() {
             />
           </div>
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>{filters.minExperience} years</span>
-            <span>{filters.maxExperience}+ years</span>
+            <span>
+              {filters.minExperience} {t('searchFilters.years')}
+            </span>
+            <span>
+              {filters.maxExperience}+ {t('searchFilters.years')}
+            </span>
           </div>
         </div>
 
         {/* Match Score */}
         <div className="space-y-3">
-          <Label>Minimum Match Score</Label>
+          <Label>{t('searchFilters.minimumMatchScoreLabel')}</Label>
           <div className="px-2">
             <Slider
               value={[filters.minMatchScore]}
@@ -135,7 +141,7 @@ export function SearchFilters() {
             />
           </div>
           <div className="text-sm text-muted-foreground">
-            {filters.minMatchScore}% minimum match
+            {filters.minMatchScore}% {t('searchFilters.minimumMatch')}
           </div>
         </div>
 
@@ -143,11 +149,11 @@ export function SearchFilters() {
 
         {/* Skills Filter */}
         <div className="space-y-3">
-          <Label htmlFor="skills">Skills</Label>
+          <Label htmlFor="skills">{t('searchFilters.skillsLabel')}</Label>
           <div className="flex space-x-2">
             <Input
               id="skills"
-              placeholder="Add skill..."
+              placeholder={t('searchFilters.addSkillPlaceholder')}
               value={skillInput}
               onChange={(e) => setSkillInput(e.target.value)}
               onKeyPress={(e) => {
@@ -157,28 +163,20 @@ export function SearchFilters() {
                 }
               }}
             />
-            <Button 
-              type="button" 
-              onClick={() => addSkill(skillInput)}
-              disabled={!skillInput.trim()}
-              size="sm"
-            >
-              Add
+            <Button type="button" onClick={() => addSkill(skillInput)} disabled={!skillInput.trim()} size="sm">
+              {t('searchFilters.addButton')}
             </Button>
           </div>
 
           {/* Selected Skills */}
           {filters.skills.length > 0 && (
             <div className="space-y-2">
-              <div className="text-sm font-medium">Selected Skills:</div>
+              <div className="text-sm font-medium">{t('searchFilters.selectedSkillsLabel')}</div>
               <div className="flex flex-wrap gap-2">
                 {filters.skills.map((skill) => (
                   <Badge key={skill} variant="secondary" className="flex items-center gap-1">
                     {skill}
-                    <X
-                      className="h-3 w-3 cursor-pointer hover:text-destructive"
-                      onClick={() => removeSkill(skill)}
-                    />
+                    <X className="h-3 w-3 cursor-pointer hover:text-destructive" onClick={() => removeSkill(skill)} />
                   </Badge>
                 ))}
               </div>
@@ -187,18 +185,13 @@ export function SearchFilters() {
 
           {/* Popular Skills */}
           <div className="space-y-2">
-            <div className="text-sm font-medium">Popular Skills:</div>
+            <div className="text-sm font-medium">{t('searchFilters.popularSkillsLabel')}</div>
             <div className="flex flex-wrap gap-2">
               {popularSkills
-                .filter(skill => !filters.skills.includes(skill))
+                .filter((skill) => !filters.skills.includes(skill))
                 .slice(0, 8)
                 .map((skill) => (
-                  <Badge
-                    key={skill}
-                    variant="outline"
-                    className="cursor-pointer hover:bg-secondary"
-                    onClick={() => addSkill(skill)}
-                  >
+                  <Badge key={skill} variant="outline" className="cursor-pointer hover:bg-secondary" onClick={() => addSkill(skill)}>
                     {skill}
                   </Badge>
                 ))}
@@ -211,11 +204,10 @@ export function SearchFilters() {
         {/* Results Count */}
         <div className="text-center py-2">
           <div className="text-lg font-semibold">
-            {filteredCandidates.length} candidate{filteredCandidates.length !== 1 ? 's' : ''} found
+            {filteredCandidates.length === 1 && t('searchFilters.candidatesFound_one', { count: filteredCandidates.length })}
+            {filteredCandidates.length > 1 && t('searchFilters.candidatesFound_other', { count: filteredCandidates.length })}
           </div>
-          <div className="text-sm text-muted-foreground">
-            Matching your criteria
-          </div>
+          <div className="text-sm text-muted-foreground">{t('searchFilters.matchingCriteria')}</div>
         </div>
       </CardContent>
     </Card>

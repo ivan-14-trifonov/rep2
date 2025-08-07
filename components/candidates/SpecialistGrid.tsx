@@ -6,12 +6,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Search } from 'lucide-react';
 import type { Candidate } from '@/lib/types';
 
+import { useTranslation } from '@/hooks/use-translation';
+
 interface SpecialistGridProps {
   candidates: Candidate[];
   isLoading?: boolean;
 }
 
 export function SpecialistGrid({ candidates, isLoading }: SpecialistGridProps) {
+  const { t } = useTranslation();
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -55,11 +58,9 @@ export function SpecialistGrid({ candidates, isLoading }: SpecialistGridProps) {
       <div className="text-center py-12">
         <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground mb-2">
-          No candidates found
+          {t('specialistGrid.noCandidatesFound')}
         </h3>
-        <p className="text-muted-foreground">
-          Try adjusting your search criteria or filters to find more candidates.
-        </p>
+        <p className="text-muted-foreground">{t('specialistGrid.tryAdjustingSearch')}</p>
       </div>
     );
   }

@@ -12,6 +12,7 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/hooks/use-translation';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -24,6 +25,7 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { login, isLoading, setLoading, error, setError } = useAppStore();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -40,7 +42,7 @@ export function LoginForm() {
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Mock authentication - in real app, validate against API
       if (data.email === 'demo@example.com' && data.password === 'password') {
@@ -55,7 +57,7 @@ export function LoginForm() {
         // For demo purposes, allow any valid email/password combination
         const name = data.email.split('@')[0].replace(/[^a-zA-Z\s]/g, '');
         const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-        
+
         login({
           id: Math.random().toString(36).substr(2, 9),
           email: data.email,
@@ -74,10 +76,8 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Welcome Back</CardTitle>
-        <CardDescription>
-          Sign in to your account to find the perfect candidates
-        </CardDescription>
+        <CardTitle className="text-2xl">{t('loginForm.welcomeBack')}</CardTitle>
+        <CardDescription>{t('loginForm.signInToAccount')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -90,39 +90,37 @@ export function LoginForm() {
           {/* Demo Credentials Info */}
           <Alert>
             <AlertDescription>
-              <strong>Demo:</strong> Use any valid email and password (min 6 chars) to sign in.
+              <strong>{t('loginForm.demo')}:</strong> {t('loginForm.demoCredentials')}
               <br />
-              Try: demo@example.com / password
+              {t('loginForm.try')}: demo@example.com / password
             </AlertDescription>
           </Alert>
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email">Email Address</Label>
+            <Label htmlFor="email">{t('loginForm.emailAddress')}</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t('loginForm.emailPlaceholder')}
                 className={`pl-10 ${errors.email ? 'border-destructive' : ''}`}
                 {...register('email')}
               />
             </div>
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
           </div>
 
           {/* Password */}
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('loginForm.password')}</Label>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter your password"
+                placeholder={t('loginForm.passwordPlaceholder')}
                 className={`pl-10 pr-10 ${errors.password ? 'border-destructive' : ''}`}
                 {...register('password')}
               />
@@ -133,35 +131,21 @@ export function LoginForm() {
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                )}
+                {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
               </Button>
             </div>
-            {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
           </div>
 
           {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={!isValid || isLoading}
-            size="lg"
-          >
-            {isLoading ? 'Signing In...' : 'Sign In'}
+          <Button type="submit" className="w-full" disabled={!isValid || isLoading} size="lg">
+            {isLoading ? t('loginForm.signingIn') : t('loginForm.signIn')}
           </Button>
 
           {/* Additional Info */}
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              Don&apos;t have an account?{' '}
-              <span className="text-primary hover:underline cursor-pointer">
-                Contact sales to get started
-              </span>
+              {t('loginForm.dontHaveAccount')} <span className="text-primary hover:underline cursor-pointer">{t('loginForm.contactSales')}</span>
             </p>
           </div>
         </form>

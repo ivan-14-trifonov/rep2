@@ -11,27 +11,23 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Briefcase, TrendingUp, MapPin } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { mockJobs } from '@/lib/mock-jobs';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function JobsPage() {
-  const { 
-    isAuthenticated, 
-    filteredJobs, 
-    setJobs, 
-    isLoading, 
-    setLoading 
-  } = useAppStore();
+  const { isAuthenticated, filteredJobs, setJobs, isLoading, setLoading } = useAppStore();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-      return;
-    }
+    // if (!isAuthenticated) {
+    //   router.push('/login');
+    //   return;
+    // }
 
     // Simulate loading jobs
     const loadJobs = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setJobs(mockJobs);
       setLoading(false);
     };
@@ -41,13 +37,13 @@ export default function JobsPage() {
     }
   }, [isAuthenticated, router, setJobs, setLoading, filteredJobs.length]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  // if (!isAuthenticated) {
+  //   return null;
+  // }
 
   const totalJobs = mockJobs.length;
-  const openJobs = mockJobs.filter(job => job.status === 'Open').length;
-  const remoteJobs = mockJobs.filter(job => job.remote).length;
+  const openJobs = mockJobs.filter((job) => job.status === 'Open').length;
+  const remoteJobs = mockJobs.filter((job) => job.remote).length;
 
   return (
     <PageLayout>
@@ -55,14 +51,12 @@ export default function JobsPage() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
           <div>
-            <h1 className="text-3xl font-bold">Job Opportunities</h1>
-            <p className="text-muted-foreground">
-              Discover your next career opportunity from our curated job listings
-            </p>
+            <h1 className="text-3xl font-bold">{t('jobs.title')}</h1>
+            <p className="text-muted-foreground">{t('jobs.description')}</p>
           </div>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            Post a Job
+            {t('jobs.postJob')}
           </Button>
         </div>
 
@@ -74,7 +68,7 @@ export default function JobsPage() {
                 <Briefcase className="h-8 w-8 text-primary" />
                 <div>
                   <div className="text-2xl font-bold">{totalJobs}</div>
-                  <div className="text-sm text-muted-foreground">Total Jobs</div>
+                  <div className="text-sm text-muted-foreground">{t('jobs.totalJobs')}</div>
                 </div>
               </div>
             </CardContent>
@@ -85,7 +79,7 @@ export default function JobsPage() {
                 <TrendingUp className="h-8 w-8 text-green-600" />
                 <div>
                   <div className="text-2xl font-bold">{openJobs}</div>
-                  <div className="text-sm text-muted-foreground">Open Positions</div>
+                  <div className="text-sm text-muted-foreground">{t('jobs.openPositions')}</div>
                 </div>
               </div>
             </CardContent>
@@ -96,7 +90,7 @@ export default function JobsPage() {
                 <MapPin className="h-8 w-8 text-blue-600" />
                 <div>
                   <div className="text-2xl font-bold">{remoteJobs}</div>
-                  <div className="text-sm text-muted-foreground">Remote Jobs</div>
+                  <div className="text-sm text-muted-foreground">{t('jobs.remoteJobs')}</div>
                 </div>
               </div>
             </CardContent>
@@ -106,15 +100,15 @@ export default function JobsPage() {
         {/* Featured Jobs */}
         <Card>
           <CardHeader>
-            <CardTitle>Featured Opportunities</CardTitle>
+            <CardTitle>{t('jobs.featuredOpportunities')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">Senior Positions</Badge>
-              <Badge variant="outline">Remote Work</Badge>
-              <Badge variant="outline">Tech Companies</Badge>
-              <Badge variant="outline">Competitive Salary</Badge>
-              <Badge variant="outline">Great Benefits</Badge>
+              <Badge variant="outline">{t('jobs.seniorPositions')}</Badge>
+              <Badge variant="outline">{t('jobs.remoteWork')}</Badge>
+              <Badge variant="outline">{t('jobs.techCompanies')}</Badge>
+              <Badge variant="outline">{t('jobs.competitiveSalary')}</Badge>
+              <Badge variant="outline">{t('jobs.greatBenefits')}</Badge>
             </div>
           </CardContent>
         </Card>
@@ -131,11 +125,9 @@ export default function JobsPage() {
             <div className="mb-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold">
-                  {filteredJobs.length} Job{filteredJobs.length !== 1 ? 's' : ''} Found
+                  {filteredJobs.length} {t('jobs.jobsFound')}
                 </h2>
-                <div className="text-sm text-muted-foreground">
-                  Sorted by relevance
-                </div>
+                <div className="text-sm text-muted-foreground">{t('jobs.sortedByRelevance')}</div>
               </div>
             </div>
             <JobGrid jobs={filteredJobs} isLoading={isLoading} />

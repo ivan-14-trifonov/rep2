@@ -58,7 +58,14 @@ export const useAppStore = create<AppState>()(
       logout: () => set({ user: null, isAuthenticated: false, jobDescription: null }),
 
       // Job Description
-      jobDescription: null,
+      jobDescription: {
+        title: '',
+        company: '',
+        location: '',
+        description: '',
+        requirements: '',
+        skills: [],
+      },
       setJobDescription: (jobDescription) => set({ jobDescription }),
 
       // Candidates
@@ -109,55 +116,40 @@ export const useAppStore = create<AppState>()(
 
         // Search query filter
         if (jobSearchQuery) {
-          filtered = filtered.filter(job =>
-            job.title.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
-            job.company.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
-            job.skills.some(skill => 
-              skill.toLowerCase().includes(jobSearchQuery.toLowerCase())
-            )
+          filtered = filtered.filter(
+            (job) =>
+              job.title.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
+              job.company.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
+              job.skills.some((skill) => skill.toLowerCase().includes(jobSearchQuery.toLowerCase())),
           );
         }
 
         // Location filter
         if (jobFilters.location) {
-          filtered = filtered.filter(job =>
-            job.location.toLowerCase().includes(jobFilters.location.toLowerCase())
-          );
+          filtered = filtered.filter((job) => job.location.toLowerCase().includes(jobFilters.location.toLowerCase()));
         }
 
         // Job type filter
         if (jobFilters.jobType) {
-          filtered = filtered.filter(job =>
-            job.type === jobFilters.jobType
-          );
+          filtered = filtered.filter((job) => job.type === jobFilters.jobType);
         }
 
         // Salary filter
-        filtered = filtered.filter(job =>
-          job.salary.max >= jobFilters.minSalary &&
-          job.salary.min <= jobFilters.maxSalary
-        );
+        filtered = filtered.filter((job) => job.salary.max >= jobFilters.minSalary && job.salary.min <= jobFilters.maxSalary);
 
         // Experience filter
-        filtered = filtered.filter(job =>
-          job.experience.max >= jobFilters.minExperience &&
-          job.experience.min <= jobFilters.maxExperience
-        );
+        filtered = filtered.filter((job) => job.experience.max >= jobFilters.minExperience && job.experience.min <= jobFilters.maxExperience);
 
         // Skills filter
         if (jobFilters.skills.length > 0) {
-          filtered = filtered.filter(job =>
-            jobFilters.skills.some(skill =>
-              job.skills.some(jobSkill =>
-                jobSkill.toLowerCase().includes(skill.toLowerCase())
-              )
-            )
+          filtered = filtered.filter((job) =>
+            jobFilters.skills.some((skill) => job.skills.some((jobSkill) => jobSkill.toLowerCase().includes(skill.toLowerCase()))),
           );
         }
 
         // Remote filter
         if (jobFilters.remote) {
-          filtered = filtered.filter(job => job.remote);
+          filtered = filtered.filter((job) => job.remote);
         }
 
         set({ filteredJobs: filtered });
@@ -186,43 +178,31 @@ export const useAppStore = create<AppState>()(
 
         // Search query filter
         if (searchQuery) {
-          filtered = filtered.filter(candidate =>
-            candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            candidate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            candidate.skills.some(skill => 
-              skill.toLowerCase().includes(searchQuery.toLowerCase())
-            )
+          filtered = filtered.filter(
+            (candidate) =>
+              candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              candidate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              candidate.skills.some((skill) => skill.toLowerCase().includes(searchQuery.toLowerCase())),
           );
         }
 
         // Location filter
         if (filters.location) {
-          filtered = filtered.filter(candidate =>
-            candidate.location.toLowerCase().includes(filters.location.toLowerCase())
-          );
+          filtered = filtered.filter((candidate) => candidate.location.toLowerCase().includes(filters.location.toLowerCase()));
         }
 
         // Experience filter
-        filtered = filtered.filter(candidate =>
-          candidate.experience >= filters.minExperience &&
-          candidate.experience <= filters.maxExperience
-        );
+        filtered = filtered.filter((candidate) => candidate.experience >= filters.minExperience && candidate.experience <= filters.maxExperience);
 
         // Skills filter
         if (filters.skills.length > 0) {
-          filtered = filtered.filter(candidate =>
-            filters.skills.some(skill =>
-              candidate.skills.some(candidateSkill =>
-                candidateSkill.toLowerCase().includes(skill.toLowerCase())
-              )
-            )
+          filtered = filtered.filter((candidate) =>
+            filters.skills.some((skill) => candidate.skills.some((candidateSkill) => candidateSkill.toLowerCase().includes(skill.toLowerCase()))),
           );
         }
 
         // Match score filter
-        filtered = filtered.filter(candidate =>
-          candidate.matchScore >= filters.minMatchScore
-        );
+        filtered = filtered.filter((candidate) => candidate.matchScore >= filters.minMatchScore);
 
         set({ filteredCandidates: filtered });
       },
@@ -240,6 +220,6 @@ export const useAppStore = create<AppState>()(
         isAuthenticated: state.isAuthenticated,
         jobDescription: state.jobDescription,
       }),
-    }
-  )
+    },
+  ),
 );

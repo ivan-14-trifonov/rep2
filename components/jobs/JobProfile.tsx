@@ -18,12 +18,15 @@ import {
   Share
 } from 'lucide-react';
 import type { Job } from '@/lib/types';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface JobProfileProps {
   job: Job;
 }
 
 export function JobProfile({ job }: JobProfileProps) {
+  const { t } = useTranslation();
+
   const getJobTypeColor = (type: string) => {
     switch (type) {
       case 'Full-time':
@@ -42,9 +45,9 @@ export function JobProfile({ job }: JobProfileProps) {
   const formatSalary = (job: Job) => {
     const { min, max, currency } = job.salary;
     if (job.type === 'Contract') {
-      return `${min}-${max}/hr`;
+      return `${min}-${max}${t('jobProfile.hr')}`;
     }
-    return `${(min / 1000).toFixed(0)}k-${(max / 1000).toFixed(0)}k annually`;
+    return `${(min / 1000).toFixed(0)}k-${(max / 1000).toFixed(0)}k ${t('jobProfile.annually')}`;
   };
 
   const formatDate = (dateString: string) => {
@@ -81,15 +84,15 @@ export function JobProfile({ job }: JobProfileProps) {
                     {job.location}
                   </div>
                   {job.remote && (
-                    <Badge variant="outline">Remote</Badge>
+                    <Badge variant="outline">{t('jobProfile.remote')}</Badge>
                   )}
                   <div className="flex items-center">
                     <Clock className="h-4 w-4 mr-1" />
-                    {job.experience.min}-{job.experience.max} years experience
+                    {job.experience.min}-{job.experience.max} {t('jobProfile.experience')}
                   </div>
                   <div className="flex items-center">
                     <Users className="h-4 w-4 mr-1" />
-                    {job.applicants} applicants
+                    {job.applicants} {t('jobProfile.applicants')}
                   </div>
                 </div>
 
@@ -103,19 +106,19 @@ export function JobProfile({ job }: JobProfileProps) {
             <div className="flex flex-wrap gap-3">
               <Button size="lg" className="flex-1 md:flex-none">
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Apply Now
+                {t('jobProfile.applyNow')}
               </Button>
               <Button variant="outline" size="lg">
                 <Heart className="h-4 w-4 mr-2" />
-                Save Job
+                {t('jobProfile.saveJob')}
               </Button>
               <Button variant="outline" size="lg">
                 <Share className="h-4 w-4 mr-2" />
-                Share
+                {t('jobProfile.share')}
               </Button>
               <Button variant="outline" size="lg">
                 <Mail className="h-4 w-4 mr-2" />
-                Contact HR
+                {t('jobProfile.contactHR')}
               </Button>
             </div>
           </div>
@@ -128,7 +131,7 @@ export function JobProfile({ job }: JobProfileProps) {
           {/* Job Description */}
           <Card>
             <CardHeader>
-              <CardTitle>Job Description</CardTitle>
+              <CardTitle>{t('jobProfile.jobDescription')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
@@ -140,7 +143,7 @@ export function JobProfile({ job }: JobProfileProps) {
           {/* Requirements */}
           <Card>
             <CardHeader>
-              <CardTitle>Requirements</CardTitle>
+              <CardTitle>{t('jobProfile.requirements')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
@@ -157,7 +160,7 @@ export function JobProfile({ job }: JobProfileProps) {
           {/* Benefits */}
           <Card>
             <CardHeader>
-              <CardTitle>Benefits & Perks</CardTitle>
+              <CardTitle>{t('jobProfile.benefitsAndPerks')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -177,31 +180,31 @@ export function JobProfile({ job }: JobProfileProps) {
           {/* Job Details */}
           <Card>
             <CardHeader>
-              <CardTitle>Job Details</CardTitle>
+              <CardTitle>{t('jobProfile.jobDetails')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Posted</span>
+                <span className="text-sm text-muted-foreground">{t('jobProfile.posted')}</span>
                 <span className="font-medium">{formatDate(job.postedDate)}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Deadline</span>
+                <span className="text-sm text-muted-foreground">{t('jobProfile.deadline')}</span>
                 <span className="font-medium">{formatDate(job.applicationDeadline)}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Job Type</span>
+                <span className="text-sm text-muted-foreground">{t('jobProfile.jobType')}</span>
                 <span className="font-medium">{job.type}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Experience</span>
-                <span className="font-medium">{job.experience.min}-{job.experience.max} years</span>
+                <span className="text-sm text-muted-foreground">{t('jobProfile.experience')}</span>
+                <span className="font-medium">{job.experience.min}-{job.experience.max} {t('jobProfile.years')}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Applicants</span>
+                <span className="text-sm text-muted-foreground">{t('jobProfile.applicants')}</span>
                 <span className="font-medium">{job.applicants}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Status</span>
+                <span className="text-sm text-muted-foreground">{t('jobProfile.status')}</span>
                 <Badge variant={job.status === 'Open' ? 'default' : 'secondary'}>
                   {job.status}
                 </Badge>
@@ -212,7 +215,7 @@ export function JobProfile({ job }: JobProfileProps) {
           {/* Required Skills */}
           <Card>
             <CardHeader>
-              <CardTitle>Required Skills</CardTitle>
+              <CardTitle>{t('jobProfile.requiredSkills')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
@@ -228,20 +231,20 @@ export function JobProfile({ job }: JobProfileProps) {
           {/* Company Info */}
           <Card>
             <CardHeader>
-              <CardTitle>About {job.company}</CardTitle>
+              <CardTitle>{t('jobProfile.aboutCompany')} {job.company}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <Building className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Technology Company</span>
+                  <span className="text-sm text-muted-foreground">{t('jobProfile.technologyCompany')}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">{job.location}</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  A leading technology company focused on innovation and growth.
+                  {t('jobProfile.aboutCompanyDescription')}
                 </p>
               </div>
             </CardContent>
@@ -252,10 +255,10 @@ export function JobProfile({ job }: JobProfileProps) {
             <CardContent className="p-4">
               <Button className="w-full" size="lg">
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Apply for this Position
+                {t('jobProfile.applyForPosition')}
               </Button>
               <p className="text-xs text-muted-foreground text-center mt-2">
-                You will be redirected to the company&apos;s application page
+                {t('jobProfile.applyRedirect')}
               </p>
             </CardContent>
           </Card>
