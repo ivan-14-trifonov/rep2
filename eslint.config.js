@@ -43,6 +43,14 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-empty-interface": "off",
       "@typescript-eslint/no-empty-object-type": "off",
+      // ts типы должны импрортироваться как типы
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+        },
+      ],
     },
   }
 );
