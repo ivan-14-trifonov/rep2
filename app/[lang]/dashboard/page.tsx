@@ -8,20 +8,12 @@ import { SearchFilters } from '@/components/search/SearchFilters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { Edit, MapPin, Building, Users } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { mockCandidates } from '@/lib/mock-data';
 
 export default function DashboardPage() {
-  const { 
-    isAuthenticated, 
-    jobDescription, 
-    filteredCandidates, 
-    setCandidates, 
-    isLoading, 
-    setLoading 
-  } = useAppStore();
+  const { isAuthenticated, jobDescription, filteredCandidates, setCandidates, isLoading, setLoading } = useAppStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -38,7 +30,7 @@ export default function DashboardPage() {
     // Simulate loading candidates
     const loadCandidates = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setCandidates(mockCandidates);
       setLoading(false);
     };
@@ -59,9 +51,7 @@ export default function DashboardPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
           <div>
             <h1 className="text-3xl font-bold">Candidate Search Results</h1>
-            <p className="text-muted-foreground">
-              Found {filteredCandidates.length} candidates matching your requirements
-            </p>
+            <p className="text-muted-foreground">Found {filteredCandidates.length} candidates matching your requirements</p>
           </div>
           <Button variant="outline" onClick={() => router.push('/')}>
             <Edit className="h-4 w-4 mr-2" />
@@ -87,7 +77,7 @@ export default function DashboardPage() {
                   {jobDescription.location}
                 </div>
               </div>
-              
+
               {jobDescription.skills.length > 0 && (
                 <div className="space-y-2">
                   <div className="text-sm font-medium">Required Skills:</div>

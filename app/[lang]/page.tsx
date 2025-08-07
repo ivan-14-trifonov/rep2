@@ -8,20 +8,21 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, Users, Target, Clock } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function HomePage() {
   const { isAuthenticated } = useAppStore();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     router.push('/login');
+  //   }
+  // }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  // if (!isAuthenticated) {
+  //   return null;
+  // }
 
   const features = [
     {
@@ -46,6 +47,8 @@ export default function HomePage() {
     },
   ];
 
+  const { t } = useTranslation();
+
   return (
     <PageLayout maxWidth="xl">
       <div className="space-y-12">
@@ -53,15 +56,14 @@ export default function HomePage() {
         <div className="text-center space-y-6">
           <div className="space-y-4">
             <Badge variant="secondary" className="text-sm px-4 py-2">
-              ✨ Powered by AI Matching Technology
+              ✨ ${t('home.poweredByAIMatching')}
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
               Find Your Perfect
               <span className="text-primary"> Candidate</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Describe your job requirements and get matched with the best candidates 
-              from our curated talent pool in seconds.
+              Describe your job requirements and get matched with the best candidates from our curated talent pool in seconds.
             </p>
           </div>
         </div>
