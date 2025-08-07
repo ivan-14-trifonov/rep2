@@ -65,89 +65,101 @@ export function JobCard({ job }: JobCardProps) {
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
-      <CardContent className="p-6">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h3 className="font-semibold text-lg group-hover:text-primary transition-colors mb-1">
-              {job.title}
-            </h3>
-            <div className="flex items-center text-muted-foreground text-sm mb-2">
-              <Building className="h-4 w-4 mr-1" />
-              {job.company}
+    <Card className="group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 h-[420px]">
+      <CardContent className="p-6 flex flex-col h-full">
+        <div>
+          {/* Header */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1">
+              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors mb-1">
+                {job.title}
+              </h3>
+              <div className="flex items-center text-muted-foreground text-sm mb-2">
+                <Building className="h-4 w-4 mr-1" />
+                {job.company}
+              </div>
+            </div>
+            <div
+              className={`px-2 py-1 rounded-lg text-xs font-medium border ${getJobTypeColor(
+                job.type
+              )}`}
+            >
+              {job.type}
             </div>
           </div>
-          <div
-            className={`px-2 py-1 rounded-lg text-xs font-medium border ${getJobTypeColor(
-              job.type
-            )}`}
-          >
-            {job.type}
-          </div>
-        </div>
 
-        {/* Location & Remote */}
-        <div className="flex items-center space-x-4 mb-4 text-sm text-muted-foreground">
-          <div className="flex items-center">
-            <MapPin className="h-4 w-4 mr-1" />
-            {job.location}
-          </div>
-          {job.remote && (
-            <Badge variant="outline" className="text-xs">
-              Remote
-            </Badge>
-          )}
-        </div>
-
-        {/* Salary & Experience */}
-        <div className="flex items-center space-x-4 mb-4 text-sm">
-          <div className="flex items-center text-green-600">
-            <DollarSign className="h-4 w-4 mr-1" />
-            {formatSalary(job)}
-          </div>
-          <div className="flex items-center text-muted-foreground">
-            <Clock className="h-4 w-4 mr-1" />
-            {job.experience.min}-{job.experience.max} years
-          </div>
-        </div>
-
-        {/* Skills */}
-        <div className="mb-4">
-          <div className="flex flex-wrap gap-1">
-            {job.skills.slice(0, 4).map((skill) => (
-              <Badge key={skill} variant="secondary" className="text-xs">
-                {skill}
-              </Badge>
-            ))}
-            {job.skills.length > 4 && (
+          {/* Location & Remote */}
+          <div className="flex items-center space-x-4 mb-4 text-sm text-muted-foreground">
+            <div className="flex items-center">
+              <MapPin className="h-4 w-4 mr-1" />
+              {job.location}
+            </div>
+            {job.remote && (
               <Badge variant="outline" className="text-xs">
-                +{job.skills.length - 4} more
+                Remote
               </Badge>
             )}
           </div>
-        </div>
 
-        {/* Description */}
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-          {job.description}
-        </p>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-            <div className="flex items-center">
-              <Users className="h-3 w-3 mr-1" />
-              {job.applicants} applicants
+          {/* Salary & Experience */}
+          <div className="flex items-center space-x-4 mb-4 text-sm">
+            <div className="flex items-center text-green-600">
+              <DollarSign className="h-4 w-4 mr-1" />
+              {formatSalary(job)}
             </div>
-            <div className="flex items-center">
-              <Calendar className="h-3 w-3 mr-1" />
-              {formatDate(job.postedDate)}
+            <div className="flex items-center text-muted-foreground">
+              <Clock className="h-4 w-4 mr-1" />
+              {job.experience.min}-{job.experience.max} years
             </div>
           </div>
-          <Button onClick={handleViewJob} size="sm">
-            View Details
-          </Button>
+
+          {/* Skills */}
+          <div className="mb-4">
+            <div className="flex flex-wrap gap-1">
+              {job.skills.slice(0, 4).map((skill) => (
+                <Badge key={skill} variant="secondary" className="text-xs">
+                  {skill}
+                </Badge>
+              ))}
+              {job.skills.length > 4 && (
+                <Badge variant="outline" className="text-xs">
+                  +{job.skills.length - 4} more
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+            {job.description}
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="flex flex-col space-y-4 mt-auto">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+              <div className="flex items-center">
+                <Users className="h-3 w-3 mr-1" />
+                {job.applicants} applicants
+              </div>
+              <div className="flex items-center">
+                <Calendar className="h-3 w-3 mr-1" />
+                {formatDate(job.postedDate)}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex space-x-2">
+            <Button className="flex-1" size="sm" onClick={handleViewJob}>
+              View Details
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <a target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

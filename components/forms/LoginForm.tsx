@@ -158,7 +158,7 @@ export function LoginForm() {
           {/* Additional Info */}
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <span className="text-primary hover:underline cursor-pointer">
                 Contact sales to get started
               </span>

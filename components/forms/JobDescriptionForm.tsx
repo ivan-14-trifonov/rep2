@@ -77,7 +77,7 @@ export function JobDescriptionForm() {
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Find Your Perfect Candidate</CardTitle>
         <CardDescription>
-          Describe your job requirements and we'll match you with the best candidates
+          Describe your job requirements and we&apos;ll match you with the best candidates
         </CardDescription>
       </CardHeader>
       <CardContent>

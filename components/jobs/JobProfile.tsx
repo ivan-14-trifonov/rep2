@@ -42,9 +42,9 @@ export function JobProfile({ job }: JobProfileProps) {
   const formatSalary = (job: Job) => {
     const { min, max, currency } = job.salary;
     if (job.type === 'Contract') {
-      return `$${min}-${max}/hr`;
+      return `${min}-${max}/hr`;
     }
-    return `$${(min / 1000).toFixed(0)}k-${(max / 1000).toFixed(0)}k annually`;
+    return `${(min / 1000).toFixed(0)}k-${(max / 1000).toFixed(0)}k annually`;
   };
 
   const formatDate = (dateString: string) => {
@@ -255,7 +255,7 @@ export function JobProfile({ job }: JobProfileProps) {
                 Apply for this Position
               </Button>
               <p className="text-xs text-muted-foreground text-center mt-2">
-                You will be redirected to the company's application page
+                You will be redirected to the company&apos;s application page
               </p>
             </CardContent>
           </Card>
