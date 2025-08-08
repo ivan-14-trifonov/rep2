@@ -18,7 +18,7 @@ export const useDashboardData = () => {
       if (mockCandidates.length > 0 && filteredCandidates.length > 0) return;
 
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 5));
       setCandidates(mockCandidates);
       setLoading(false);
     };

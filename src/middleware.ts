@@ -20,18 +20,16 @@ export function middleware(request: NextRequest) {
   const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}`));
 
   // Если локали нет в пути, переписываем URL, чтобы включить локаль
-  if (!pathnameHasLocale) {
-    const locale = getLocale(request);
-
-    const url = request.nextUrl.clone();
-    const repl = pathname.replace(basePath || '', '');
-    url.pathname = `/${locale}${repl}`;
-    return NextResponse.rewrite(url);
+  if (pathnameHasLocale) {
+    return;
   }
 
-  // Если локаль уже есть, или это статический файл/внутренний путь (отфильтрованный матчером),
-  // позволяем запросу пройти без изменений.
-  return NextResponse.next();
+  const locale = getLocale(request);
+  const url = request.nextUrl.clone();
+  const repl = pathname.replace(basePath || '', '');
+  url.pathname = `/${locale}${repl}`;
+
+  return NextResponse.rewrite(url);
 }
 
 export const config = {
