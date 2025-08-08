@@ -1,0 +1,1 @@
+export { SpecialistGrid } from './ui/SpecialistGrid';
