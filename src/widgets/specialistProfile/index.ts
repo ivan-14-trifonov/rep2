@@ -1,0 +1,1 @@
+export { SpecialistProfile } from './ui/SpecialistProfile';
