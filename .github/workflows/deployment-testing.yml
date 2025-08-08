@@ -1,0 +1,20 @@
+name: Testing Deployment
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    types: [labeled, unlabeled, synchronize, closed, reopened]
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+  packages: write # This is required for package publish
+jobs:
+  call-deployment:
+    uses: iconicompany/iconicactions/.github/workflows/deployment.yml@main
+    with:
+      #RUNS_ON: self-hosted
+      DOCKER_BUILDKIT: true
+      WERF_ENV: testing
+      #DATABASE_URL: postgres://postgresql01.kube01.icncd.ru
+    secrets:
+      WERF_SECRET_KEY: ${{ secrets.WERF_SECRET_KEY }}

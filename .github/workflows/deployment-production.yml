@@ -1,0 +1,16 @@
+name: Production Deployment
+on:
+  push:
+    tags: ['v*','!v*-*']
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+  packages: write # This is required for package publish
+jobs:
+  call-deployment:
+    uses: iconicompany/iconicactions/.github/workflows/deployment.yml@main
+    with:
+      WERF_ENV: production
+      DOMAIN: iconicompany.ru
+    secrets:
+      WERF_SECRET_KEY: ${{ secrets.WERF_SECRET_KEY }}
