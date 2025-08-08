@@ -4,11 +4,12 @@ import { getDictionary } from './dictionaries';
 import { ClientLayout } from '@/shared/components/layout/ClientLayout';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
+import { BRAND_NAME } from '@/shared/constants';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'TalentFind - Smart Candidate Search Platform',
+  title: `${BRAND_NAME} - Smart Candidate Search Platform`,
   description: 'Find the perfect candidates for your team with AI-powered matching technology.',
 };
 
