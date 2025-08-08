@@ -28,7 +28,7 @@ export default function JobsPage() {
     // Simulate loading jobs
     const loadJobs = async () => {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 5));
       setJobs(mockJobs);
       setLoading(false);
     };

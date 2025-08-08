@@ -1,63 +1,60 @@
-# ARG NODE_REPO=oven/bun:1.0-alpine
-# ARG NODE_LOCK=bun.lockb
-# ARG NPM=bun
-# ARG NODE=bun
+ARG NODE_REPO=docker.io/oven/bun:1.2.19-alpine
+ARG NODE_LOCK=bun.lock
+ARG NPM=bun
+ARG NODE=bun
 
-ARG NODE_REPO=node:20-alpine
-ARG NODE_LOCK=pnpm-lock.yaml
-ARG NPM=pnpm
-ARG NODE=pnpm
+# ARG NODE_REPO=node:20-alpine
+# ARG NODE_LOCK=pnpm-lock.yaml
+# ARG NPM=pnpm
+# ARG NODE=pnpm
 
-FROM ${NODE_REPO} AS base
-RUN apk add --no-cache openssl
-# RUN apk add --no-cache libstdc++
-RUN npm i -g pnpm@latest
 
-FROM base AS prod-deps
+FROM ${NODE_REPO} AS deps
 ARG NODE_LOCK
 ARG NPM
 WORKDIR /app
 COPY package.json ${NODE_LOCK} ./
-COPY prisma prisma
-RUN ${NPM} install --frozen-lockfile --production
+RUN ${NPM} install --frozen-lockfile
 
-FROM prod-deps AS deps
-ARG NODE_LOCK
-ARG NPM
-WORKDIR /app
-COPY package.json ${NODE_LOCK} ./
-RUN ${NPM} install  --frozen-lockfile
+
 
 FROM deps AS builder
 ARG NPM
 WORKDIR /app
+
 ENV NODE_ENV=production
-#COPY src src
-COPY prisma prisma
-#COPY *.?js *.yaml *.ts? *.json *.lock? ./
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_BASE_PATH=/v2
+
+COPY package.json next.config.js postcss.config.js tsconfig.json components.json eslint.config.js ./
+COPY src/ src/
+COPY public/ public/
+
 RUN ${NPM} run build
-#RUN apk add postgresql-client
 
 
-# Production image, copy all the files and run next
-# oven/bun:alpine, node:20-alpine, bcgovimages/alpine-node-libreoffice:20, etc
-FROM builder AS runner
+
+# Production image
+FROM ${NODE_REPO} AS runner
 WORKDIR /app
+
+# Создаем группу и пользователя nextjs с правильными UID/GID
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001 -G nodejs
+
 ENV NODE_ENV=production
-#RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
-USER 1000
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_BASE_PATH=/v2
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Устанавливаем права на директорию приложения
+RUN chown -R nextjs:nodejs /app
+
+# Переключаемся на пользователя nextjs
+USER nextjs
+
 EXPOSE 3000
 
-# берется dev mode node_modules, из-за prisma
-#COPY --from=builder --chown=node /app/node_modules ./node_modules
-#COPY prisma prisma
-#COPY --from=prod-deps /app/node_modules ./node_modules
-#COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-
-#COPY package.json ./
-COPY src src
-#COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-#COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-#COPY --from=builder --chown=nextjs:nodejs /app/next.config.mjs ./
-
-CMD npm run deploy && npm start
+CMD ["node", "server.js"]

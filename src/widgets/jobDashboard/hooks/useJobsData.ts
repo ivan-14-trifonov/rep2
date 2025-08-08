@@ -11,9 +11,9 @@ export const useJobsData = () => {
     // Simulate loading jobs
     const loadJobs = async () => {
       if (mockJobs.length > 0 && filteredJobs.length > 0) return;
-      
+
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 5));
       setJobs(mockJobs);
       setLoading(false);
     };
@@ -31,6 +31,6 @@ export const useJobsData = () => {
     totalJobs,
     openJobs,
     remoteJobs,
-    router
+    router,
   };
 };
