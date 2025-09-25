@@ -5,6 +5,7 @@ import { ClientLayout } from '@/shared/components/layout/ClientLayout';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { BRAND_NAME } from '@/shared/constants';
+import AuthProvider from '../AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +21,9 @@ export default async function RootLayout({ children, params: promissedParams }: 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClientLayout dictionary={dictionary}>{children}</ClientLayout>
+        <AuthProvider>
+          <ClientLayout dictionary={dictionary}>{children}</ClientLayout>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from '@ui/alert';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useState } from 'react';
 import { useAppStore } from '@/shared/lib/store';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 
@@ -39,31 +40,21 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
     setError(null);
-
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Mock authentication - in real app, validate against API
-      if (data.email === 'demo@example.com' && data.password === 'password') {
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false
+      });
+      if ((result === undefined) || (result?.error)) {
+        setError('Authentication failed. Please check your credentials.');
+      } else {
         login({
           id: '1',
           email: data.email,
           name: 'Demo User',
           company: 'Demo Company',
-        });
-        router.push('/');
-      } else {
-        // For demo purposes, allow any valid email/password combination
-        const name = data.email.split('@')[0].replace(/[^a-zA-Z\s]/g, '');
-        const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-
-        login({
-          id: Math.random().toString(36).substr(2, 9),
-          email: data.email,
-          name: capitalizedName || 'User',
-          company: 'Your Company',
-        });
+          });
         router.push('/');
       }
     } catch (err) {
