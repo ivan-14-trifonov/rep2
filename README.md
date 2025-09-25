@@ -187,12 +187,21 @@ The application uses Zustand for state management with the following key stores:
    npm install
    ```
 
-2. **Development Server**:
+2. **Environment Variables**:
+   Create a `.env.local` file in the root of the project and add the following variables:
+   ```
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=your_secret
+   ```
+
+3. **Development Server**:
    ```bash
    npm run dev
    ```
 
-3. **Build for Production**:
+4. **Build for Production**:
    ```bash
    npm run build
    npm start
