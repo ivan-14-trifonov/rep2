@@ -18,7 +18,11 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
     return <SpecialistGridSkeleton />;
   }
 
-  if (candidates.length === 0) {
+  const visibleCandidates = candidates
+    .filter((c) => (typeof c.matchScore === 'number' ? c.matchScore >= 50 : true))
+    .sort((a, b) => (b.matchScore ?? 0) - (a.matchScore ?? 0));
+
+  if (visibleCandidates.length === 0) {
     return (
       <div className="text-center py-12">
         <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -30,7 +34,7 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {candidates.map((candidate) => (
+      {visibleCandidates.map((candidate) => (
         <SpecialistCard key={candidate.id} candidate={candidate} footer={specialistCardFooter ? specialistCardFooter(candidate) : undefined} />
       ))}
     </div>
