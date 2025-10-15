@@ -54,7 +54,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
             <MapPin className="h-4 w-4 mr-1" />
             {candidate.location}
           </div>
-          <div>{`${candidate.experience} ${t('candidateCard.yearsExperience')}`}</div>
+          <div>{`${t('candidateCard.experience')}: ${candidate.experience} ${t('candidateCard.years')}`}</div>
         </div>
 
         {/* Skills */}
