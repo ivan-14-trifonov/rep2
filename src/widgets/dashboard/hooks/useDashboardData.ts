@@ -8,11 +8,6 @@ export const useDashboardData = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!jobDescription) {
-      router.push('/');
-      return;
-    }
-
     // Simulate loading candidates
     const loadCandidates = async () => {
       if (mockCandidates.length > 0 && filteredCandidates.length > 0) return;
@@ -24,7 +19,7 @@ export const useDashboardData = () => {
     };
 
     loadCandidates();
-  }, [jobDescription, router, setCandidates, setLoading, filteredCandidates.length]);
+  }, [setCandidates, setLoading, filteredCandidates.length]);
 
   return {
     jobDescription,
