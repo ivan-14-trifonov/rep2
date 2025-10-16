@@ -39,7 +39,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
             </Avatar>
             <div>
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{candidate.name}</h3>
-              <p className="text-muted-foreground text-sm">{candidate.title}</p>
+              <p className="text-sm text-black">{candidate.title}</p>
             </div>
           </div>
           <div className={`px-2 py-1 rounded-lg text-xs font-medium ${getMatchScoreColor(candidate.matchScore)}`}>
@@ -49,7 +49,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
         </div>
 
         {/* Location & Experience */}
-        <div className="flex items-center space-x-4 mb-4 text-sm text-muted-foreground">
+        <div className="flex items-center space-x-4 mb-4 text-sm">
           <div className="flex items-center">
             <MapPin className="h-4 w-4 mr-1" />
             {candidate.location}
