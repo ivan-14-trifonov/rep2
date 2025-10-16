@@ -12,6 +12,7 @@ export interface Candidate {
   avatar: string;
   skills: string[];
   experience: number;
+  grade: 'Junior' | 'Middle' | 'Senior' | 'Lead';
   matchScore: number;
   matchDescription: string;
   email: string;
