@@ -73,6 +73,7 @@ const dictionary: Dictionary = {
   candidateCard: {
     experience: 'Опыт',
     years: 'лет',
+    candidate: 'Кандидат',
     more: 'еще',
     viewProfile: 'Смотреть профиль',
   },

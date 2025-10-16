@@ -22,6 +22,15 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
     return score >= 80 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
   };
 
+  const displayName = candidate.name && candidate.name.trim() ? candidate.name : t('candidateCard.candidate');
+  const initials = displayName
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <Card className="group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px]">
       <CardContent className="p-6 flex flex-col grow">
@@ -29,16 +38,13 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={candidate.avatar} alt={candidate.name} />
+              <AvatarImage src={candidate.avatar} alt={displayName} />
               <AvatarFallback className="bg-primary text-primary-foreground">
-                {candidate.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')}
+                {initials}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{candidate.name}</h3>
+              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{displayName}</h3>
               <p className="text-sm text-black">{candidate.title}</p>
             </div>
           </div>

@@ -3,7 +3,7 @@ import type { Candidate } from '@/types';
 export const mockCandidates: Candidate[] = [
   {
     id: '1',
-    name: 'Sarah Chen',
+    name: '',
     title: 'Senior Full Stack Developer',
     location: 'San Francisco, CA',
     avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400',
