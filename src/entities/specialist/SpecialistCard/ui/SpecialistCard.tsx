@@ -48,7 +48,6 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
             </div>
           </div>
           <div className={`px-2 py-1 rounded-lg text-xs font-medium ${getMatchScoreColor(candidate.matchScore)}`}>
-            <Star className="h-3 w-3 inline mr-1" />
             {candidate.matchScore}%
           </div>
         </div>
@@ -61,29 +60,16 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
             </Badge>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <MapPin className="h-4 w-4 mr-1" />
-              {candidate.location}
-            </div>
             <div>{`${t('candidateCard.experience')}: ${candidate.experience} ${t('candidateCard.years')}`}</div>
-          </div>
-        </div>
-
-        {/* Skills */}
-        <div className="mb-4">
-          <div className="flex flex-wrap gap-1">
-            {candidate.skills.slice(0, 4).map((skill) => (
-              <Badge key={skill} variant="secondary" className="text-xs">
-                {skill}
-              </Badge>
-            ))}
-            {candidate.skills.length > 4 && (
-              <Badge variant="outline" className="text-xs">
-                +{candidate.skills.length - 4} {t('candidateCard.more')}
-              </Badge>
+            {candidate.location && candidate.location.trim() && (
+              <div className="flex items-center">
+                <MapPin className="h-4 w-4 mr-1" />
+                {candidate.location}
+              </div>
             )}
           </div>
         </div>
+
 
         {/* Match Description */}
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2 grow">{candidate.matchDescription}</p>
