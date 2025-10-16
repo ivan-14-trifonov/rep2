@@ -1,8 +1,8 @@
 'use client';
 import { Card, CardContent } from '@ui/card';
 import { Badge } from '@ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
-import { MapPin, Star } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@ui/avatar';
+import { MapPin, Star, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import type { Candidate } from '@/types';
@@ -22,25 +22,24 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
     return score >= 80 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
   };
 
+  const gradeStyles: Record<Candidate['grade'], { bg: string; border: string }> = {
+    Junior: { bg: 'bg-gray-500', border: 'border-gray-500' },
+    Middle: { bg: 'bg-blue-500', border: 'border-blue-500' },
+    Senior: { bg: 'bg-green-500', border: 'border-green-500' },
+    Lead: { bg: 'bg-purple-500', border: 'border-purple-500' },
+  };
+
   const displayName = candidate.name && candidate.name.trim() ? candidate.name : t('candidateCard.candidate');
-  const initials = displayName
-    .split(' ')
-    .filter(Boolean)
-    .map((n) => n[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px]">
+    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${gradeStyles[candidate.grade].border}`}>
       <CardContent className="p-6 flex flex-col grow">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={candidate.avatar} alt={displayName} />
-              <AvatarFallback className="bg-primary text-primary-foreground">
-                {initials}
+              <AvatarFallback className={`${gradeStyles[candidate.grade].bg} text-white`}>
+                <User className="h-6 w-6" />
               </AvatarFallback>
             </Avatar>
             <div>
@@ -54,13 +53,20 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
           </div>
         </div>
 
-        {/* Location & Experience */}
-        <div className="flex items-center space-x-4 mb-4 text-sm">
-          <div className="flex items-center">
-            <MapPin className="h-4 w-4 mr-1" />
-            {candidate.location}
+        {/* Grade, Location & Experience */}
+        <div className="mb-4 text-sm">
+          <div className="mb-2">
+            <Badge className={`${gradeStyles[candidate.grade].bg} text-white`}>
+              {candidate.grade}
+            </Badge>
           </div>
-          <div>{`${t('candidateCard.experience')}: ${candidate.experience} ${t('candidateCard.years')}`}</div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <MapPin className="h-4 w-4 mr-1" />
+              {candidate.location}
+            </div>
+            <div>{`${t('candidateCard.experience')}: ${candidate.experience} ${t('candidateCard.years')}`}</div>
+          </div>
         </div>
 
         {/* Skills */}
