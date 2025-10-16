@@ -69,7 +69,9 @@ export type Dictionary = {
     copyright: string;
   };
   candidateCard: {
-    yearsExperience: string;
+    experience: string,
+    years: string,
+    candidate: string,
     more: string;
     viewProfile: string;
   };

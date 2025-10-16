@@ -71,7 +71,9 @@ const dictionary: Dictionary = {
     copyright: '© 2025 TalentFind. All rights reserved.',
   },
   candidateCard: {
-    yearsExperience: 'years exp.',
+    experience: 'Exp.',
+    years: 'years',
+    candidate: 'Candidate',
     more: 'more',
     viewProfile: 'View Profile',
   },
