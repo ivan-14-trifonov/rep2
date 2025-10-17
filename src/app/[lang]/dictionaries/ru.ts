@@ -75,7 +75,8 @@ const dictionary: Dictionary = {
     years: 'лет',
     candidate: 'Кандидат',
     more: 'еще',
-    viewProfile: 'Смотреть профиль',
+    viewProfile: 'Смотреть отклик',
+    viewResume: 'Смотреть резюме',
   },
   specialistGrid: {
     noCandidatesFound: 'Кандидаты не найдены',

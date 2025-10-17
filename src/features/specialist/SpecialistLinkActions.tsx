@@ -23,19 +23,12 @@ export function SpecialistLinkActions({ candidate }: SpecialistLinkActionsProps)
   };
 
   return (
-    <div className="flex space-x-2">
-      <Button onClick={handleViewProfile} className="flex-1" size="sm">
-        {t('candidateCard.viewProfile')}
+    <div className="flex flex-col sm:flex-row gap-2 w-full">
+      <Button onClick={handleViewProfile} className="flex-1 min-w-0 h-auto px-3 py-2" size="sm">
+        <span className="text-center leading-tight whitespace-normal">{t('candidateCard.viewProfile')}</span>
       </Button>
-      <Button variant="outline" size="sm" asChild>
-        <a href={`mailto:${candidate.email}`}>
-          <Mail className="h-4 w-4" />
-        </a>
-      </Button>
-      <Button variant="outline" size="sm" asChild>
-        <a href={candidate.linkedin} target="_blank" rel="noopener noreferrer">
-          <ExternalLink className="h-4 w-4" />
-        </a>
+      <Button className="flex-1 min-w-0 h-auto px-3 py-2" size="sm" onClick={() => {}}>
+        <span className="text-center leading-tight whitespace-normal">{t('candidateCard.viewResume')}</span>
       </Button>
     </div>
   );

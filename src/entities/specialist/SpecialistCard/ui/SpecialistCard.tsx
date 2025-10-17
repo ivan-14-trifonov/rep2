@@ -71,8 +71,8 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
         </div>
 
 
-        {/* Match Description */}
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 grow">{candidate.matchDescription}</p>
+        {/* Summary */}
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-4 break-words">{candidate.summary}</p>
 
         {/* Actions */}
         {footer && footer}
