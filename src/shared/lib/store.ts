@@ -73,7 +73,60 @@ export const useAppStore = create<AppState>()(
       filteredCandidates: [],
       selectedCandidate: null,
       setCandidates: (candidates) => {
-        set({ candidates, filteredCandidates: candidates });
+        // normalize incoming candidates to include legacy flat fields expected across the app
+        const normalize = (c: any) => {
+          const specialist = c.specialist ?? {};
+
+          const computeExperienceYears = (items: any[] = []) => {
+            if (!Array.isArray(items) || items.length === 0) return 0;
+            let totalMonths = 0;
+            const now = new Date();
+            for (const it of items) {
+              try {
+                const start = it.start ? new Date(it.start) : null;
+                const end = it.end ? new Date(it.end) : now;
+                if (start) {
+                  const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+                  totalMonths += Math.max(0, months);
+                }
+              } catch (e) {
+                // ignore
+              }
+            }
+            return Math.floor(totalMonths / 12);
+          };
+
+          const skillsFromSpecialist = Array.isArray(specialist.skills)
+            ? specialist.skills
+            : specialist.formattedExperienceSkills
+            ? Object.keys(specialist.formattedExperienceSkills)
+            : [];
+
+          const matched = (typeof c.matched === 'number' ? Math.round(c.matched * 100)
+            : typeof c.matchedBatch === 'number' ? Math.round(c.matchedBatch * 100)
+            : typeof c.matchScore === 'number' ? Math.round(c.matchScore)
+            : typeof c.rate === 'number' ? Math.round(c.rate) : undefined);
+
+          const normalized = {
+            // keep original data
+            ...c,
+            // legacy-flat fields for UI and filters
+            name: c.name ?? specialist.name ?? `${specialist.firstName ?? ''} ${specialist.lastName ?? ''}`.trim(),
+            title: c.title ?? specialist.title ?? specialist.specialization?.name ?? '',
+            skills: c.skills ?? skillsFromSpecialist ?? [],
+            experience: typeof c.experience === 'number' ? c.experience : computeExperienceYears(specialist.experience),
+            matchScore: typeof c.matchScore === 'number' ? c.matchScore : (typeof matched === 'number' ? matched : undefined),
+            location: c.location ?? specialist.city?.name ?? (specialist.country && typeof specialist.country === 'object' ? specialist.country.name : specialist.country) ?? '',
+            summary: c.summary ?? specialist.aboutMe ?? c.comment ?? '',
+            grade: c.grade ?? specialist.grade ?? 'unknown',
+          };
+
+          return normalized;
+        };
+
+        const normalizedCandidates = candidates.map(normalize);
+
+        set({ candidates: normalizedCandidates, filteredCandidates: normalizedCandidates });
         get().applyFilters();
       },
       setSelectedCandidate: (selectedCandidate) => set({ selectedCandidate }),

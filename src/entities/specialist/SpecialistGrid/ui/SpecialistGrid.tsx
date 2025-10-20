@@ -5,6 +5,7 @@ import { SpecialistCard } from '@/entities/specialist/SpecialistCard/ui/Speciali
 import type { ReactNode } from 'react';
 import type { Candidate } from '@/types';
 import { SpecialistGridSkeleton } from './SpecialistGridSkeleton';
+import { useAppStore } from '@/shared/lib/store';
 
 interface SpecialistGridProps {
   candidates: Candidate[];
@@ -18,9 +19,23 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
     return <SpecialistGridSkeleton />;
   }
 
+  const minMatchScore = useAppStore((s) => s.filters.minMatchScore ?? 0);
+
+  const normalizeScore = (c: any) => {
+    if (typeof c.matchScore === 'number') return c.matchScore;
+    if (typeof c.matched === 'number') return Math.round(c.matched * 100);
+    if (typeof c.matchedBatch === 'number') return Math.round(c.matchedBatch * 100);
+    if (typeof c.rate === 'number') return Math.round(c.rate);
+    return undefined;
+  };
+
   const visibleCandidates = candidates
-    .filter((c) => (typeof c.matchScore === 'number' ? c.matchScore >= 50 : true))
-    .sort((a, b) => (b.matchScore ?? 0) - (a.matchScore ?? 0));
+    .filter((c) => {
+      const score = normalizeScore(c);
+      // enforce hard minimum of 50%: exclude candidates without numeric score or with score < 50
+      return typeof score === 'number' ? score >= 50 : false;
+    })
+    .sort((a, b) => (normalizeScore(b) ?? 0) - (normalizeScore(a) ?? 0));
 
   if (visibleCandidates.length === 0) {
     return (

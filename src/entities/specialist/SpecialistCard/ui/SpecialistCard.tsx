@@ -22,49 +22,104 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
     return score >= 80 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
   };
 
-  const gradeStyles: Record<Candidate['grade'], { bg: string; border: string }> = {
+  // gradeStyles kept as a simple string-keyed map because the new mock uses ids for grade
+  const gradeStyles: Record<string, { bg: string; border: string }> = {
     Junior: { bg: 'bg-gray-500', border: 'border-gray-500' },
     Middle: { bg: 'bg-blue-500', border: 'border-blue-500' },
     Senior: { bg: 'bg-green-500', border: 'border-green-500' },
     Lead: { bg: 'bg-purple-500', border: 'border-purple-500' },
+    unknown: { bg: 'bg-gray-400', border: 'border-gray-300' },
   };
 
-  const displayName = candidate.name && candidate.name.trim() ? candidate.name : t('candidateCard.candidate');
+  // New mock stores person under candidate.specialist
+  const specialist = candidate.specialist ?? ({} as any);
+
+  const displayName = specialist.name && String(specialist.name).trim()
+    ? String(specialist.name)
+    : `${specialist.firstName ?? ''} ${specialist.lastName ?? ''}`.trim() || t('candidateCard.candidate');
+
+  const title = specialist.title ?? specialist.specialization?.name ?? '';
+
+  // compute experience (years) from specialist.experience array
+  const computeExperienceYears = (items: any[] = []) => {
+    if (!Array.isArray(items) || items.length === 0) return 0;
+    let totalMonths = 0;
+    const now = new Date();
+    for (const it of items) {
+      try {
+        const start = it.start ? new Date(it.start) : null;
+        const end = it.end ? new Date(it.end) : now;
+        if (start) {
+          const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+          totalMonths += Math.max(0, months);
+        }
+      } catch (e) {
+        // ignore malformed dates
+      }
+    }
+    return Math.floor(totalMonths / 12);
+  };
+
+  const experience = computeExperienceYears(specialist.experience);
+
+  const location = specialist.city?.name ?? (specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '');
+
+  const summary = specialist.aboutMe ?? '';
+
+  // matchScore isn't in the new mock; use candidate.rate as a fallback numeric indicator
+  const matchScore = typeof (candidate as any).matchScore === 'number'
+    ? (candidate as any).matchScore
+    : typeof candidate.rate === 'number'
+      ? Math.round(candidate.rate)
+      : 0;
+
+  // grade in new mock is an id or string; try to normalize to known labels, otherwise use 'unknown'
+  const normalizeGrade = (g: any) => {
+    if (!g) return 'unknown';
+    const s = String(g).toLowerCase();
+    if (s.includes('jun')) return 'Junior';
+    if (s.includes('mid') || s.includes('middle')) return 'Middle';
+    if (s.includes('senior')) return 'Senior';
+    if (s.includes('lead')) return 'Lead';
+    return 'unknown';
+  };
+
+  const gradeKey = normalizeGrade(specialist.grade ?? '');
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${gradeStyles[candidate.grade].border}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${gradeStyles[gradeKey].border}`}>
       <CardContent className="p-6 flex flex-col grow">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
-              <AvatarFallback className={`${gradeStyles[candidate.grade].bg} text-white`}>
+              <AvatarFallback className={`${gradeStyles[gradeKey].bg} text-white`}>
                 <User className="h-6 w-6" />
               </AvatarFallback>
             </Avatar>
             <div>
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{displayName}</h3>
-              <p className="text-sm text-black">{candidate.title}</p>
+              <p className="text-sm text-black">{title}</p>
             </div>
           </div>
-          <div className={`px-2 py-1 rounded-lg text-xs font-medium ${getMatchScoreColor(candidate.matchScore)}`}>
-            {candidate.matchScore}%
+          <div className={`px-2 py-1 rounded-lg text-xs font-medium ${getMatchScoreColor(matchScore)}`}>
+            {matchScore}%
           </div>
         </div>
 
         {/* Grade, Location & Experience */}
         <div className="mb-4 text-sm">
           <div className="mb-2">
-            <Badge className={`${gradeStyles[candidate.grade].bg} text-white`}>
-              {candidate.grade}
+            <Badge className={`${gradeStyles[gradeKey].bg} text-white`}>
+              {gradeKey}
             </Badge>
           </div>
           <div className="flex items-center space-x-4">
-            <div>{`${t('candidateCard.experience')}: ${candidate.experience} ${t('candidateCard.years')}`}</div>
-            {candidate.location && candidate.location.trim() && (
+            <div>{`${t('candidateCard.experience')}: ${experience} ${t('candidateCard.years')}`}</div>
+            {location && String(location).trim() && (
               <div className="flex items-center">
                 <MapPin className="h-4 w-4 mr-1" />
-                {candidate.location}
+                {location}
               </div>
             )}
           </div>
@@ -72,7 +127,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
 
         {/* Summary */}
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-4 break-words">{candidate.summary}</p>
+  <p className="text-sm text-muted-foreground mb-4 line-clamp-4 break-words">{summary}</p>
 
         {/* Actions */}
         {footer && footer}

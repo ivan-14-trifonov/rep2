@@ -10,8 +10,10 @@ export const useDashboardData = () => {
   useEffect(() => {
     // Simulate loading candidates
     const loadCandidates = async () => {
-      if (mockCandidates.length > 0 && filteredCandidates.length > 0) return;
+      // If there are no mock candidates, nothing to do.
+      if (mockCandidates.length === 0) return;
 
+      // Always (re)load mocks on mount to ensure the UI reflects current mock data.
       setLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 5));
       setCandidates(mockCandidates);
