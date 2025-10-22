@@ -22,6 +22,7 @@ export interface EducationItem {
   level?: string;
   major?: string | null;
   year?: number | null;
+  [key: string]: any;
 }
 
 export interface SalaryInfo {
@@ -87,24 +88,26 @@ export interface Specialist {
   salary?: SalaryInfo;
   contacts?: Contacts;
   language?: LanguageItem[];
-  employment?: string;
-  relocation?: string;
-  schedule?: string;
-  hasVehicle?: boolean;
+  employment?: string | null;
+  relocation?: string | null;
+  schedule?: string | null;
+  hasVehicle?: boolean | null;
   driveExperience?: any;
-  businessTripReadiness?: string;
+  businessTripReadiness?: string | null;
   age?: number | null;
   status?: string;
   citizenship?: CitizenshipItem[];
   jobSearchStatus?: string;
   driverLicenseTypes?: any[];
-  travelTime?: string;
+  travelTime?: string | null;
   aboutMe?: string | null;
   gender?: string | null;
   img?: string | null;
   skills?: string[];
   company?: string;
-  grade?: string;
+  // grade can be a simple string or an object (new structure) - allow extra fields from API
+  // grade is an object (new structure) or null
+  grade?: { id?: string; name?: string; [key: string]: any } | null;
   specialization?: Specialization;
   city?: City | null;
   country?: Country | string | null;

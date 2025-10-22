@@ -168,7 +168,12 @@ export const mockCandidates: Candidate[] = [
         "67226ef91b77429382c1e011"
       ],
       "company": "66f5667faf81cbcafe180282",
-      "grade": "6641efd5ac0c70406a0eb262",
+      "grade": {
+        "name": "Middle",
+        "createdAt": "2024-05-13T10:47:49.703Z",
+        "updatedAt": "2024-05-13T10:47:49.703Z",
+        "id": "6641efd5ac0c70406a0eb262"
+      },
       "specialization": {
         "id": "666a926536669a01edc9fe9e",
         "name": "Java разработчик",
@@ -525,7 +530,12 @@ export const mockCandidates: Candidate[] = [
         "67226f001b77429382c1ed63"
       ],
       "company": "66f5667faf81cbcafe180282",
-      "grade": "67233918e815baaca58a8e98",
+      "grade": {
+        "name": "Lead",
+        "createdAt": "2024-10-31T08:00:24.685Z",
+        "updatedAt": "2024-10-31T08:00:24.685Z",
+        "id": "67233918e815baaca58a8e98"
+      },
       "city": {
         "id": "66680e8a8924aeb130be3cd5",
         "name": "Ижевск",
@@ -944,7 +954,12 @@ export const mockCandidates: Candidate[] = [
         "67226f051b77429382c1f664"
       ],
       "company": "66f5667faf81cbcafe180282",
-      "grade": "6641efd5ac0c70406a0eb262",
+      "grade": {
+        "name": "Middle",
+        "createdAt": "2024-05-13T10:47:49.703Z",
+        "updatedAt": "2024-05-13T10:47:49.703Z",
+        "id": "6641efd5ac0c70406a0eb262"
+      },
       "specialization": {
         "id": "671013f7bda14420a6b7ab2f",
         "name": "Инженер сопровождения",
@@ -1378,7 +1393,12 @@ export const mockCandidates: Candidate[] = [
         "68e4bc8dc3199e3d9c6c36a7"
       ],
       "company": "66f5667faf81cbcafe180282",
-      "grade": "6641efd5ac0c70406a0eb262",
+      "grade": {
+        "name": "Middle",
+        "createdAt": "2024-05-13T10:47:49.703Z",
+        "updatedAt": "2024-05-13T10:47:49.703Z",
+        "id": "6641efd5ac0c70406a0eb262"
+      },
       "city": {
         "id": "666ae4ee7230b16c96ac5f09",
         "name": "Иркутск",

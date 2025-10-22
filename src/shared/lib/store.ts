@@ -107,6 +107,13 @@ export const useAppStore = create<AppState>()(
             : typeof c.matchScore === 'number' ? Math.round(c.matchScore)
             : typeof c.rate === 'number' ? Math.round(c.rate) : undefined);
 
+          const extractGrade = (g: any) => {
+            if (!g) return 'unknown';
+            if (typeof g === 'string') return g;
+            if (typeof g === 'object') return g.name ?? g.id ?? 'unknown';
+            return 'unknown';
+          };
+
           const normalized = {
             // keep original data
             ...c,
@@ -118,7 +125,7 @@ export const useAppStore = create<AppState>()(
             matchScore: typeof c.matchScore === 'number' ? c.matchScore : (typeof matched === 'number' ? matched : undefined),
             location: c.location ?? specialist.city?.name ?? (specialist.country && typeof specialist.country === 'object' ? specialist.country.name : specialist.country) ?? '',
             summary: c.summary ?? specialist.aboutMe ?? c.comment ?? '',
-            grade: c.grade ?? specialist.grade ?? 'unknown',
+            grade: extractGrade(c.grade ?? specialist.grade) ?? 'unknown',
           };
 
           return normalized;

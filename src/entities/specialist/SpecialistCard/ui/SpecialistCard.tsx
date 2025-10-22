@@ -73,27 +73,24 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
       ? Math.round(candidate.rate)
       : 0;
 
-  // grade in new mock is an id or string; try to normalize to known labels, otherwise use 'unknown'
   const normalizeGrade = (g: any) => {
-    if (!g) return 'unknown';
-    const s = String(g).toLowerCase();
-    if (s.includes('jun')) return 'Junior';
-    if (s.includes('mid') || s.includes('middle')) return 'Middle';
-    if (s.includes('senior')) return 'Senior';
-    if (s.includes('lead')) return 'Lead';
+    const raw = String((g && g.name) ? g.name : '').toLowerCase();
+    if (!raw) return 'unknown';
+    if (raw.includes('jun')) return 'Junior';
+    if (raw.includes('mid') || raw.includes('middle')) return 'Middle';
+    if (raw.includes('senior')) return 'Senior';
+    if (raw.includes('lead')) return 'Lead';
     return 'unknown';
   };
 
-  const gradeKey = normalizeGrade(specialist.grade ?? '');
-
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${gradeStyles[gradeKey].border}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${gradeStyles[normalizeGrade(specialist.grade)].border}`}>
       <CardContent className="p-6 flex flex-col grow">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
-              <AvatarFallback className={`${gradeStyles[gradeKey].bg} text-white`}>
+              <AvatarFallback className={`${gradeStyles[normalizeGrade(specialist.grade)].bg} text-white`}>
                 <User className="h-6 w-6" />
               </AvatarFallback>
             </Avatar>
@@ -109,11 +106,13 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
         {/* Grade, Location & Experience */}
         <div className="mb-4 text-sm">
-          <div className="mb-2">
-            <Badge className={`${gradeStyles[gradeKey].bg} text-white`}>
-              {gradeKey}
-            </Badge>
-          </div>
+          {specialist.grade?.name ? (
+            <div className="mb-2">
+              <Badge className={`${gradeStyles[normalizeGrade(specialist.grade)].bg} text-white`}>
+                {specialist.grade.name}
+              </Badge>
+            </div>
+          ) : null}
           <div className="flex items-center space-x-4">
             <div>{`${t('candidateCard.experience')}: ${experience} ${t('candidateCard.years')}`}</div>
             {location && String(location).trim() && (
