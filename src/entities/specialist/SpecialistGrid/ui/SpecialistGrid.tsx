@@ -22,11 +22,8 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
   const minMatchScore = useAppStore((s) => s.filters.minMatchScore ?? 0);
 
   const normalizeScore = (c: any) => {
-    if (typeof c.matchScore === 'number') return c.matchScore;
-    if (typeof c.matched === 'number') return Math.round(c.matched * 100);
-    if (typeof c.matchedBatch === 'number') return Math.round(c.matchedBatch * 100);
-    if (typeof c.rate === 'number') return Math.round(c.rate);
-    return undefined;
+    // Use only candidate.matched as the single source of truth (0..1) -> percent
+    return typeof c.matched === 'number' ? Math.round(c.matched * 100) : undefined;
   };
 
   const visibleCandidates = candidates

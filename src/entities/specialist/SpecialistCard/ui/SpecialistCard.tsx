@@ -109,12 +109,8 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   const summary = candidate.comment ?? '';
 
-  // matchScore isn't in the new mock; use candidate.rate as a fallback numeric indicator
-  const matchScore = typeof (candidate as any).matchScore === 'number'
-    ? (candidate as any).matchScore
-    : typeof candidate.rate === 'number'
-      ? Math.round(candidate.rate)
-      : 0;
+  // matchScore derived from candidate.matched (0..1) -> percent rounded, fallback 0
+  const matchScore = typeof (candidate as any).matched === 'number' ? Math.round((candidate as any).matched * 100) : 0;
 
   const normalizeGrade = (g: any) => {
     const raw = String((g && g.name) ? g.name : '').toLowerCase();
