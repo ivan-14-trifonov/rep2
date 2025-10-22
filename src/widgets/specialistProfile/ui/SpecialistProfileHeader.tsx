@@ -24,7 +24,7 @@ export function SpecialistProfileHeader({ candidate }: SpecialistProfileHeaderPr
             <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
               {candidate.name
                 .split(' ')
-                .map((n) => n[0])
+                .map((n: string) => n[0])
                 .join('')}
             </AvatarFallback>
           </Avatar>

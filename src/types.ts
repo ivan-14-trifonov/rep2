@@ -135,7 +135,7 @@ export interface JobDetail {
   id: string;
   name?: string;
   requirements?: Requirement[] | null;
-  tasks?: string | null;
+  tasks?: string | any[] | null;
   description?: string | null;
   descriptionTeam?: string | null;
   industry?: string | null;

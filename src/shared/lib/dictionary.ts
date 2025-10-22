@@ -74,6 +74,7 @@ export type Dictionary = {
     candidate: string,
     more: string;
     viewProfile: string;
+    viewResume?: string;
   };
   specialistGrid: {
     noCandidatesFound: string;

@@ -13,9 +13,11 @@ export const metadata: Metadata = {
   description: 'Find the perfect candidates for your team with AI-powered matching technology.',
 };
 
-export default async function RootLayout({ children, params: promissedParams }: { children: ReactNode; params: Promise<{ lang: 'en' | 'ru' }> }) {
-  const params = await promissedParams;
-  const dictionary = await getDictionary(params.lang);
+export default async function RootLayout({ children, params }: { children: ReactNode; params: any }) {
+  // params in Next's generated types can be a Promise or an object depending on context
+  const resolvedParams = typeof params?.then === 'function' ? await params : params;
+  const lang = resolvedParams?.lang ?? 'en';
+  const dictionary = await getDictionary(lang as 'en' | 'ru');
 
   return (
     <html lang="en">
