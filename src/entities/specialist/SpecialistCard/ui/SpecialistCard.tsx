@@ -87,13 +87,17 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
     const locale = getLocale();
     const y = d.years;
     const m = d.months;
+    const prefix = t('candidateCard.experience');
+
     if (locale && locale.startsWith('ru')) {
-      return `Опыт: ${y} ${plural(y, 'год', 'года', 'лет')} ${m} ${plural(m, 'месяц', 'месяца', 'месяцев')}`;
+      const yWord = plural(y, t('candidateCard.year_one') || 'год', t('candidateCard.year_few') || 'года', t('candidateCard.year_many') || 'лет');
+      const mWord = plural(m, t('candidateCard.month_one') || 'месяц', t('candidateCard.month_few') || 'месяца', t('candidateCard.month_many') || 'месяцев');
+      return `${prefix}: ${y} ${yWord} ${m} ${mWord}`;
     }
-    // english fallback
-    const yearWord = y === 1 ? 'year' : 'years';
-    const monthWord = m === 1 ? 'month' : 'months';
-    return `Experience: ${y} ${yearWord} ${m} ${monthWord}`;
+
+    const yearWord = y === 1 ? (t('candidateCard.year_one') || 'year') : (t('candidateCard.years') || 'years');
+    const monthWord = m === 1 ? (t('candidateCard.month_one') || 'month') : (t('candidateCard.month_few') || 'months');
+    return `${prefix}: ${y} ${yearWord} ${m} ${monthWord}`;
   };
 
   const location = specialist.city?.name ?? (specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '');

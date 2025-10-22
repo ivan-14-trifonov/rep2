@@ -73,6 +73,12 @@ const dictionary: Dictionary = {
   candidateCard: {
     experience: 'Опыт',
     years: 'лет',
+    year_one: 'год',
+    year_few: 'года',
+    year_many: 'лет',
+    month_one: 'месяц',
+    month_few: 'месяца',
+    month_many: 'месяцев',
     candidate: 'Кандидат',
     more: 'еще',
     viewProfile: 'Смотреть отклик',
