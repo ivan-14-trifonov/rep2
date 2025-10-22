@@ -3,6 +3,7 @@ import { Card, CardContent } from '@ui/card';
 import { Badge } from '@ui/badge';
 import { Avatar, AvatarFallback } from '@ui/avatar';
 import { MapPin, Star, User } from 'lucide-react';
+import plural from 'plural-ru';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import type { Candidate } from '@/types';
@@ -48,9 +49,9 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   const title = specialist.title ?? specialist.specialization?.name ?? '';
 
-  // compute experience (years) from specialist.experience array
-  const computeExperienceYears = (items: any[] = []) => {
-    if (!Array.isArray(items) || items.length === 0) return 0;
+  // compute experience (years and months) from specialist.experience array
+  const computeExperience = (items: any[] = []) => {
+    if (!Array.isArray(items) || items.length === 0) return { years: 0, months: 0 };
     let totalMonths = 0;
     const now = new Date();
     for (const it of items) {
@@ -65,10 +66,12 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
         // ignore malformed dates
       }
     }
-    return Math.floor(totalMonths / 12);
+    const years = Math.floor(totalMonths / 12);
+    const months = totalMonths % 12;
+    return { years, months };
   };
 
-  const experience = computeExperienceYears(specialist.experience);
+  const experience = computeExperience(specialist.experience);
 
   const location = specialist.city?.name ?? (specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '');
 
@@ -135,12 +138,12 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
               </Badge>
             </div>
           ) : null}
-          <div className="flex items-center space-x-4">
-            <div>{`${t('candidateCard.experience')}: ${experience} ${t('candidateCard.years')}`}</div>
+          <div className="space-y-1">
+            <div>{`Опыт: ${experience.years} ${plural(experience.years, 'год', 'года', 'лет')} ${experience.months} ${plural(experience.months, 'месяц', 'месяца', 'месяцев')}`}</div>
             {location && String(location).trim() && (
-              <div className="flex items-center">
+              <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-1" />
-                {location}
+                <span>{location}</span>
               </div>
             )}
           </div>
