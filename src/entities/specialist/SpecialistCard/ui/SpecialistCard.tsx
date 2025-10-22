@@ -34,9 +34,17 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   // New mock stores person under candidate.specialist
   const specialist = candidate.specialist ?? ({} as any);
 
-  const displayName = specialist.name && String(specialist.name).trim()
-    ? String(specialist.name)
-    : `${specialist.firstName ?? ''} ${specialist.lastName ?? ''}`.trim() || t('candidateCard.candidate');
+  const first = String(specialist.firstName ?? '').trim();
+  const middle = String(specialist.middleName ?? '').trim();
+  const last = String(specialist.lastName ?? '').trim();
+
+  const hasFirst = !!first;
+  const hasLast = !!last;
+
+  const nameFallback = t('candidateCard.candidate');
+
+  const firstLine = hasFirst ? (middle ? `${first} ${middle[0]}.` : first) : (hasLast ? last : '');
+  const secondLine = hasFirst && hasLast ? last : '';
 
   const title = specialist.title ?? specialist.specialization?.name ?? '';
 
@@ -95,7 +103,21 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
               </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{displayName}</h3>
+              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+                {firstLine || secondLine ? (
+                  secondLine ? (
+                    <span className="leading-tight">
+                      <span>{firstLine}</span>
+                      <br />
+                      <span>{secondLine}</span>
+                    </span>
+                  ) : (
+                    <span>{firstLine}</span>
+                  )
+                ) : (
+                  <span>{nameFallback}</span>
+                )}
+              </h3>
               <p className="text-sm text-black">{title}</p>
             </div>
           </div>
