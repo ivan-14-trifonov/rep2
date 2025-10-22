@@ -20,7 +20,7 @@ export default async function RootLayout({ children, params }: { children: React
   const dictionary = await getDictionary(lang as 'en' | 'ru');
 
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body className={inter.className}>
         <ClientLayout dictionary={dictionary}>{children}</ClientLayout>
       </body>

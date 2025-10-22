@@ -73,6 +73,29 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   const experience = computeExperience(specialist.experience);
 
+  // detect locale: prefer translation hook if it provides locale, otherwise page lang or navigator
+  const getLocale = () => {
+    // try to get from translation hook if it exposes locale
+    // @ts-ignore
+    const maybeLocale = (t as any)?.locale ?? typeof document !== 'undefined' ? document.documentElement.lang : undefined;
+    if (maybeLocale) return String(maybeLocale);
+    if (typeof navigator !== 'undefined') return navigator.language;
+    return 'en';
+  };
+
+  const formatDuration = (d: { years: number; months: number }) => {
+    const locale = getLocale();
+    const y = d.years;
+    const m = d.months;
+    if (locale && locale.startsWith('ru')) {
+      return `Опыт: ${y} ${plural(y, 'год', 'года', 'лет')} ${m} ${plural(m, 'месяц', 'месяца', 'месяцев')}`;
+    }
+    // english fallback
+    const yearWord = y === 1 ? 'year' : 'years';
+    const monthWord = m === 1 ? 'month' : 'months';
+    return `Experience: ${y} ${yearWord} ${m} ${monthWord}`;
+  };
+
   const location = specialist.city?.name ?? (specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '');
 
   const summary = specialist.aboutMe ?? '';
@@ -139,7 +162,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
             </div>
           ) : null}
           <div className="space-y-1">
-            <div>{`Опыт: ${experience.years} ${plural(experience.years, 'год', 'года', 'лет')} ${experience.months} ${plural(experience.months, 'месяц', 'месяца', 'месяцев')}`}</div>
+            <div>{formatDuration(experience)}</div>
             {location && String(location).trim() && (
               <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-1" />
