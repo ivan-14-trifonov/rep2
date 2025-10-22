@@ -5,7 +5,6 @@ import { SpecialistCard } from '@/entities/specialist/SpecialistCard/ui/Speciali
 import type { ReactNode } from 'react';
 import type { Candidate } from '@/types';
 import { SpecialistGridSkeleton } from './SpecialistGridSkeleton';
-import { useAppStore } from '@/shared/lib/store';
 
 interface SpecialistGridProps {
   candidates: Candidate[];
@@ -18,8 +17,6 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
   if (isLoading) {
     return <SpecialistGridSkeleton />;
   }
-
-  const minMatchScore = useAppStore((s) => s.filters.minMatchScore ?? 0);
 
   const normalizeScore = (c: any) => {
     // Use only candidate.matched as the single source of truth (0..1) -> percent
