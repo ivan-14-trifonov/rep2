@@ -47,7 +47,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   const firstLine = hasFirst ? (middle ? `${first} ${middle[0]}.` : first) : (hasLast ? last : '');
   const secondLine = hasFirst && hasLast ? last : '';
 
-  const title = specialist.title ?? specialist.specialization?.name ?? '';
+  const title = specialist.specialization?.name ?? specialist.title ?? '';
 
   // compute experience (years and months) from specialist.experience array
   const computeExperience = (items: any[] = []) => {
