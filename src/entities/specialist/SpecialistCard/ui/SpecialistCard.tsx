@@ -100,9 +100,14 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
     return `${prefix}: ${y} ${yearWord} ${m} ${monthWord}`;
   };
 
-  const location = specialist.city?.name ?? (specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '');
+  const location = (() => {
+    const city = specialist.city?.name ?? '';
+    const country = specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '';
+    if (city && country) return `${city}, ${country}`;
+    return city || country || '';
+  })();
 
-  const summary = specialist.aboutMe ?? '';
+  const summary = candidate.comment ?? '';
 
   // matchScore isn't in the new mock; use candidate.rate as a fallback numeric indicator
   const matchScore = typeof (candidate as any).matchScore === 'number'
