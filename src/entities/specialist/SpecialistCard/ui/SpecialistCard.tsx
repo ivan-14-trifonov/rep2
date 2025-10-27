@@ -102,16 +102,6 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   // matchScore derived from candidate.matched (0..1) -> percent rounded, fallback 0
   const matchScore = typeof (candidate as any).matched === 'number' ? Math.round((candidate as any).matched * 100) : 0;
 
-  const normalizeGrade = (g: any) => {
-    const raw = String((g && g.name) ? g.name : '').toLowerCase();
-    if (!raw) return 'unknown';
-    if (raw.includes('jun')) return 'Junior';
-    if (raw.includes('mid') || raw.includes('middle')) return 'Middle';
-    if (raw.includes('senior')) return 'Senior';
-    if (raw.includes('lead')) return 'Lead';
-    return 'unknown';
-  };
-
   return (
     <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${getGradeStyles(specialist.grade?.name).border}`}>
       <CardContent className="p-6 flex flex-col grow">
