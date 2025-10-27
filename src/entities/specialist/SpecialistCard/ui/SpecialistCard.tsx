@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import type { Candidate } from '@/types';
 import type { ReactNode } from 'react';
+import { getMatchScoreColor } from '@/entities/offers/lib/getMatchScoreColor';
+import { getGradeStyles } from '@/entities/specialist/lib/get-grade-styles';
 
 interface SpecialistCardProps {
   candidate: Candidate;
@@ -19,18 +21,6 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   const { t } = useTranslation();
 
-  const getMatchScoreColor = (score: number) => {
-    return score >= 80 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
-  };
-
-  // gradeStyles kept as a simple string-keyed map because the new mock uses ids for grade
-  const gradeStyles: Record<string, { bg: string; border: string }> = {
-    Junior: { bg: 'bg-gray-500', border: 'border-gray-500' },
-    Middle: { bg: 'bg-blue-500', border: 'border-blue-500' },
-    Senior: { bg: 'bg-green-500', border: 'border-green-500' },
-    Lead: { bg: 'bg-purple-500', border: 'border-purple-500' },
-    unknown: { bg: 'bg-gray-400', border: 'border-gray-300' },
-  };
 
   // New mock stores person under candidate.specialist
   const specialist = candidate.specialist ?? ({} as any);
@@ -123,13 +113,13 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   };
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${gradeStyles[normalizeGrade(specialist.grade)].border}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${getGradeStyles(specialist.grade?.name).border}`}>
       <CardContent className="p-6 flex flex-col grow">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
-              <AvatarFallback className={`${gradeStyles[normalizeGrade(specialist.grade)].bg} text-white`}>
+              <AvatarFallback className={`${getGradeStyles(specialist.grade?.name).bg} text-white`}>
                 <User className="h-6 w-6" />
               </AvatarFallback>
             </Avatar>
@@ -161,7 +151,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
         <div className="mb-4 text-sm">
           {specialist.grade?.name ? (
             <div className="mb-2">
-              <Badge className={`${gradeStyles[normalizeGrade(specialist.grade)].bg} text-white`}>
+              <Badge className={`${getGradeStyles(specialist.grade.name).bg} text-white`}>
                 {specialist.grade.name}
               </Badge>
             </div>
