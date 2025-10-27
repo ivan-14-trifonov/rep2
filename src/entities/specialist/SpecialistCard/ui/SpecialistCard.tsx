@@ -13,6 +13,7 @@ import { getGradeStyles } from '@/entities/specialist/lib/get-grade-styles';
 import { computeExperience } from '@/entities/candidate/lib/computeExperience';
 import { getOfferMatchScore } from '@/entities/offer/lib/getMatchScore';
 import { useLanguage } from '@/shared/hooks/use-language';
+import { formatSpecialistDuration } from '@/entities/specialist/lib/format-specialist-duration';
 
 interface SpecialistCardProps {
   candidate: Candidate;
@@ -45,21 +46,6 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   // compute experience (years and months) from specialist.experience array
   const experience = computeExperience(specialist.experience);
-
-  const formatDuration = (d: { years: number; months: number }) => {
-    const locale = lang;
-    const y = d.years;
-    const m = d.months;
-    const prefix = t('candidateCard.experience');
-    if (locale && locale.startsWith('ru')) {
-      const yWord = plural(y, t('candidateCard.year_one') || 'год', t('candidateCard.year_few') || 'года', t('candidateCard.year_many') || 'лет');
-      const mWord = plural(m, t('candidateCard.month_one') || 'месяц', t('candidateCard.month_few') || 'месяца', t('candidateCard.month_many') || 'месяцев');
-      return `${prefix}: ${y} ${yWord} ${m} ${mWord}`;
-    }
-    const yearWord = y === 1 ? (t('candidateCard.year_one') || 'year') : (t('candidateCard.years') || 'years');
-    const monthWord = m === 1 ? (t('candidateCard.month_one') || 'month') : (t('candidateCard.month_few') || 'months');
-    return `${prefix}: ${y} ${yearWord} ${m} ${monthWord}`;
-  };
 
   const location = (() => {
     const city = specialist.city?.name ?? '';
@@ -118,7 +104,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
             </div>
           ) : null}
           <div className="space-y-1">
-            <div>{formatDuration(experience)}</div>
+            <div>{formatSpecialistDuration(experience, { lang, t })}</div>
             {location && String(location).trim() && (
               <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-1" />
