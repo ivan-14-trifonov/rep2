@@ -10,6 +10,8 @@ import type { Candidate } from '@/types';
 import type { ReactNode } from 'react';
 import { getMatchScoreColor } from '@/entities/offers/lib/getMatchScoreColor';
 import { getGradeStyles } from '@/entities/specialist/lib/get-grade-styles';
+import { computeExperience } from '@/entities/candidate/lib/computeExperience';
+import { getOfferMatchScore } from '@/entities/offer/lib/getMatchScore';
 
 interface SpecialistCardProps {
   candidate: Candidate;
@@ -40,27 +42,6 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   const title = specialist.specialization?.name ?? specialist.title ?? '';
 
   // compute experience (years and months) from specialist.experience array
-  const computeExperience = (items: any[] = []) => {
-    if (!Array.isArray(items) || items.length === 0) return { years: 0, months: 0 };
-    let totalMonths = 0;
-    const now = new Date();
-    for (const it of items) {
-      try {
-        const start = it.start ? new Date(it.start) : null;
-        const end = it.end ? new Date(it.end) : now;
-        if (start) {
-          const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
-          totalMonths += Math.max(0, months);
-        }
-      } catch (e) {
-        // ignore malformed dates
-      }
-    }
-    const years = Math.floor(totalMonths / 12);
-    const months = totalMonths % 12;
-    return { years, months };
-  };
-
   const experience = computeExperience(specialist.experience);
 
   // detect locale: prefer translation hook if it provides locale, otherwise page lang or navigator
@@ -100,7 +81,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   const summary = candidate.comment ?? '';
 
   // matchScore derived from candidate.matched (0..1) -> percent rounded, fallback 0
-  const matchScore = typeof (candidate as any).matched === 'number' ? Math.round((candidate as any).matched * 100) : 0;
+  const matchScore = getOfferMatchScore(candidate);
 
   return (
     <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${getGradeStyles(specialist.grade?.name).border}`}>
