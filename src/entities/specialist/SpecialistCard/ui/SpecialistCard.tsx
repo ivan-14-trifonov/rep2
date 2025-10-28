@@ -72,18 +72,14 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
             </Avatar>
             <div>
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
-                {firstLine || secondLine ? (
-                  secondLine ? (
-                    <span className="leading-tight">
-                      <span>{firstLine}</span>
-                      <br />
-                      <span>{secondLine}</span>
-                    </span>
-                  ) : (
+                {secondLine ? (
+                  <span className="leading-tight">
                     <span>{firstLine}</span>
-                  )
+                    <br />
+                    <span>{secondLine}</span>
+                  </span>
                 ) : (
-                  <span>{nameFallback}</span>
+                  <span>{firstLine || nameFallback}</span>
                 )}
               </h3>
               <p className="text-sm text-black">{title}</p>
