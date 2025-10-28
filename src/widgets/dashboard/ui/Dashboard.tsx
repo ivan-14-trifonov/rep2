@@ -1,7 +1,7 @@
 'use client';
 
 import { PageLayout } from '@/shared/components/layout/PageLayout';
-import { SpecialistGrid } from '@/entities/specialist/SpecialistGrid';
+import { SpecialistGrid } from '@/widgets/specialistGrid';
 import { SpecialistLinkActions } from '@/features/specialist/SpecialistLinkActions';
 import { DashboardHeader } from './DashboardHeader';
 import { JobSummaryCard } from './JobSummaryCard';
