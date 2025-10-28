@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import type { Candidate } from '@/types';
 import type { ReactNode } from 'react';
-import { getMatchScoreColor } from '@/entities/offers/lib/getMatchScoreColor';
+import { getMatchScoreColor } from '@/entities/offer/lib/getMatchScoreColor';
 import { getGradeStyles } from '@/entities/specialist/lib/getGradeStyles';
 import { computeExperience } from '@/entities/candidate/lib/computeExperience';
 import { getOfferMatchScore } from '@/entities/offer/lib/getOfferMatchScore';
