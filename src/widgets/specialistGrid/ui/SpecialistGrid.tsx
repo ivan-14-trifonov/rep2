@@ -18,20 +18,7 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
     return <SpecialistGridSkeleton />;
   }
 
-  const normalizeScore = (c: any) => {
-    // Use only candidate.matched as the single source of truth (0..1) -> percent
-    return typeof c.matched === 'number' ? Math.round(c.matched * 100) : undefined;
-  };
-
-  const visibleCandidates = candidates
-    .filter((c) => {
-      const score = normalizeScore(c);
-      // enforce hard minimum of 50%: exclude candidates without numeric score or with score < 50
-      return typeof score === 'number' ? score >= 50 : false;
-    })
-    .sort((a, b) => (normalizeScore(b) ?? 0) - (normalizeScore(a) ?? 0));
-
-  if (visibleCandidates.length === 0) {
+  if (candidates.length === 0) {
     return (
       <div className="text-center py-12">
         <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -43,7 +30,7 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {visibleCandidates.map((candidate) => (
+      {candidates.map((candidate) => (
         <SpecialistCard key={candidate.id} candidate={candidate} footer={specialistCardFooter ? specialistCardFooter(candidate) : undefined} />
       ))}
     </div>
