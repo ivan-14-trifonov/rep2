@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Candidate, JobDescription, User, SearchFilters, Job, JobFilters } from '@/types';
+import { computeExperience } from '@/entities/candidate/lib/computeExperience';
 
 interface AppState {
   // Authentication
@@ -189,24 +190,45 @@ export const useAppStore = create<AppState>()(
           );
         }
 
-        // Location filter
+        // Location filter - construct from candidate.specialist.city and candidate.specialist.country
         if (filters.location) {
-          filtered = filtered.filter((candidate) => candidate.location.toLowerCase().includes(filters.location.toLowerCase()));
+          filtered = filtered.filter((candidate) => {
+            const specialist = candidate.specialist || {};
+            const city = specialist.city?.name || '';
+            const country = specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) || '';
+            const location = `${city} ${country}`.toLowerCase();
+            return location.includes(filters.location.toLowerCase());
+          });
         }
 
-        // Experience filter
-        filtered = filtered.filter((candidate) => candidate.experience >= filters.minExperience && candidate.experience <= filters.maxExperience);
+        // Experience filter - compute from candidate.specialist.experience array
+        filtered = filtered.filter((candidate) => {
+          const specialist = candidate.specialist || {};
+          // compute experience (years and months) from specialist.experience array using same logic as in SpecialistCard
+          const experience = computeExperience(specialist.experience || []);
+          const totalYears = experience.years + experience.months / 12;
+          return totalYears >= filters.minExperience && totalYears <= filters.maxExperience;
+        });
 
-        // Skills filter
+        // Skills filter - use candidate.specialist.skills
         if (filters.skills.length > 0) {
-          filtered = filtered.filter((candidate) =>
-            // @ts-ignore
-            filters.skills.some((skill) => candidate.skills.some((candidateSkill) => candidateSkill.toLowerCase().includes(skill.toLowerCase()))),
-          );
+          filtered = filtered.filter((candidate) => {
+            const specialist = candidate.specialist || {};
+            const candidateSkills = specialist.skills || [];
+            return filters.skills.some((skill) => 
+              candidateSkills.some((candidateSkill) => 
+                candidateSkill.toLowerCase().includes(skill.toLowerCase())
+              )
+            );
+          });
         }
 
-        // Match score filter
-        filtered = filtered.filter((candidate) => candidate.matchScore >= filters.minMatchScore);
+        // Match score filter - compute matchScore from candidate.matched (0..1) -> percent rounded, fallback 0
+        filtered = filtered.filter((candidate) => {
+          const matched = candidate?.matched;
+          const matchScore = typeof matched === 'number' ? Math.round(matched * 100) : 0;
+          return matchScore >= filters.minMatchScore;
+        });
 
         set({ filteredCandidates: filtered });
       },
