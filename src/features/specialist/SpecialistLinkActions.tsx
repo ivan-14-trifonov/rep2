@@ -2,10 +2,11 @@
 
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Button } from '@/shared/ui/button';
-import { ExternalLink, Mail } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCandidateStore } from '@/entities/candidate/hooks/useCandidateStore';
 import type { Candidate } from '@/types';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip';
 
 interface SpecialistLinkActionsProps {
   candidate: Candidate;
@@ -27,9 +28,20 @@ export function SpecialistLinkActions({ candidate }: SpecialistLinkActionsProps)
       <Button onClick={handleViewProfile} className="flex-1 min-w-0 h-auto px-3 py-2" size="sm">
         <span className="text-center leading-tight whitespace-normal">{t('candidateCard.viewProfile')}</span>
       </Button>
-      <Button className="flex-1 min-w-0 h-auto px-3 py-2" size="sm" onClick={() => {}}>
-        <span className="text-center leading-tight whitespace-normal">{t('candidateCard.viewResume')}</span>
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="sm" asChild>
+              <a href={candidate.linkedin} target="_blank" rel="noopener noreferrer">
+                <Briefcase className="h-4 w-4" />
+              </a>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {t('candidateCard.viewResume')}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 }
