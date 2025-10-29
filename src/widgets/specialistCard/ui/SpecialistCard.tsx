@@ -63,13 +63,13 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
       <CardContent className="p-6 flex flex-col grow">
         {/* Header */}
         <div className="flex items-start justify-between mb-4 min-h-[3.5rem]">
-          <div className="flex items-center space-x-3">
-            <Avatar className="h-12 w-12">
+          <div className="flex items-start space-x-3">
+            <Avatar className="h-12 w-12 mt-1">
               <AvatarFallback className={`${getGradeStyles(specialist.grade?.name).bg} text-white`}>
                 <User className="h-6 w-6" />
               </AvatarFallback>
             </Avatar>
-            <div>
+            <div className="flex flex-col justify-center min-h-[3rem]">
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
                 {secondLine ? (
                   <span className="leading-tight">
