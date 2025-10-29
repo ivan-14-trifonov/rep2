@@ -126,7 +126,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
         {/* Summary */}
         <div className="h-[4rem] mb-10 flex items-start">
-          <p className="text-sm text-muted-foreground break-words h-full overflow-hidden leading-[1rem] max-h-[4rem]">
+          <p className="text-sm text-muted-foreground line-clamp-4 break-words h-full overflow-hidden leading-[1rem] max-h-[4rem]">
             {summary || '\u00A0'}
           </p>
         </div>
