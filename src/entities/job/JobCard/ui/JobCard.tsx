@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslation } from '@/shared/hooks/use-translation';
-import { useAppStore } from '@/shared/lib/store';
+
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';

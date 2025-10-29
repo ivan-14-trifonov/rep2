@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslation } from '@/shared/hooks/use-translation';
-import { useAppStore } from '@/shared/lib/store';
+import { useJobStore } from '@/entities/job/hooks/useJobStore';
 import { Button } from '@ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { Separator } from '@ui/separator';
@@ -11,7 +11,7 @@ import { FilterSection } from './FilterSection';
 import { SkillInput } from './SkillInput';
 
 export function JobFilters() {
-  const { jobSearchQuery, jobFilters, setJobSearchQuery, setJobFilters, filteredJobs } = useAppStore();
+  const { jobSearchQuery, jobFilters, setJobSearchQuery, setJobFilters, filteredJobs } = useJobStore();
   const { t } = useTranslation();
 
   const addSkill = (skill: string) => {

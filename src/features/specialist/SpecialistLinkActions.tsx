@@ -4,7 +4,7 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { Button } from '@/shared/ui/button';
 import { ExternalLink, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useAppStore } from '@/shared/lib/store';
+import { useCandidateStore } from '@/entities/candidate/hooks/useCandidateStore';
 import type { Candidate } from '@/types';
 
 interface SpecialistLinkActionsProps {
@@ -13,7 +13,7 @@ interface SpecialistLinkActionsProps {
 
 export function SpecialistLinkActions({ candidate }: SpecialistLinkActionsProps) {
   const router = useRouter();
-  const { setSelectedCandidate } = useAppStore();
+  const { setSelectedCandidate } = useCandidateStore();
   const { t } = useTranslation();
 
   const handleViewProfile = () => {

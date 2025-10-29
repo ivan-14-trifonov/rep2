@@ -10,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/c
 import { Alert, AlertDescription } from '@ui/alert';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useState } from 'react';
-import { useAppStore } from '@/shared/lib/store';
+import { useAuthStore } from '@/shared/hooks/useAuthStore';
+import { useUIStore } from '@/shared/hooks/useUIStore';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 
@@ -23,7 +24,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading, setLoading, error, setError } = useAppStore();
+  const { login } = useAuthStore();
+  const { isLoading, setLoading, error, setError } = useUIStore();
   const router = useRouter();
   const { t } = useTranslation();
 

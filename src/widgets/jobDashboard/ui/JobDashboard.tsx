@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Briefcase, TrendingUp, MapPin } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/use-translation';
-import { useAppStore } from '@/shared/lib/store';
+import { useJobStore } from '@/entities/job/hooks/useJobStore';
+import { useUIStore } from '@/shared/hooks/useUIStore';
 import { mockJobs } from '@/shared/lib/mock-jobs';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
 import { Button } from '@ui/button';
@@ -15,7 +16,8 @@ import { JobLinkActions } from '@/features/job';
 import { JobFilters } from '@/widgets/jobFilters';
 
 export default function JobsPage() {
-  const { isAuthenticated, filteredJobs, setJobs, isLoading, setLoading } = useAppStore();
+  const { filteredJobs, setJobs } = useJobStore();
+  const { isLoading, setLoading } = useUIStore();
   const router = useRouter();
   const { t } = useTranslation();
 

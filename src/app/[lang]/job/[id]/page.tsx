@@ -2,7 +2,8 @@
 
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useAppStore } from '@/shared/lib/store';
+import { useAuthStore } from '@/shared/hooks/useAuthStore';
+import { useJobStore } from '@/entities/job/hooks/useJobStore';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
 import { mockJobs } from '@/shared/lib/mock-jobs';
@@ -11,7 +12,8 @@ import { BackButton } from '@/shared/components/BackButton';
 
 export default function JobPage() {
   const params = useParams<{ id: string }>();
-  const { isAuthenticated, selectedJob, setSelectedJob } = useAppStore();
+  const { isAuthenticated } = useAuthStore();
+  const { selectedJob, setSelectedJob } = useJobStore();
   const router = useRouter();
 
   useEffect(() => {

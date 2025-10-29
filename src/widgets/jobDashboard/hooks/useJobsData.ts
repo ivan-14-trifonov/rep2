@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppStore } from '@/shared/lib/store';
+import { useJobStore } from '@/entities/job/hooks/useJobStore';
+import { useUIStore } from '@/shared/hooks/useUIStore';
 import { mockJobs } from '@/shared/lib/mock-jobs';
 
 export const useJobsData = () => {
-  const { isAuthenticated, filteredJobs, setJobs, isLoading, setLoading } = useAppStore();
+  const { filteredJobs, setJobs } = useJobStore();
+  const { isLoading, setLoading } = useUIStore();
   const router = useRouter();
 
   useEffect(() => {
