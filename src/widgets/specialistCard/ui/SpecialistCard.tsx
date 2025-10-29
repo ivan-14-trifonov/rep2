@@ -62,7 +62,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
     <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${getGradeStyles(specialist.grade?.name).border}`}>
       <CardContent className="p-6 flex flex-col grow">
         {/* Header */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between mb-4 min-h-[3.5rem]">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12">
               <AvatarFallback className={`${getGradeStyles(specialist.grade?.name).bg} text-white`}>
@@ -90,14 +90,20 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
         {/* Title and Grade */}
         {(title || specialist.grade?.name) && (
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-start justify-between mb-4 min-h-[3rem]">
             {title && (
-              <p className="text-sm text-black">{title}</p>
+              <p className="text-sm text-black flex-grow mr-2 min-h-[2.25rem] max-h-[2.25rem] leading-[1.125rem] overflow-hidden flex items-start">
+                {title}
+              </p>
             )}
             {specialist.grade?.name && (
-              <Badge className={`${getGradeStyles(specialist.grade.name).bg} text-white`}>
-                {specialist.grade.name}
-              </Badge>
+              <div className="flex-shrink-0 self-start">
+                <Badge 
+                  className={`${getGradeStyles(specialist.grade.name).bg} text-white`}
+                >
+                  {specialist.grade.name}
+                </Badge>
+              </div>
             )}
           </div>
         )}
