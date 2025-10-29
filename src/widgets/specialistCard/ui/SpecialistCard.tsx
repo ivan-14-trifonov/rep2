@@ -3,7 +3,6 @@ import { Card, CardContent } from '@ui/card';
 import { Badge } from '@ui/badge';
 import { Avatar, AvatarFallback } from '@ui/avatar';
 import { MapPin, Star, User } from 'lucide-react';
-import plural from 'plural-ru';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import type { Candidate } from '@/types';
