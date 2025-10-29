@@ -110,20 +110,26 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
         {/* Location & Experience */}
         <div className="mb-4 text-sm">
-          <div className="space-y-1">
-            <div>{formatSpecialistDuration(experience, { lang, t })}</div>
-            {location && String(location).trim() && (
+          <div className="space-y-1 min-h-[3.5rem] flex flex-col justify-start">
+            <div>{formatSpecialistDuration(experience, { lang, t }) || <div className="h-4">&nbsp;</div>}</div>
+            {location && String(location).trim() ? (
               <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-1" />
                 <span>{location}</span>
               </div>
+            ) : (
+              <div className="h-4">&nbsp;</div>
             )}
           </div>
         </div>
 
 
         {/* Summary */}
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-4 break-words">{summary}</p>
+        <div className="h-[4rem] mb-10 flex items-start">
+          <p className="text-sm text-muted-foreground break-words h-full overflow-hidden leading-[1rem] max-h-[4rem]">
+            {summary || '\u00A0'}
+          </p>
+        </div>
 
         {/* Actions */}
         {footer && footer}
