@@ -81,7 +81,6 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
                   <span>{firstLine || nameFallback}</span>
                 )}
               </h3>
-              <p className="text-sm text-black">{title}</p>
             </div>
           </div>
           <div className={`px-2 py-1 rounded-lg text-xs font-medium ${getMatchScoreColor(matchScore)}`}>
@@ -89,15 +88,22 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
           </div>
         </div>
 
-        {/* Grade, Location & Experience */}
-        <div className="mb-4 text-sm">
-          {specialist.grade?.name ? (
-            <div className="mb-2">
+        {/* Title and Grade */}
+        {(title || specialist.grade?.name) && (
+          <div className="flex items-center gap-3 mb-4">
+            {title && (
+              <p className="text-sm text-black">{title}</p>
+            )}
+            {specialist.grade?.name && (
               <Badge className={`${getGradeStyles(specialist.grade.name).bg} text-white`}>
                 {specialist.grade.name}
               </Badge>
-            </div>
-          ) : null}
+            )}
+          </div>
+        )}
+
+        {/* Location & Experience */}
+        <div className="mb-4 text-sm">
           <div className="space-y-1">
             <div>{formatSpecialistDuration(experience, { lang, t })}</div>
             {location && String(location).trim() && (
@@ -111,7 +117,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
 
         {/* Summary */}
-  <p className="text-sm text-muted-foreground mb-4 line-clamp-4 break-words">{summary}</p>
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-4 break-words">{summary}</p>
 
         {/* Actions */}
         {footer && footer}
