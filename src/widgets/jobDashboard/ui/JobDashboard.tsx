@@ -38,7 +38,7 @@ export default function JobsPage() {
     if (mockJobs.length === 0 || filteredJobs.length === 0) {
       loadJobs();
     }
-  }, [isAuthenticated, router, setJobs, setLoading, filteredJobs.length]);
+  }, [router, setJobs, setLoading, filteredJobs.length]);
 
   // if (!isAuthenticated) {
   //   return null;
