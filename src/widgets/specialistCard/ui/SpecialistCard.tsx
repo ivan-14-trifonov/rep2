@@ -60,7 +60,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   return (
     <Card
-      className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${getGradeStyles(specialist.grade?.name).border}`}
+      className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col border ${getGradeStyles(specialist.grade?.name).border}`}
     >
       <CardContent className="p-6 flex flex-col grow justify-between">
         {/* Header */}
@@ -113,8 +113,8 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
           </div>
 
           {/* Summary */}
-          <div className="h-[4rem] mb-10 flex items-start">
-            <p className="text-sm text-muted-foreground line-clamp-4 break-words h-full overflow-hidden leading-[1rem] max-h-[4rem]">{summary || '\u00A0'}</p>
+          <div className="mb-8 flex items-start">
+            <p className="text-sm text-muted-foreground line-clamp-4 break-words overflow-hidden leading-4 min-h-[4rem]">{summary || '\u00A0'}</p>
           </div>
         </div>
 
