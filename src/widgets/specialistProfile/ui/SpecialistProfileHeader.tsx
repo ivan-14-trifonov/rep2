@@ -5,7 +5,7 @@ import { Button } from '@ui/button';
 import { Mail, Phone, ExternalLink, Star, MapPin, Award } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Card, CardContent } from '@ui/card';
-import { getMatchScoreColor } from '../lib/getMatchScore';
+import { getMatchScoreColor } from '@/entities/offer/lib/getMatchScoreColor';
 import type { Candidate } from '@/types';
 
 interface SpecialistProfileHeaderProps {

@@ -38,7 +38,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   const nameFallback = t('candidateCard.candidate');
 
-  const firstLine = hasFirst ? (middle ? `${first} ${middle[0]}.` : first) : (hasLast ? last : '');
+  const firstLine = hasFirst ? (middle ? `${first} ${middle[0]}.` : first) : hasLast ? last : '';
   const secondLine = hasFirst && hasLast ? last : '';
 
   const title = specialist.specialization?.name ?? specialist.title ?? '';
@@ -48,7 +48,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   const location = (() => {
     const city = specialist.city?.name ?? '';
-    const country = specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '';
+    const country = specialist.country && typeof specialist.country === 'object' ? specialist.country.name : ((specialist.country as any) ?? '');
     if (city && country) return `${city}, ${country}`;
     return city || country || '';
   })();
@@ -59,17 +59,19 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   const matchScore = getOfferMatchScore(candidate);
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${getGradeStyles(specialist.grade?.name).border}`}>
-      <CardContent className="p-6 flex flex-col grow">
+    <Card
+      className={`group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-[400px] border ${getGradeStyles(specialist.grade?.name).border}`}
+    >
+      <CardContent className="p-6 flex flex-col grow justify-between">
         {/* Header */}
-        <div className="flex items-start justify-between mb-4 min-h-[3.5rem]">
+        <div className="flex items-start justify-between mb-4">
           <div className="flex items-start space-x-3">
             <Avatar className="h-12 w-12 mt-1">
               <AvatarFallback className={`${getGradeStyles(specialist.grade?.name).bg} text-white`}>
                 <User className="h-6 w-6" />
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col justify-center min-h-[3rem]">
+            <div className="flex flex-col justify-start min-h-[3rem]">
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
                 {secondLine ? (
                   <span className="leading-tight">
@@ -83,56 +85,41 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
               </h3>
             </div>
           </div>
-          <div className={`px-2 py-1 rounded-lg text-xs font-medium ${getMatchScoreColor(matchScore)}`}>
-            {matchScore}%
-          </div>
+          <div className={`px-2 py-1 rounded-lg text-xs font-medium ${getMatchScoreColor(matchScore)}`}>{matchScore}%</div>
         </div>
 
-        {/* Title and Grade */}
-        {(title || specialist.grade?.name) && (
-          <div className="flex items-start justify-between mb-4 min-h-[3rem]">
-            {title && (
-              <p className="text-sm text-black flex-grow mr-2 min-h-[2.25rem] max-h-[2.25rem] leading-[1.125rem] overflow-hidden flex items-start">
-                {title}
-              </p>
-            )}
-            {specialist.grade?.name && (
-              <div className="flex-shrink-0 self-start">
-                <Badge 
-                  className={`${getGradeStyles(specialist.grade.name).bg} text-white`}
-                >
-                  {specialist.grade.name}
-                </Badge>
-              </div>
-            )}
+        <div>
+          {/* Title and Grade */}
+          {(title || specialist.grade?.name) && (
+            <div className="flex items-center justify-between mb-4">
+              {title && <p className="text-sm text-black flex-grow mr-2 leading-5 line-clamp-2">{title}</p>}
+              {specialist.grade?.name && <Badge className={`${getGradeStyles(specialist.grade.name).bg} text-white`}>{specialist.grade.name}</Badge>}
+            </div>
+          )}
+
+          {/* Location & Experience */}
+          <div className="mb-4 text-sm">
+            <div className="space-y-1 min-h-[3.5rem] flex flex-col justify-start">
+              <div>{formatSpecialistDuration(experience, { lang, t }) || <div className="h-4">&nbsp;</div>}</div>
+              {location && String(location).trim() ? (
+                <div className="flex items-center text-sm">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  <span>{location}</span>
+                </div>
+              ) : (
+                <div className="h-4">&nbsp;</div>
+              )}
+            </div>
           </div>
-        )}
 
-        {/* Location & Experience */}
-        <div className="mb-4 text-sm">
-          <div className="space-y-1 min-h-[3.5rem] flex flex-col justify-start">
-            <div>{formatSpecialistDuration(experience, { lang, t }) || <div className="h-4">&nbsp;</div>}</div>
-            {location && String(location).trim() ? (
-              <div className="flex items-center text-sm">
-                <MapPin className="h-4 w-4 mr-1" />
-                <span>{location}</span>
-              </div>
-            ) : (
-              <div className="h-4">&nbsp;</div>
-            )}
+          {/* Summary */}
+          <div className="h-[4rem] mb-10 flex items-start">
+            <p className="text-sm text-muted-foreground line-clamp-4 break-words h-full overflow-hidden leading-[1rem] max-h-[4rem]">{summary || '\u00A0'}</p>
           </div>
-        </div>
-
-
-        {/* Summary */}
-        <div className="h-[4rem] mb-10 flex items-start">
-          <p className="text-sm text-muted-foreground line-clamp-4 break-words h-full overflow-hidden leading-[1rem] max-h-[4rem]">
-            {summary || '\u00A0'}
-          </p>
         </div>
 
         {/* Actions */}
-        {footer && footer}
+        <div>{footer && footer}</div>
       </CardContent>
     </Card>
   );
