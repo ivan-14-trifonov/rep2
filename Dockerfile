@@ -1,4 +1,4 @@
-ARG NODE_REPO=docker.io/oven/bun:1.2.19-alpine
+ARG NODE_REPO=docker.io/oven/bun:latest
 ARG NODE_LOCK=bun.lock
 ARG NPM=bun
 ARG NODE=bun
