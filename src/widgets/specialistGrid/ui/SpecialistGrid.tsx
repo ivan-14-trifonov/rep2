@@ -1,7 +1,7 @@
 'use client';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Search } from 'lucide-react';
-import { SpecialistCard } from '@/entities/specialist/SpecialistCard/ui/SpecialistCard';
+import { SpecialistCard } from '@/widgets/specialistCard/ui/SpecialistCard';
 import type { ReactNode } from 'react';
 import type { Candidate } from '@/types';
 import { SpecialistGridSkeleton } from './SpecialistGridSkeleton';

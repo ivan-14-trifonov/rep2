@@ -17,7 +17,7 @@ export function WorkExperienceCard({ candidate }: { candidate: Candidate }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {candidate.previousRoles.map((role, index) => (
+  {candidate.previousRoles.map((role: any, index: number) => (
           <div key={index}>
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
               <h4 className="font-semibold text-lg">{role.position}</h4>

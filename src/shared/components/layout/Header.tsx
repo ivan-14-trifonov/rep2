@@ -2,7 +2,7 @@
 
 import { BRAND_NAME } from '@/shared/constants';
 import { useTranslation } from '@/shared/hooks/use-translation';
-import { useAppStore } from '@/shared/lib/store';
+import { useAuthStore } from '@/shared/hooks/useAuthStore';
 import { Avatar, AvatarFallback } from '@ui/avatar';
 import { Button } from '@ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@ui/dropdown-menu';
@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { BrandLogo } from '../BrandLogo';
 
 export function Header() {
-  const { user, isAuthenticated, logout } = useAppStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
   const router = useRouter();
   const { t } = useTranslation();
 

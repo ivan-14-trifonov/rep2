@@ -7,5 +7,6 @@ const dictionaries = {
 };
 
 export const getDictionary = async (locale: 'en' | 'ru'): Promise<Dictionary> => {
-  return dictionaries[locale]();
+  const loader = (dictionaries as Record<string, () => Promise<Dictionary>>)[locale] ?? dictionaries.en;
+  return loader();
 };

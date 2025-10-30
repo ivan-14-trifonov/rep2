@@ -4,7 +4,7 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { Button } from '@/shared/ui/button';
 import { ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useAppStore } from '@/shared/lib/store';
+import { useJobStore } from '@/entities/job/hooks/useJobStore';
 import type { Job } from '@/types';
 
 interface JobLinkActionsProps {
@@ -12,7 +12,7 @@ interface JobLinkActionsProps {
 }
 
 export function JobLinkActions({ job }: JobLinkActionsProps) {
-  const { setSelectedJob } = useAppStore();
+  const { setSelectedJob } = useJobStore();
   const { t } = useTranslation();
   const router = useRouter();
 

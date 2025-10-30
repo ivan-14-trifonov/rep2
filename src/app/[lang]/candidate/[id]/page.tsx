@@ -3,7 +3,8 @@
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
-import { useAppStore } from '@/shared/lib/store';
+import { useAuthStore } from '@/shared/hooks/useAuthStore';
+import { useCandidateStore } from '@/entities/candidate/hooks/useCandidateStore';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { mockCandidates } from '@/shared/lib/mock-data';
 import { SpecialistProfile } from '@/widgets/specialistProfile';
@@ -11,7 +12,8 @@ import { BackButton } from '@/shared/components/BackButton';
 
 export default function CandidatePage() {
   const params = useParams<{ id: string }>();
-  const { isAuthenticated, selectedCandidate, setSelectedCandidate } = useAppStore();
+  const { isAuthenticated } = useAuthStore();
+  const { selectedCandidate, setSelectedCandidate } = useCandidateStore();
   const router = useRouter();
   const { t } = useTranslation();
 

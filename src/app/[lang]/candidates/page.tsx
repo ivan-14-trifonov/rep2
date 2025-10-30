@@ -1,14 +1,10 @@
 'use client';
 
-import { useAppStore } from '@/shared/lib/store';
+import { useAuthStore } from '@/shared/hooks/useAuthStore';
 import { Dashboard } from '@/widgets/dashboard/ui';
 
 export default function DashboardPage() {
-  const { jobDescription } = useAppStore();
-
-  if (!jobDescription) {
-    return null;
-  }
+  const { jobDescription } = useAuthStore();
 
   return <Dashboard />;
 }
