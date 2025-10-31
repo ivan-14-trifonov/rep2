@@ -11,9 +11,10 @@ import { PageLayout } from '@/shared/components/layout/PageLayout';
 import { Button } from '@ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { Badge } from '@ui/badge';
-import { JobGrid } from '@/entities/job/JobGrid';
 import { JobLinkActions } from '@/features/job';
 import { JobFilters } from '@/widgets/jobFilters';
+import type { Job } from '@imarketplace/types/entities';
+import { JobGrid } from '@/widgets/JobGrid';
 
 export default function JobsPage() {
   const { filteredJobs, setJobs } = useJobStore();
@@ -133,7 +134,7 @@ export default function JobsPage() {
                 <div className="text-sm text-muted-foreground">{t('jobs.sortedByRelevance')}</div>
               </div>
             </div>
-            <JobGrid jobs={filteredJobs} isLoading={isLoading} jobCardFooter={(job) => <JobLinkActions job={job} />} />
+            <JobGrid jobs={filteredJobs} isLoading={isLoading} jobCardFooter={(job: Job) => <JobLinkActions job={job} />} />
           </div>
         </div>
       </div>

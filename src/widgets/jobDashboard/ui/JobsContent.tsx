@@ -1,9 +1,9 @@
 'use client';
 
-import { useTranslation } from '@/shared/hooks/use-translation';
-import { JobGrid } from '@/entities/job/JobGrid';
 import { JobLinkActions } from '@/features/job';
+import { useTranslation } from '@/shared/hooks/use-translation';
 import { JobFilters } from '@/widgets/jobFilters';
+import { JobGrid } from '@/widgets/JobGrid';
 
 interface JobsContentProps {
   jobs: any[];

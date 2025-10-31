@@ -434,13 +434,7 @@ export interface Location {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "offerStatus".
  */
-export interface OfferStatus {
-  id: string;
-  name: string;
-  code: string;
-  updatedAt: string;
-  createdAt: string;
-}
+
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "offer".

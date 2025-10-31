@@ -1,11 +1,11 @@
 'use client';
 
-import { JobCard } from '@/entities/job/JobCard';
+import { JobCard } from './JobCard';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Briefcase } from 'lucide-react';
 import { JobGridSkeleton } from './JobGridSkeleton';
-import type { Job } from '@/types';
 import type { ReactNode } from 'react';
+import type { Job } from '@imarketplace/types/entities';
 
 interface JobGridProps {
   jobs: Job[];

@@ -1,13 +1,10 @@
 'use client';
 
 import { useTranslation } from '@/shared/hooks/use-translation';
-
 import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Building, Calendar, Clock, DollarSign, ExternalLink, MapPin, Users } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import type { Job } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
 import type { ReactNode } from 'react';
 
 interface JobCardProps {
