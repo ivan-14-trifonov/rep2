@@ -15,30 +15,30 @@ interface JobCardProps {
 export function JobCard({ job, footer }: JobCardProps) {
   const { t } = useTranslation();
 
-  const getJobTypeTranslation = (type: string) => {
+  const getJobTypeTranslation = (type: string | null | undefined) => {
     switch (type) {
-      case 'Full-time':
+      case 'full':
         return t('jobCard.fullTime');
-      case 'Part-time':
+      case 'short':
         return t('jobCard.partTime');
-      case 'Contract':
+      case 'contract':
         return t('jobCard.contract');
-      case 'Remote':
+      case 'remote':
         return t('jobCard.remote');
       default:
         return type;
     }
   };
 
-  const getJobTypeColor = (type: string) => {
+  const getJobTypeColor = (type: string | null | undefined) => {
     switch (type) {
-      case 'Full-time':
+      case 'full':
         return 'bg-green-50 text-green-700 border-green-200';
-      case 'Part-time':
+      case 'short':
         return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'Contract':
+      case 'contract':
         return 'bg-orange-50 text-orange-700 border-orange-200';
-      case 'Remote':
+      case 'remote':
         return 'bg-purple-50 text-purple-700 border-purple-200';
       default:
         return 'bg-gray-50 text-gray-700 border-gray-200';
@@ -46,11 +46,9 @@ export function JobCard({ job, footer }: JobCardProps) {
   };
 
   const formatSalary = (job: Job) => {
-    const { min, max, currency } = job.salary;
-    if (job.type === 'Contract') {
-      return `${min}-${max}${t('jobCard.perHour')}`;
-    }
-    return `${(min / 1000).toFixed(0)}k-${(max / 1000).toFixed(0)}k`;
+    const { amount, currency } = job;
+    if (!amount || !currency) return '-';
+    return `${(amount / 1000).toFixed(0)}k ${currency}`;
   };
 
   const formatDate = (dateString: string) => {
@@ -76,22 +74,22 @@ export function JobCard({ job, footer }: JobCardProps) {
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors mb-1">{job.title}</h3>
+              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors mb-1">{job.name}</h3>
               <div className="flex items-center text-muted-foreground text-sm mb-2 whitespace-nowrap">
                 <Building className="h-4 w-4 mr-1" />
-                {job.company}
+                {typeof job.company === 'object' && job.company !== null ? job.company.name : job.company}
               </div>
             </div>
-            <div className={`px-2 py-1 rounded-lg text-xs font-medium border ${getJobTypeColor(job.type)}`}>{getJobTypeTranslation(job.type)}</div>
+            <div className={`px-2 py-1 rounded-lg text-xs font-medium border ${getJobTypeColor(job.employmentType)}`}>{getJobTypeTranslation(job.employmentType)}</div>
           </div>
 
           {/* Location & Remote */}
           <div className="flex items-center space-x-4 mb-4 text-sm text-muted-foreground">
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-1" />
-              {job.location}
+              {typeof job.city === 'object' && job.city !== null ? job.city.name : job.city}
             </div>
-            {job.remote && (
+            {job.workFormat === 'remote' && (
               <Badge variant="outline" className="text-xs">
                 {t('jobCard.remote')}
               </Badge>
@@ -104,23 +102,21 @@ export function JobCard({ job, footer }: JobCardProps) {
               <DollarSign className="h-4 w-4 mr-1" />
               {formatSalary(job)}
             </div>
-            <div className="flex items-center text-muted-foreground">
-              <Clock className="h-4 w-4 mr-1" />
-              {job.experience.min}-{job.experience.max} {t('jobCard.years')} {t('jobCard.experience')}
-            </div>
+
           </div>
 
           {/* Skills */}
           <div className="mb-4">
             <div className="flex flex-wrap gap-1">
-              {job.skills.slice(0, 4).map((skill) => (
-                <Badge key={skill} variant="secondary" className="text-xs">
-                  {skill}
-                </Badge>
-              ))}
-              {job.skills.length > 4 && (
+              {Array.isArray(job.requiredSkills) &&
+                job.requiredSkills.slice(0, 4).map((skill: any) => (
+                  <Badge key={skill} variant="secondary" className="text-xs">
+                    {skill}
+                  </Badge>
+                ))}
+              {Array.isArray(job.requiredSkills) && job.requiredSkills.length > 4 && (
                 <Badge variant="outline" className="text-xs">
-                  +{job.skills.length - 4} {t('candidateCard.more')}
+                  +{job.requiredSkills.length - 4} {t('candidateCard.more')}
                 </Badge>
               )}
             </div>
@@ -136,11 +132,11 @@ export function JobCard({ job, footer }: JobCardProps) {
             <div className="flex items-center space-x-4 text-xs text-muted-foreground">
               <div className="flex items-center">
                 <Users className="h-3 w-3 mr-1" />
-                {job.applicants} {t('jobCard.applicants')}
+                {job.numberOfSpecialists} {t('jobCard.applicants')}
               </div>
               <div className="flex items-center">
                 <Calendar className="h-3 w-3 mr-1" />
-                {formatDate(job.postedDate)}
+                {formatDate(job.createdAt)}
               </div>
             </div>
           </div>

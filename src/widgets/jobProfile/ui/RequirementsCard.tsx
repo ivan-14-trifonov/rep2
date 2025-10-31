@@ -2,8 +2,18 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { CheckCircle } from 'lucide-react';
 
-export function RequirementsCard({ requirements }: { requirements: string[] }) {
+interface JobRequirement {
+  requirement: string;
+  mandatory?: boolean | null;
+  id?: string | null;
+}
+
+export function RequirementsCard({ requirements }: { requirements: JobRequirement[] | null | undefined }) {
   const { t } = useTranslation();
+
+  if (!requirements) {
+    return null;
+  }
 
   return (
     <Card>
@@ -13,9 +23,9 @@ export function RequirementsCard({ requirements }: { requirements: string[] }) {
       <CardContent>
         <ul className="space-y-3">
           {requirements.map((requirement, index) => (
-            <li key={index} className="flex items-start space-x-3">
+            <li key={requirement.id || index} className="flex items-start space-x-3">
               <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 shrink-0" />
-              <span className="text-muted-foreground">{requirement}</span>
+              <span className="text-muted-foreground">{requirement.requirement}</span>
             </li>
           ))}
         </ul>

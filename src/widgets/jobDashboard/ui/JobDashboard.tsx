@@ -46,8 +46,8 @@ export default function JobsPage() {
   // }
 
   const totalJobs = mockJobs.length;
-  const openJobs = mockJobs.filter((job) => job.status === 'Open').length;
-  const remoteJobs = mockJobs.filter((job) => job.remote).length;
+  const openJobs = mockJobs.filter((job) => job.status === 'selection').length;
+  const remoteJobs = mockJobs.filter((job) => job.workFormat === 'remote').length;
 
   return (
     <PageLayout>
@@ -134,7 +134,7 @@ export default function JobsPage() {
                 <div className="text-sm text-muted-foreground">{t('jobs.sortedByRelevance')}</div>
               </div>
             </div>
-            <JobGrid jobs={filteredJobs} isLoading={isLoading} jobCardFooter={(job: Job) => <JobLinkActions job={job} />} />
+            <JobGrid jobs={filteredJobs} isLoading={isLoading} jobCardFooter={(job) => <JobLinkActions job={job} />} />
           </div>
         </div>
       </div>

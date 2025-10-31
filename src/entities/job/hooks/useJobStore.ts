@@ -1,5 +1,16 @@
 import { create } from 'zustand';
-import type { Job, JobFilters } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
+
+interface JobFilters {
+  location: string;
+  jobType: string;
+  minSalary: number;
+  maxSalary: number;
+  skills: string[];
+  remote: boolean;
+  minExperience: number;
+  maxExperience: number;
+}
 
 interface JobState {
   jobs: Job[];
@@ -51,40 +62,52 @@ export const useJobStore = create<JobState>((set, get) => ({
     if (jobSearchQuery) {
       filtered = filtered.filter(
         (job) =>
-          job.title.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
-          job.company.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
-          // @ts-ignore
-          job.skills.some((skill) => skill.toLowerCase().includes(jobSearchQuery.toLowerCase())),
+          (job.name && job.name.toLowerCase().includes(jobSearchQuery.toLowerCase())) ||
+          (typeof job.company === 'object' &&
+            job.company !== null &&
+            job.company.name &&
+            job.company.name.toLowerCase().includes(jobSearchQuery.toLowerCase())) ||
+          (Array.isArray(job.requiredSkills) &&
+            job.requiredSkills.some((skill: any) => skill.toLowerCase().includes(jobSearchQuery.toLowerCase())))
       );
     }
 
     // Location filter
     if (jobFilters.location) {
-      filtered = filtered.filter((job) => job.location.toLowerCase().includes(jobFilters.location.toLowerCase()));
+      filtered = filtered.filter(
+        (job) =>
+          typeof job.city === 'object' &&
+          job.city !== null &&
+          job.city.name &&
+          job.city.name.toLowerCase().includes(jobFilters.location.toLowerCase())
+      );
     }
 
     // Job type filter
     if (jobFilters.jobType) {
-      filtered = filtered.filter((job) => job.type === jobFilters.jobType);
+      filtered = filtered.filter((job) => job.employmentType === jobFilters.jobType);
     }
 
     // Salary filter
-    filtered = filtered.filter((job) => job.salary.max >= jobFilters.minSalary && job.salary.min <= jobFilters.maxSalary);
-
-    // Experience filter
-    filtered = filtered.filter((job) => job.experience.max >= jobFilters.minExperience && job.experience.min <= jobFilters.maxExperience);
+    filtered = filtered.filter(
+      (job) =>
+        job.amount && job.amount >= jobFilters.minSalary && job.amount <= jobFilters.maxSalary
+    );
 
     // Skills filter
     if (jobFilters.skills.length > 0) {
-      filtered = filtered.filter((job) =>
-        // @ts-ignore
-        jobFilters.skills.some((skill) => job.skills.some((jobSkill) => jobSkill.toLowerCase().includes(skill.toLowerCase()))),
+      filtered = filtered.filter(
+        (job) =>
+          Array.isArray(job.requiredSkills) &&
+          jobFilters.skills.some((skill) =>
+            (job.requiredSkills as any[]).some((jobSkill) => jobSkill.toLowerCase().includes(skill.toLowerCase()))
+          )
       );
     }
 
     // Remote filter
     if (jobFilters.remote) {
-      filtered = filtered.filter((job) => job.remote);
+      filtered = filtered.filter((job) => job.workFormat === 'remote');
     }
 
     set({ filteredJobs: filtered });

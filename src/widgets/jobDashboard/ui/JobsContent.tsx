@@ -5,8 +5,10 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { JobFilters } from '@/widgets/jobFilters';
 import { JobGrid } from '@/widgets/JobGrid';
 
+import type { Job } from '@imarketplace/types/entities';
+
 interface JobsContentProps {
-  jobs: any[];
+  jobs: Job[];
   isLoading: boolean;
   jobCount: number;
 }

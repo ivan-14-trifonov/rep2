@@ -204,39 +204,3 @@ export interface SearchFilters {
   minMatchScore: number;
 }
 
-export interface Job {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  type: 'Full-time' | 'Part-time' | 'Contract' | 'Remote';
-  salary: {
-    min: number;
-    max: number;
-    currency: string;
-  };
-  description: string;
-  requirements: string[];
-  skills: string[];
-  experience: {
-    min: number;
-    max: number;
-  };
-  postedDate: string;
-  applicationDeadline: string;
-  applicants: number;
-  status: 'Open' | 'Closed' | 'Draft';
-  benefits: string[];
-  remote: boolean;
-}
-
-export interface JobFilters {
-  location: string;
-  jobType: string;
-  minSalary: number;
-  maxSalary: number;
-  skills: string[];
-  remote: boolean;
-  minExperience: number;
-  maxExperience: number;
-}
