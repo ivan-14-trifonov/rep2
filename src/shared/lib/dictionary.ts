@@ -1,4 +1,7 @@
 export type Dictionary = {
+  common: {
+    loading: string;
+  };
   header: {
     signIn: string;
     getStarted: string;
@@ -85,6 +88,7 @@ export type Dictionary = {
   specialistGrid: {
     noCandidatesFound: string;
     tryAdjustingSearch: string;
+    loadingCandidates: string;
   };
   specialistProfile: {
     match: string;

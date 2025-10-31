@@ -13,9 +13,10 @@ import { computeExperience } from '@/entities/candidate/lib/computeExperience';
 import { getOfferMatchScore } from '@/entities/offer/lib/getOfferMatchScore';
 import { useLanguage } from '@/shared/hooks/use-language';
 import { formatSpecialistDuration } from '@/entities/specialist/lib/formatSpecialistDuration';
+import type { Specialist } from '@imarketplace/types/entities';
 
 interface SpecialistCardProps {
-  candidate: Candidate;
+  candidate: Specialist;
   footer?: ReactNode;
 }
 
@@ -48,7 +49,7 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
 
   const location = (() => {
     const city = specialist.city?.name ?? '';
-    const country = specialist.country && typeof specialist.country === 'object' ? specialist.country.name : ((specialist.country as any) ?? '');
+    const country = specialist.country && typeof specialist.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '';
     if (city && country) return `${city}, ${country}`;
     return city || country || '';
   })();

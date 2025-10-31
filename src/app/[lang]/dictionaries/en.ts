@@ -1,6 +1,9 @@
 import type { Dictionary } from '@/shared/lib/dictionary';
 
 const dictionary: Dictionary = {
+  common: {
+    loading: 'Loading...',
+  },
   header: {
     signIn: 'Sign In',
     getStarted: 'Get Started',
@@ -87,6 +90,7 @@ const dictionary: Dictionary = {
   specialistGrid: {
     noCandidatesFound: 'No candidates found',
     tryAdjustingSearch: 'Try adjusting your search criteria or filters to find more candidates.',
+    loadingCandidates: 'Please wait while we load the candidates',
   },
   specialistProfile: {
     match: 'Match',

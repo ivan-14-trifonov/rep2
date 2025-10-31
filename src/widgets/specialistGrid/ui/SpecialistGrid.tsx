@@ -2,12 +2,13 @@
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Search } from 'lucide-react';
 import { SpecialistCard } from '@/widgets/specialistCard/ui/SpecialistCard';
+import { SpecialistGridSkeleton } from './SpecialistGridSkeleton';
 import type { ReactNode } from 'react';
 import type { Candidate } from '@/types';
-import { SpecialistGridSkeleton } from './SpecialistGridSkeleton';
+import type { Specialist } from '@imarketplace/types/entities';
 
 interface SpecialistGridProps {
-  candidates: Candidate[];
+  candidates: Specialist[];
   isLoading?: boolean;
   specialistCardFooter?: (candidate: Candidate) => ReactNode;
 }
