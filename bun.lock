@@ -6,7 +6,6 @@
       "dependencies": {
         "@formatjs/intl-localematcher": "^0.6.2",
         "@hookform/resolvers": "^5.2.2",
-        "@imarketplace/types": "link:@imarketplace/types",
         "@radix-ui/react-accordion": "^1.2.12",
         "@radix-ui/react-alert-dialog": "^1.1.15",
         "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -60,6 +59,7 @@
         "zustand": "^5.0.8",
       },
       "devDependencies": {
+        "@imarketplace/types": "file:@imarkeplace/types",
         "@next/swc-wasm-nodejs": "^16.0.1",
         "@tailwindcss/postcss": "^4.1.16",
         "@types/negotiator": "^0.6.4",
@@ -156,7 +156,7 @@
 
     "@humanwhocodes/retry": ["@humanwhocodes/retry@0.4.3", "", {}, "sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ=="],
 
-    "@imarketplace/types": ["@imarketplace/types@link:@imarketplace/types", {}],
+    "@imarketplace/types": ["@imarketplace/types@file:@imarkeplace/types", { "devDependencies": { "typescript": "^5.0.0" } }],
 
     "@img/colour": ["@img/colour@1.0.0", "", {}, "sha512-A5P/LfWGFSl6nsckYtjw9da+19jB8hkJ6ACTGcDfEJ0aE+l2n2El7dsVM7UVHZQ9s2lmYMWlrS21YLy2IR1LUw=="],
 

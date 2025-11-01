@@ -1,0 +1,32 @@
+{
+  "name": "@imarketplace/types",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./entities": {
+      "import": "./dist/entities/index.js",
+      "types": "./dist/entities/index.d.ts"
+    },
+    "./contracts/*": {
+      "import": "./dist/contracts/*.js",
+      "types": "./dist/contracts/*.d.ts"
+    },
+    "./services/*": {
+      "import": "./dist/services/*.js",
+      "types": "./dist/services/*.d.ts"
+    }
+  }
+}
