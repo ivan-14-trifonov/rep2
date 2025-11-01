@@ -79,6 +79,6 @@
     "typescript-eslint": "^8.39.0",
     "postcss": "8.5.6",
     "tailwindcss": "^4.1.16",
-    "@imarketplace/types": "file:@imarkeplace/types"
+    "@imarketplace/types": "file:@imarketplace/types"
   }
 }
