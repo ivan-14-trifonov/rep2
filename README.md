@@ -194,6 +194,7 @@ The application uses Zustand for state management with the following key stores:
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your_secret
+   BACKEND_URL=https://imarketplacematching-main.iconicompany.icncd.ru/api
    ```
 
 3. **Development Server**:
