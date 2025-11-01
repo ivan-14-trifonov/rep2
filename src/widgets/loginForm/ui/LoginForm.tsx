@@ -52,8 +52,8 @@ export function LoginForm() {
         login({
           id: '1',
           email: data.email,
-          name: 'Demo User',
-          company: 'Demo Company',
+          name: data.email.split('@')[0], // Use part of email as name
+          company: '',
           });
         router.push('/');
       }
@@ -77,15 +77,6 @@ export function LoginForm() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-
-          {/* Demo Credentials Info */}
-          <Alert>
-            <AlertDescription>
-              <strong>{t('loginForm.demo')}:</strong> {t('loginForm.demoCredentials')}
-              <br />
-              {t('loginForm.try')}: demo@example.com / password
-            </AlertDescription>
-          </Alert>
 
           {/* Email */}
           <div className="space-y-2">
