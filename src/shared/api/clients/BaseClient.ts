@@ -1,8 +1,6 @@
 import { ApiError } from '@/shared/errors/ApiError';
 import { ForbiddenError } from '@/shared/errors/ForbiddenError';
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
-import { error } from 'console';
-import { forbidden } from 'next/navigation';
 
 interface RequestOptions {
   headers?: Record<string, string>;
@@ -30,7 +28,6 @@ export class BaseClient {
         const errorData = error.response?.data?.error;
         const message = errorData?.message || 'неизвестная ошибка';
         const code = errorData?.code;
-        console.log('code', code);
         if (code === 'FORBIDDEN') {
           throw new ForbiddenError(message, code);
         }

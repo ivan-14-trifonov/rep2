@@ -1,17 +1,18 @@
 import { apiController } from '@/shared/api/ApiContainer';
 import { useSpecialistOffersGridStore } from '../store/useSpecialistOffersGridStore';
+import type { getPaginatedOffersResult } from '@imarketplace/types/contracts/offer-contract';
 
 export const useFetchPaginatedOffers = () => {
-  const { setOffers, setLoading, setError } = useSpecialistOffersGridStore();
+  const { setPaginatedResult, setLoading, setError } = useSpecialistOffersGridStore();
 
-  const fetchOffers = (params: { page: number }) => {
+  const fetchOffers = async (params: { page: number }) => {
     setLoading(true);
     setError(null);
 
     return apiController.offers
       .getPaginatedOffers(params.page)
-      .then((response) => {
-        setOffers(response.offers);
+      .then((response: getPaginatedOffersResult) => {
+        setPaginatedResult(response);
       })
       .catch((error) => {
         if (error instanceof Error) {

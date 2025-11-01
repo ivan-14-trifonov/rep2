@@ -4,22 +4,21 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { Button } from '@/shared/ui/button';
 import { Briefcase } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useCandidateStore } from '@/entities/candidate/hooks/useCandidateStore';
-import type { Candidate } from '@/types';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip';
+import type { Offer, Specialist } from '@imarketplace/types/entities';
+import Link from 'next/link';
 
 interface SpecialistLinkActionsProps {
-  candidate: Candidate;
+  candidate: Offer<{ specialist: Specialist }>;
 }
 
 export function SpecialistLinkActions({ candidate }: SpecialistLinkActionsProps) {
   const router = useRouter();
-  const { setSelectedCandidate } = useCandidateStore();
   const { t } = useTranslation();
 
   const handleViewProfile = () => {
     // TODO: only redirect on url and id
-    setSelectedCandidate(candidate);
+    // setSelectedCandidate(candidate);
     router.push(`/candidate/${candidate.id}`);
   };
 
@@ -32,14 +31,12 @@ export function SpecialistLinkActions({ candidate }: SpecialistLinkActionsProps)
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="outline" size="sm" asChild>
-              <a href={candidate.linkedin} target="_blank" rel="noopener noreferrer">
+              <Link href={`/candidate/${candidate.id}`} target="_blank" rel="noopener noreferrer">
                 <Briefcase className="h-4 w-4" />
-              </a>
+              </Link>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>
-            {t('candidateCard.viewResume')}
-          </TooltipContent>
+          <TooltipContent>{t('candidateCard.viewResume')}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>

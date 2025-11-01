@@ -1,7 +1,7 @@
 // A record of all public environment variables the app needs
 const publicEnvs = {
   NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
-  // e.g. NEXT_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_API_KEY,
+  NEXT_PUBLIC_TOKEN: process.env.NEXT_PUBLIC_TOKEN,
 } as const;
 
 // A type guard to check if a key is a valid public env key
@@ -25,3 +25,4 @@ export const getPublicEnv = (key: PublicEnvKey): string => {
 
 // Export specific variables for direct use, benefiting from the safety check.
 export const BACKEND_URL = getPublicEnv('NEXT_PUBLIC_BACKEND_URL');
+export const TOKEN = getPublicEnv('NEXT_PUBLIC_TOKEN');

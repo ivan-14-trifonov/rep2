@@ -8,7 +8,7 @@ import { SpecialistFilters } from '@/widgets/specialistFilters';
 import { SpecialistOffersGrid } from '@/widgets/specialistOffersGrid';
 
 export function Dashboard() {
-  const { jobDescription, filteredCandidates, isLoading, router } = useDashboardData();
+  const { jobDescription, filteredCandidates, router } = useDashboardData();
 
   return (
     <PageLayout>
