@@ -11,14 +11,15 @@ import { BackButton } from '@/shared/components/BackButton';
 
 export default function JobPage() {
   const params = useParams<{ id: string }>();
-  const { isAuthenticated, selectedJob, setSelectedJob } = useAppStore();
+  const { selectedJob, setSelectedJob } = useAppStore(); // Remove isAuthenticated from destructure
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    // if (!isAuthenticated) {
-    //   router.push('/login');
-    //   return;
-    // }
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login');
+      return;
+    }
 
     // If no selected job, try to find by ID
     if (!selectedJob) {
@@ -29,11 +30,11 @@ export default function JobPage() {
         router.push('/jobs');
       }
     }
-  }, [isAuthenticated, selectedJob, params.id, router, setSelectedJob]);
+  }, [isAuthenticated, isLoading, selectedJob, params.id, router, setSelectedJob]);
 
-  // if (!isAuthenticated || !selectedJob) {
-  //   return null;
-  // }
+  if (!isAuthenticated && !isLoading) {
+    return null;
+  }
 
   if (!selectedJob) {
     return null;

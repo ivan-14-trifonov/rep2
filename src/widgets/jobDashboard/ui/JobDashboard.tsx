@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Briefcase, TrendingUp, MapPin } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/use-translation';
+import { useAuth } from '@/shared/hooks/use-auth';
 import { useAppStore } from '@/shared/lib/store';
 import { mockJobs } from '@/shared/lib/mock-jobs';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
@@ -15,15 +16,16 @@ import { JobLinkActions } from '@/features/job';
 import { JobFilters } from '@/widgets/jobFilters';
 
 export default function JobsPage() {
-  const { isAuthenticated, filteredJobs, setJobs, isLoading, setLoading } = useAppStore();
+  const { filteredJobs, setJobs, isLoading, setLoading } = useAppStore();
+  const { isAuthenticated, isLoading: authIsLoading } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
 
   useEffect(() => {
-    // if (!isAuthenticated) {
-    //   router.push('/login');
-    //   return;
-    // }
+    if (!authIsLoading && !isAuthenticated) {
+      router.push('/login');
+      return;
+    }
 
     // Simulate loading jobs
     const loadJobs = async () => {
@@ -36,11 +38,11 @@ export default function JobsPage() {
     if (mockJobs.length === 0 || filteredJobs.length === 0) {
       loadJobs();
     }
-  }, [isAuthenticated, router, setJobs, setLoading, filteredJobs.length]);
+  }, [isAuthenticated, authIsLoading, router, setJobs, setLoading, filteredJobs.length]);
 
-  // if (!isAuthenticated) {
-  //   return null;
-  // }
+  if (!isAuthenticated && !authIsLoading) {
+    return null;
+  }
 
   const totalJobs = mockJobs.length;
   const openJobs = mockJobs.filter((job) => job.status === 'Open').length;

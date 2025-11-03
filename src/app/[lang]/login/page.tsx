@@ -2,21 +2,23 @@
 
 import { LoginForm } from '@/widgets/loginForm';
 import { LoginLayout } from '@/shared/components/layout/LogniLayout';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function LoginPage() {
-  // const { isAuthenticated } = useAppStore();
-  // const router = useRouter();
-  // const { t } = useTranslation();
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push('/');
-  //   }
-  // }, [isAuthenticated, router]);
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, isLoading, router]);
 
-  // if (isAuthenticated) {
-  //   return null;
-  // }
+  if (isAuthenticated && !isLoading) {
+    return null;
+  }
 
   return (
     <LoginLayout>

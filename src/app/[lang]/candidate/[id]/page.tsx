@@ -11,15 +11,16 @@ import { BackButton } from '@/shared/components/BackButton';
 
 export default function CandidatePage() {
   const params = useParams<{ id: string }>();
-  const { isAuthenticated, selectedCandidate, setSelectedCandidate } = useAppStore();
+  const { selectedCandidate, setSelectedCandidate } = useAppStore(); // Remove isAuthenticated from destructure
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
 
   useEffect(() => {
-    // if (!isAuthenticated) {
-    //   router.push('/login');
-    //   return;
-    // }
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login');
+      return;
+    }
 
     // If no selected candidate, try to find by ID
     if (!selectedCandidate) {
@@ -30,11 +31,11 @@ export default function CandidatePage() {
         router.push('/dashboard');
       }
     }
-  }, [isAuthenticated, selectedCandidate, params.id, router, setSelectedCandidate]);
+  }, [isAuthenticated, isLoading, selectedCandidate, params.id, router, setSelectedCandidate]);
 
-  // if (!isAuthenticated || !selectedCandidate) {
-  //   return null;
-  // }
+  if (!isAuthenticated && !isLoading) {
+    return null;
+  }
 
   if (!selectedCandidate) {
     return null;

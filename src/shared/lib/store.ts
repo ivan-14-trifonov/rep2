@@ -3,12 +3,6 @@ import { persist } from 'zustand/middleware';
 import type { Candidate, JobDescription, User, SearchFilters, Job, JobFilters } from '@/types';
 
 interface AppState {
-  // Authentication
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (user: User) => void;
-  logout: () => void;
-
   // Job Description
   jobDescription: JobDescription | null;
   setJobDescription: (job: JobDescription) => void;
@@ -51,11 +45,7 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      // Authentication
-      user: null,
-      isAuthenticated: false,
-      login: (user) => set({ user, isAuthenticated: true }),
-      logout: () => set({ user: null, isAuthenticated: false, jobDescription: null }),
+
 
       // Job Description
       jobDescription: {
@@ -220,8 +210,6 @@ export const useAppStore = create<AppState>()(
     {
       name: 'candidate-search-storage',
       partialize: (state) => ({
-        user: state.user,
-        isAuthenticated: state.isAuthenticated,
         jobDescription: state.jobDescription,
       }),
     },

@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/c
 import { Alert, AlertDescription } from '@ui/alert';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useState } from 'react';
-import { useAppStore } from '@/shared/lib/store';
+
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
@@ -24,7 +24,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading, setLoading, error, setError } = useAppStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -38,7 +39,7 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const result = await signIn('credentials', {
@@ -49,18 +50,13 @@ export function LoginForm() {
       if ((result === undefined) || (result?.error)) {
         setError('Authentication failed. Please check your credentials.');
       } else {
-        login({
-          id: '1',
-          email: data.email,
-          name: data.email.split('@')[0], // Use part of email as name
-          company: '',
-          });
+        // Redirect to home page after successful authentication
         router.push('/');
       }
     } catch (err) {
       setError('Authentication failed. Please try again.');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 

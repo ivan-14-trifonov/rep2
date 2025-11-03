@@ -4,7 +4,7 @@ import { useAppStore } from '@/shared/lib/store';
 import { mockCandidates } from '@/shared/lib/mock-data';
 
 export const useDashboardData = () => {
-  const { isAuthenticated, jobDescription, filteredCandidates, setCandidates, isLoading, setLoading } = useAppStore();
+  const { jobDescription, filteredCandidates, setCandidates, isLoading, setLoading } = useAppStore();
   const router = useRouter();
 
   useEffect(() => {

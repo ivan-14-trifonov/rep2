@@ -22,7 +22,12 @@ const authOptions: NextAuthOptions = {
           });
 
           if (res.data?.token) {
-            return { accessToken: res.data.token };
+            return {
+              id: res.data.user?.id || '1',
+              email: credentials?.email || '',
+              name: res.data.user?.name || credentials?.email?.split('@')[0] || 'User',
+              accessToken: res.data.token 
+            };
           }
           return null;
         } catch (e) {
@@ -40,6 +45,7 @@ const authOptions: NextAuthOptions = {
         token.accessToken = (user as any).accessToken;
         token.id = (user as any).id;
         token.email = (user as any).email;
+        token.name = (user as any).name;
       }
       return token;
     },
@@ -48,6 +54,7 @@ const authOptions: NextAuthOptions = {
         session.user = {
           id: token.id as string,
           email: token.email as string,
+          name: token.name as string,
         } as any;
         (session as any).accessToken = token.accessToken;
       }
