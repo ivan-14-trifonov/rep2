@@ -115,6 +115,17 @@ export function LoginForm() {
             {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
           </div>
 
+          {/* Google Sign-In Button */}
+          <Button 
+            type="button" 
+            className="w-full" 
+            onClick={() => signIn('google', { callbackUrl: '/' })} 
+            variant="outline"
+            size="lg"
+          >
+            {t('loginForm.signInWithGoogle')}
+          </Button>
+
           {/* Submit Button */}
           <Button type="submit" className="w-full" disabled={!isValid || isLoading} size="lg">
             {isLoading ? t('loginForm.signingIn') : t('loginForm.signIn')}
