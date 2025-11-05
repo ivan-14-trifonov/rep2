@@ -64,7 +64,10 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
       
       let arr = []
       for (let i = 0; i < result.length; i++) {
-        arr[i + 1] = result[i].name;
+        const statusNumber = parseInt(result[i].number);
+        if (!isNaN(statusNumber)) {
+          arr[statusNumber] = result[i].name;
+        }
       }
 
       setAllStatuses(arr);

@@ -135,11 +135,14 @@ export default function UserWorksList() {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/status", "number");
+      const result = await GetElements(connect, "status", "number");
       
       let arr = []
       for (let i = 0; i < result.length; i++) {
-        arr[i + 1] = result[i].name;
+        const statusNumber = parseInt(result[i].number);
+        if (!isNaN(statusNumber)) {
+          arr[statusNumber] = result[i].name;
+        }
       }
 
       setStatus(arr);
