@@ -14,6 +14,7 @@ ARG NODE_LOCK
 ARG NPM
 WORKDIR /app
 COPY package.json ${NODE_LOCK} ./
+COPY @imarketplace/ @imarketplace/
 RUN ${NPM} install --frozen-lockfile
 
 

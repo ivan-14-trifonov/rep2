@@ -14,7 +14,6 @@
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.6.2",
     "@hookform/resolvers": "^5.2.2",
-    "@imarketplace/types": "link:@imarketplace/types",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -79,6 +78,7 @@
     "eslint-config-next": "^16.0.1",
     "typescript-eslint": "^8.39.0",
     "postcss": "8.5.6",
-    "tailwindcss": "^4.1.16"
+    "tailwindcss": "^4.1.16",
+    "@imarketplace/types": "file:@imarketplace/types"
   }
 }
