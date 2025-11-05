@@ -599,10 +599,7 @@ export default function UserWorksList() {
     navigate(url);
   }
 
-  const onStatusConfiguration = () => {
-    let url = `/status-configuration?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
-    navigate(url);
-  }
+
 
   const onSection = event => {
     let section = event.currentTarget.getAttribute("value");
@@ -632,7 +629,6 @@ export default function UserWorksList() {
       }
       <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
       <Button className="addWork" variant="contained" onClick={onAddPerform} sx={{mt: 3}} fullWidth>Добавить исполнение</Button>
-      <Button className="addWork" variant="outlined" onClick={onStatusConfiguration} sx={{mt: 2}} fullWidth>Настроить статусы</Button>
       {sections &&
         <div className="sections">
           {Array(sections.length).fill().map((_, i) =>
