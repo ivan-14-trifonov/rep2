@@ -1,12 +1,9 @@
-import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
-import { basePath } from '../next.config';
+import { BACKEND_URL } from './shared/config';
 
-const backendUrl = process.env.BACKEND_URL;
-
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   basePath: '/api/auth',
   providers: [
     CredentialsProvider({
@@ -15,10 +12,10 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
+      // @ts-ignore
       async authorize(credentials) {
-        console.log('authorize credentials', credentials);
         try {
-          const res = await axios.post(`${backendUrl}/auth/signin`, {
+          const res = await axios.post(`${BACKEND_URL}/api/auth/signin`, {
             email: credentials?.email,
             password: credentials?.password,
           });
@@ -57,6 +54,7 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
+    // @ts-ignore
     async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
         try {
@@ -91,6 +89,7 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
+    // @ts-ignore
     async jwt({ token, user, account, profile }) {
       if (account && user) {
         token.id = user.id;
@@ -122,6 +121,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
+    // @ts-ignore
     async session({ session, token }) {
       session.user = {
         id: token.id as string,
