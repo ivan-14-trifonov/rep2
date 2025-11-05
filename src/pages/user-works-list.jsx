@@ -7,7 +7,7 @@ import { Button, Container, Card, TextField, Modal, Box } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../config/firebase";
-import { GetElements, GetEl, GetWorkInSections, Status4, AddWork, updateEl, deleteEl } from "../services/firestore";
+import { GetElements, GetEl, GetWorkInSections, AddWork, updateEl, deleteEl } from "../services/firestore";
 
 import edit from '../assets/images/edit.png';
 import del from '../assets/images/delete.png';
@@ -174,129 +174,6 @@ const EditWorkModal = ({ connect, work_id, isOpen, onClose }) => {
   );
 };
 
-// Модальное окно добавления произведения
-// НЕ ДОПИСАНО
-const AddWorkModal = ({ connect, isOpen, onClose, onSave }) => {
-  async function submitAddWork(e: React.FormEvent) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const fields = {
-      name: formData.get("name"),
-      book: formData.get("book"),
-      number: formData.get("number"),
-      page: formData.get("page"),
-      theme: formData.get("theme"),
-      event: formData.get("event"),
-      status: formData.get("status"),
-    }
-    AddWork(connect, fields);
-    e.target.reset();
-
-    //let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
-    //navigate(url);
-  }
-
-  const [books, setBooks] = useState();
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/book", "name");
-      setBooks(result);
-    };
-    asyncEffect();
-  }, []);
-
-  const [events, setEvents] = useState();
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const result = await GetElements(connect, "event", "name");
-      setEvents(result);
-    };
-    asyncEffect();
-  }, []);
-
-  const [themes, setThemes] = useState();
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const result = await GetElements(connect, "theme", "name");
-      setThemes(result);
-    };
-    asyncEffect();
-  }, []);
-
-  //const [title, setTitle] = useState(seminar.title);
-  //const [description, setDescription] = useState(seminar.description);
-
-  const handleSave = () => {
-    /*const updatedSeminar = {
-      ...seminar,
-      title,
-      description,
-      date,
-      time,
-      photo,
-    };
-    onSave(updatedSeminar);
-    onClose();*/
-  };
-
-  return (
-    <Modal open={isOpen} onClose={onClose}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 400,
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        <h2>Редактирование</h2>
-        {(books && events && themes) &&
-        <form onSubmit={submitAddWork} className="formAddWork">
-          <input className="formAddWork__input" name="name" placeholder="Название" />
-          <select className="formAddWork__select" name="book" id="books-select">
-            <option value="">--Выберите сборник--</option>
-              {Array(books.length).fill().map((_, i) =>
-                <option value={books[i].name}>{books[i].name}</option>
-              )}
-          </select>
-          <input className="formAddWork__input" name="number" placeholder="Номер" />
-          <input className="formAddWork__input" name="page" placeholder="Страница" />
-          <select className="formAddWork__select" name="theme" id="themes-select">
-            <option value="">--Выберите тему--</option>
-              {Array(themes.length).fill().map((_, i) =>
-                <option value={themes[i].name}>{themes[i].name}</option>
-              )}
-          </select>
-          <select className="formAddWork__select" name="event" id="events-select">
-            <option value="">--Выберите событие--</option>
-              {Array(events.length).fill().map((_, i) =>
-                <option value={events[i].name}>{events[i].name}</option>
-              )}
-          </select>
-          <input className="formAddWork__input" name="status" placeholder="Статус" />
-
-          <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>Сохранить</Button>
-        </form>}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-          <Button onClick={onClose} sx={{ mr: 2 }}>
-            Отменить
-          </Button>
-          <Button variant="contained" onClick={handleSave}>
-            Сохранить
-          </Button>
-        </Box>
-      </Box>
-    </Modal>
-  );
-};
-
 function cardsOfWorks(works, status, navigate, connect, openModal, onDelete) {
 
   function inBook(work) {
@@ -356,11 +233,6 @@ function cardsOfWorks(works, status, navigate, connect, openModal, onDelete) {
     }
 
     return <p className="perform">&#10149;<b>{date}{time}{event}{note}</b></p>;
-  }
-
-  const onStatus4 = event => {
-    let idWork = event.currentTarget.getAttribute("idWork");
-    Status4(connect, idWork);
   }
 
   return (
