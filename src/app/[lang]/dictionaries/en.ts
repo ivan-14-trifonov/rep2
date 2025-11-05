@@ -142,6 +142,7 @@ const dictionary: Dictionary = {
     signingIn: 'Signing In...',
     dontHaveAccount: "Don't have an account?",
     contactSales: 'Contact sales to get started',
+    signInWithGoogle: 'Sign in with Google',
   },
   jobFilters: {
     title: 'Job Filters',

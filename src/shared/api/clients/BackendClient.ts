@@ -1,8 +1,10 @@
-import { BACKEND_URL, TOKEN } from '@/shared/config';
+import { BACKEND_URL } from '@/shared/config';
 import { BaseClient } from './BaseClient';
+import { auth } from '@/auth';
+import { getSession } from 'next-auth/react';
 
 export class BackendClient extends BaseClient {
-  constructor() {
-    super(`${BACKEND_URL}`, TOKEN);
+  constructor(token: string) {
+    super(`${BACKEND_URL}`, token);
   }
 }

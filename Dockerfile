@@ -21,11 +21,14 @@ RUN ${NPM} install --frozen-lockfile
 
 FROM deps AS builder
 ARG NPM
+ARG NEXT_PUBLIC_BASE_PATH
+ARG NEXT_PUBLIC_BACKEND_URL
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NEXT_PUBLIC_BASE_PATH=/v2
+ENV NEXT_PUBLIC_BASE_PATH=${NEXT_PUBLIC_BASE_PATH}
+ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
 
 COPY package.json next.config.js postcss.config.js tsconfig.json components.json eslint.config.js ./
 COPY src/ src/
@@ -44,7 +47,6 @@ RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001 -G nodejs
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NEXT_PUBLIC_BASE_PATH=/v2
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public

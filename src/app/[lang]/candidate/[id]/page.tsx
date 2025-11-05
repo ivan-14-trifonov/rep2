@@ -3,25 +3,25 @@
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
-import { useAuthStore } from '@/shared/hooks/useAuthStore';
-import { useCandidateStore } from '@/entities/candidate/hooks/useCandidateStore';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { mockCandidates } from '@/shared/lib/mock-data';
 import { SpecialistProfile } from '@/widgets/specialistProfile';
 import { BackButton } from '@/shared/components/BackButton';
+import { useAppStore } from '@/shared/lib/store';
+import { useAuth } from '@/shared/hooks/use-auth';
 
 export default function CandidatePage() {
   const params = useParams<{ id: string }>();
-  const { isAuthenticated } = useAuthStore();
-  const { selectedCandidate, setSelectedCandidate } = useCandidateStore();
+  const { selectedCandidate, setSelectedCandidate } = useAppStore(); // Remove isAuthenticated from destructure
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
 
   useEffect(() => {
-    // if (!isAuthenticated) {
-    //   router.push('/login');
-    //   return;
-    // }
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login');
+      return;
+    }
 
     // If no selected candidate, try to find by ID
     if (!selectedCandidate) {
@@ -32,11 +32,11 @@ export default function CandidatePage() {
         router.push('/dashboard');
       }
     }
-  }, [isAuthenticated, selectedCandidate, params.id, router, setSelectedCandidate]);
+  }, [isAuthenticated, isLoading, selectedCandidate, params.id, router, setSelectedCandidate]);
 
-  // if (!isAuthenticated || !selectedCandidate) {
-  //   return null;
-  // }
+  if (!isAuthenticated && !isLoading) {
+    return null;
+  }
 
   if (!selectedCandidate) {
     return null;

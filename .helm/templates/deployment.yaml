@@ -39,6 +39,8 @@ spec:
         #  value: "{{ $.Values.env.DATABASE_URL }}?sslmode=require&sslrootcert=/var/run/autocert.step.sm/root.crt&sslcert=/var/run/autocert.step.sm/site.crt&sslkey=/var/run/autocert.step.sm/site.key"
         - name: DOMAIN
           value: {{ $.Values.env.DOMAIN }}
+        - name: NEXT_AUTH_URL
+          value: "https://imarketplacefront-main.iconicompany.icncd.ru/v2/api/auth"
         # {{- range $name, $value := .Values.env }}
         # - name: {{ $name }}
         #   value: {{ $value | quote }}

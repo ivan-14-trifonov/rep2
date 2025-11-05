@@ -142,6 +142,7 @@ const dictionary: Dictionary = {
     signingIn: 'Выполняется вход...',
     dontHaveAccount: 'У вас нет аккаунта?',
     contactSales: 'Свяжитесь с отделом продаж, чтобы начать работу',
+    signInWithGoogle: 'Войти через Google',
   },
   jobFilters: {
     title: 'Фильтры вакансий',

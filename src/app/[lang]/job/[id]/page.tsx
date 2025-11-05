@@ -2,25 +2,25 @@
 
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useAuthStore } from '@/shared/hooks/useAuthStore';
-import { useJobStore } from '@/entities/job/hooks/useJobStore';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
 import { mockJobs } from '@/shared/lib/mock-jobs';
 import { JobProfile } from '@/widgets/jobProfile';
 import { BackButton } from '@/shared/components/BackButton';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useAppStore } from '@/shared/lib/store';
 
 export default function JobPage() {
   const params = useParams<{ id: string }>();
-  const { isAuthenticated } = useAuthStore();
-  const { selectedJob, setSelectedJob } = useJobStore();
+  const { selectedJob, setSelectedJob } = useAppStore(); // Remove isAuthenticated from destructure
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    // if (!isAuthenticated) {
-    //   router.push('/login');
-    //   return;
-    // }
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login');
+      return;
+    }
 
     // If no selected job, try to find by ID
     if (!selectedJob) {
@@ -31,11 +31,11 @@ export default function JobPage() {
         router.push('/jobs');
       }
     }
-  }, [isAuthenticated, selectedJob, params.id, router, setSelectedJob]);
+  }, [isAuthenticated, isLoading, selectedJob, params.id, router, setSelectedJob]);
 
-  // if (!isAuthenticated || !selectedJob) {
-  //   return null;
-  // }
+  if (!isAuthenticated && !isLoading) {
+    return null;
+  }
 
   if (!selectedJob) {
     return null;

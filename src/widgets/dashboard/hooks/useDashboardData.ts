@@ -1,14 +1,10 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/shared/hooks/useAuthStore';
-import { useCandidateStore } from '@/entities/candidate/hooks/useCandidateStore';
-import { useUIStore } from '@/shared/hooks/useUIStore';
 import { mockCandidates } from '@/shared/lib/mock-data';
+import { useAppStore } from '@/shared/lib/store';
 
 export const useDashboardData = () => {
-  const { isAuthenticated, jobDescription } = useAuthStore();
-  const { filteredCandidates, setCandidates } = useCandidateStore();
-  const { isLoading, setLoading } = useUIStore();
+  const { jobDescription, filteredCandidates, setCandidates, isLoading, setLoading } = useAppStore();
   const router = useRouter();
 
   useEffect(() => {

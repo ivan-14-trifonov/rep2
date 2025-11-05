@@ -1,25 +1,28 @@
 'use client';
 
 import { PageLayout } from '@/shared/components/layout/PageLayout';
+import { useAuth } from '@/shared/hooks/use-auth';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Badge } from '@ui/badge';
 import { Search, Users, Target, Clock } from 'lucide-react';
 import { Card, CardContent } from '@ui/card';
 import { JobDescriptionForm } from '@/widgets/jobDescriptionForm';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function HomePage() {
-  // const { isAuthenticated } = useAppStore();
-  // const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     router.push('/login');
-  //   }
-  // }, [isAuthenticated, router]);
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, isLoading, router]);
 
-  // if (!isAuthenticated) {
-  //   return null;
-  // }
+  if (!isAuthenticated && !isLoading) {
+    return null;
+  }
 
   const { t } = useTranslation();
 

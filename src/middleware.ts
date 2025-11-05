@@ -16,6 +16,10 @@ function getLocale(request: NextRequest) {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  if (pathname.startsWith('/api') || pathname.startsWith('/auth')) {
+    return;
+  }
+
   // Проверяем, есть ли уже локаль в пути, учитывая basePath
   const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}`));
 
