@@ -10,6 +10,15 @@ export async function AddWork(connect, fields) {
   }
 }
 
+export async function AddStatus(connect, fields) {
+  try {
+    await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musicalGroup, "status"), fields);
+  } catch (e) {
+    // An error happened.
+    // console.error("Error adding status: ", e);
+  }
+}
+
 export async function AddPerform(connect, fields) {
   try {
     const docRef = await addDoc(collection(connect.db, "/space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform"), fields);
