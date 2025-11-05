@@ -1,10 +1,11 @@
 import type { Ttype } from '@/shared/hooks/use-translation';
-import type { Job } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
 
 export function formatSalary(t: Ttype, job: Job) {
-  const { min, max, currency } = job.salary;
-  if (job.type === 'Contract') {
-    return `${min}-${max}${t('jobProfile.hr')}`;
+  const { amount, currency } = job;
+  if (!amount || !currency) return '-';
+  if (job.employmentType === 'short') {
+    return `${amount} ${currency}${t('jobProfile.hr')}`;
   }
-  return `${(min / 1000).toFixed(0)}k-${(max / 1000).toFixed(0)}k ${t('jobProfile.annually')}`;
+  return `${(amount / 1000).toFixed(0)}k ${currency} ${t('jobProfile.annually')}`;
 }

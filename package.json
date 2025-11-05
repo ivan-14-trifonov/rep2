@@ -41,6 +41,7 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "axios": "^1.13.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -77,6 +78,7 @@
     "eslint-config-next": "^16.0.1",
     "typescript-eslint": "^8.39.0",
     "postcss": "8.5.6",
-    "tailwindcss": "^4.1.16"
+    "tailwindcss": "^4.1.16",
+    "@imarketplace/types": "file:@imarketplace/types"
   }
 }

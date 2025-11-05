@@ -1,6 +1,6 @@
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import type { Job } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
 
 export function JobDescriptionCard({ job }: { job: Job }) {
   const { t } = useTranslation();

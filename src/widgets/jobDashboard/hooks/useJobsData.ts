@@ -24,8 +24,8 @@ export const useJobsData = () => {
   }, [setJobs, setLoading, filteredJobs.length]);
 
   const totalJobs = mockJobs.length;
-  const openJobs = mockJobs.filter((job) => job.status === 'Open').length;
-  const remoteJobs = mockJobs.filter((job) => job.remote).length;
+  const openJobs = mockJobs.filter((job) => job.status === 'selection').length;
+  const remoteJobs = mockJobs.filter((job) => job.workFormat === 'remote').length;
 
   return {
     filteredJobs,

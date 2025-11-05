@@ -1,6 +1,9 @@
 import type { Dictionary } from '@/shared/lib/dictionary';
 
 const dictionary: Dictionary = {
+  common: {
+    loading: 'Загрузка...',
+  },
   header: {
     signIn: 'Войти',
     getStarted: 'Начать',
@@ -87,6 +90,7 @@ const dictionary: Dictionary = {
   specialistGrid: {
     noCandidatesFound: 'Кандидаты не найдены',
     tryAdjustingSearch: 'Попробуйте изменить критерии поиска или фильтры, чтобы найти больше кандидатов.',
+    loadingCandidates: 'Пожалуйста, подождите, пока мы загружаем кандидатов',
   },
   specialistProfile: {
     match: 'Совпадение',

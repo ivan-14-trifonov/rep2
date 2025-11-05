@@ -2,23 +2,24 @@
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Search } from 'lucide-react';
 import { SpecialistCard } from '@/widgets/specialistCard/ui/SpecialistCard';
-import type { ReactNode } from 'react';
-import type { Candidate } from '@/types';
 import { SpecialistGridSkeleton } from './SpecialistGridSkeleton';
+import type { ReactNode } from 'react';
+import type { Offer, Specialist } from '@imarketplace/types/entities';
 
 interface SpecialistGridProps {
-  candidates: Candidate[];
+  offers: Offer<{ specialist: Specialist }>[];
   isLoading?: boolean;
-  specialistCardFooter?: (candidate: Candidate) => ReactNode;
+  specialistCardFooter?: (offer: Offer<{ specialist: Specialist }>) => ReactNode;
 }
 
-export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: SpecialistGridProps) {
+export function SpecialistGrid({ offers, isLoading, specialistCardFooter }: SpecialistGridProps) {
   const { t } = useTranslation();
-  if (isLoading) {
+
+  if (isLoading || offers.length === 0) {
     return <SpecialistGridSkeleton />;
   }
 
-  if (candidates.length === 0) {
+  if (offers.length === 0) {
     return (
       <div className="text-center py-12">
         <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -30,8 +31,8 @@ export function SpecialistGrid({ candidates, isLoading, specialistCardFooter }: 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {candidates.map((candidate) => (
-        <SpecialistCard key={candidate.id} candidate={candidate} footer={specialistCardFooter ? specialistCardFooter(candidate) : undefined} />
+      {offers.map((offer) => (
+        <SpecialistCard key={offer.id} candidate={offer} footer={specialistCardFooter ? specialistCardFooter(offer) : undefined} />
       ))}
     </div>
   );

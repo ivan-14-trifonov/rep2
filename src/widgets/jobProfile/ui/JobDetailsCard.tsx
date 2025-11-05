@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { formatDate } from '../lib/formatDate';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Badge } from '@ui/badge';
-import type { Job } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
 
 export function JobDetailsCard({ job }: { job: Job }) {
   const { t } = useTranslation();
@@ -14,29 +14,19 @@ export function JobDetailsCard({ job }: { job: Job }) {
       <CardContent className="space-y-4">
         <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">{t('jobProfile.posted')}</span>
-          <span className="font-medium">{formatDate(job.postedDate)}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">{t('jobProfile.deadline')}</span>
-          <span className="font-medium">{formatDate(job.applicationDeadline)}</span>
+          <span className="font-medium">{formatDate(job.createdAt)}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">{t('jobProfile.jobType')}</span>
-          <span className="font-medium">{job.type}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">{t('jobProfile.experience')}</span>
-          <span className="font-medium">
-            {job.experience.min}-{job.experience.max} {t('jobProfile.years')}
-          </span>
+          <span className="font-medium">{job.employmentType}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">{t('jobProfile.applicants')}</span>
-          <span className="font-medium">{job.applicants}</span>
+          <span className="font-medium">{job.numberOfSpecialists}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">{t('jobProfile.status')}</span>
-          <Badge variant={job.status === 'Open' ? 'default' : 'secondary'}>{job.status}</Badge>
+          <Badge variant={job.status === 'selection' ? 'default' : 'secondary'}>{job.status}</Badge>
         </div>
       </CardContent>
     </Card>

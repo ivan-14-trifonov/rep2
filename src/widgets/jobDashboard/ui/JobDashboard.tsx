@@ -11,9 +11,10 @@ import { PageLayout } from '@/shared/components/layout/PageLayout';
 import { Button } from '@ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { Badge } from '@ui/badge';
-import { JobGrid } from '@/entities/job/JobGrid';
 import { JobLinkActions } from '@/features/job';
 import { JobFilters } from '@/widgets/jobFilters';
+import type { Job } from '@imarketplace/types/entities';
+import { JobGrid } from '@/widgets/JobGrid';
 
 export default function JobsPage() {
   const { filteredJobs, setJobs } = useJobStore();
@@ -45,8 +46,8 @@ export default function JobsPage() {
   // }
 
   const totalJobs = mockJobs.length;
-  const openJobs = mockJobs.filter((job) => job.status === 'Open').length;
-  const remoteJobs = mockJobs.filter((job) => job.remote).length;
+  const openJobs = mockJobs.filter((job) => job.status === 'selection').length;
+  const remoteJobs = mockJobs.filter((job) => job.workFormat === 'remote').length;
 
   return (
     <PageLayout>

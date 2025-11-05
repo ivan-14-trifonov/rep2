@@ -2,8 +2,12 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { Badge } from '@ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 
-export function RequiredSkillsCard({ skills }: { skills: string[] }) {
+export function RequiredSkillsCard({ skills }: { skills: any }) {
   const { t } = useTranslation();
+
+  if (!skills || !Array.isArray(skills)) {
+    return null;
+  }
 
   return (
     <Card>

@@ -1,15 +1,14 @@
 'use client';
 
 import { PageLayout } from '@/shared/components/layout/PageLayout';
-import { SpecialistGrid } from '@/widgets/specialistGrid';
-import { SpecialistLinkActions } from '@/features/specialist/SpecialistLinkActions';
 import { DashboardHeader } from './DashboardHeader';
 import { JobSummaryCard } from './JobSummaryCard';
 import { useDashboardData } from '../hooks/useDashboardData';
 import { SpecialistFilters } from '@/widgets/specialistFilters';
+import { SpecialistOffersGrid } from '@/widgets/specialistOffersGrid';
 
 export function Dashboard() {
-  const { jobDescription, filteredCandidates, isLoading, router } = useDashboardData();
+  const { jobDescription, filteredCandidates, router } = useDashboardData();
 
   return (
     <PageLayout>
@@ -26,11 +25,7 @@ export function Dashboard() {
 
           {/* Candidates Grid */}
           <div className="lg:col-span-3">
-            <SpecialistGrid
-              candidates={filteredCandidates}
-              isLoading={isLoading}
-              specialistCardFooter={(candidate) => <SpecialistLinkActions candidate={candidate} />}
-            />
+            <SpecialistOffersGrid />
           </div>
         </div>
       </div>

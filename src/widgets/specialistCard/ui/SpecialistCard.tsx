@@ -13,25 +13,27 @@ import { computeExperience } from '@/entities/candidate/lib/computeExperience';
 import { getOfferMatchScore } from '@/entities/offer/lib/getOfferMatchScore';
 import { useLanguage } from '@/shared/hooks/use-language';
 import { formatSpecialistDuration } from '@/entities/specialist/lib/formatSpecialistDuration';
+import type { Offer, Specialist } from '@imarketplace/types/entities';
+import { SpecialistCardSkeleton } from './SpecialistCardSkeleton';
 
 interface SpecialistCardProps {
-  candidate: Candidate;
+  candidate: Offer<{ specialist: Specialist }>;
   footer?: ReactNode;
 }
 
 export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
-  const router = useRouter();
-
   const { t } = useTranslation();
-
   const lang = useLanguage();
 
   // New mock stores person under candidate.specialist
-  const specialist = candidate.specialist ?? ({} as any);
+  const specialist = candidate.specialist;
+  if (!specialist) {
+    return <SpecialistCardSkeleton />;
+  }
 
-  const first = String(specialist.firstName ?? '').trim();
-  const middle = String(specialist.middleName ?? '').trim();
-  const last = String(specialist.lastName ?? '').trim();
+  const first = String(specialist?.firstName ?? '').trim();
+  const middle = String(specialist?.middleName ?? '').trim();
+  const last = String(specialist?.lastName ?? '').trim();
 
   const hasFirst = !!first;
   const hasLast = !!last;
@@ -41,14 +43,15 @@ export function SpecialistCard({ candidate, footer }: SpecialistCardProps) {
   const firstLine = hasFirst ? (middle ? `${first} ${middle[0]}.` : first) : hasLast ? last : '';
   const secondLine = hasFirst && hasLast ? last : '';
 
-  const title = specialist.specialization?.name ?? specialist.title ?? '';
+  const title = specialist?.specialization?.name ?? specialist.title ?? '';
 
   // compute experience (years and months) from specialist.experience array
-  const experience = computeExperience(specialist.experience);
+  // @ts-ignore
+  const experience = computeExperience(specialist?.experience || []);
 
   const location = (() => {
     const city = specialist.city?.name ?? '';
-    const country = specialist.country && typeof specialist.country === 'object' ? specialist.country.name : ((specialist.country as any) ?? '');
+    const country = specialist.country && typeof specialist?.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '';
     if (city && country) return `${city}, ${country}`;
     return city || country || '';
   })();

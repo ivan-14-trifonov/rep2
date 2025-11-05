@@ -5,7 +5,7 @@ import { Button } from '@/shared/ui/button';
 import { ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useJobStore } from '@/entities/job/hooks/useJobStore';
-import type { Job } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
 
 interface JobLinkActionsProps {
   job: Job;
