@@ -122,34 +122,34 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
         }}
       >
         <h2>Редактирование</h2>
-        {(books && events && themes && allStatuses) &&
+        {(books !== undefined && events !== undefined && themes !== undefined && allStatuses !== null) &&
         <form onSubmit={submitEditWork} className="formAddWork">
           <input className="formAddWork__input" name="name" value={name} onChange={(e) => setName(e.target.value)} />
           <select className="formAddWork__select" name="book" id="books-select" value={book} onChange={(e) => setBook(e.target.value)}>
             <option value="">--Выберите сборник--</option>
-              {Array(books.length).fill().map((_, i) =>
-                <option value={books[i].name}>{books[i].name}</option>
+              {books && books.length > 0 && books.map((bookItem, i) =>
+                <option key={i} value={bookItem.name}>{bookItem.name}</option>
               )}
           </select>
           <input className="formAddWork__input" name="number" value={number} onChange={(e) => setNumber(e.target.value)} />
           <input className="formAddWork__input" name="page" value={page} onChange={(e) => setPage(e.target.value)} />
           <select className="formAddWork__select" name="theme" id="themes-select" value={theme} onChange={(e) => setTheme(e.target.value)}>
             <option value="">--Выберите тему--</option>
-              {Array(themes.length).fill().map((_, i) =>
-                <option value={themes[i].name}>{themes[i].name}</option>
+              {themes && themes.length > 0 && themes.map((themeItem, i) =>
+                <option key={i} value={themeItem.name}>{themeItem.name}</option>
               )}
           </select>
           <select className="formAddWork__select" name="event" id="events-select" value={event} onChange={(e) => setEvent(e.target.value)}>
             <option value="">--Выберите событие--</option>
-              {Array(events.length).fill().map((_, i) =>
-                <option value={events[i].name}>{events[i].name}</option>
+              {events && events.length > 0 && events.map((eventItem, i) =>
+                <option key={i} value={eventItem.name}>{eventItem.name}</option>
               )}
           </select>
           <select className="formAddWork__select" name="status" id="status-select" value={status} onChange={(e) => setStatus(e.target.value)} >
             <option value="">--Выберите статус--</option>
-              {Array(allStatuses.length - 1).fill().map((_, i) =>
-                <option value={i + 1}>{allStatuses[i + 1]}</option>
-              )}
+              {allStatuses && allStatuses.map((statusName, i) => 
+                statusName && i > 0 ? <option key={i} value={i}>{statusName}</option> : null
+              ).filter(Boolean)}
           </select>
           <input className="formAddWork__input" name="comment" value={comment} onChange={(e) => setComment(e.target.value)} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
