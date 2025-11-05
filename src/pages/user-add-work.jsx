@@ -4,116 +4,12 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../config/firebase";
-import { AddWork, GetElements } from "../services/firestore";
-
-function FormAddWork(connect, navigate) {
-
-  async function submitAddWork(e: React.FormEvent) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const fields = {
-      name: formData.get("name"),
-      book: formData.get("book"),
-      number: formData.get("number"),
-      page: formData.get("page"),
-      theme: formData.get("theme"),
-      event: formData.get("event"),
-      status: formData.get("status"),
-      comment: formData.get("comment"),
-    }
-    AddWork(connect, fields);
-    e.target.reset();
-
-    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
-    navigate(url);
-  }
-
-  const [books, setBooks] = useState();
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/book", "name");
-      setBooks(result);
-    };
-    asyncEffect();
-  }, []);
-
-  const [events, setEvents] = useState();
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const result = await GetElements(connect, "event", "name");
-      setEvents(result);
-    };
-    asyncEffect();
-  }, []);
-
-  const [themes, setThemes] = useState();
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const result = await GetElements(connect, "theme", "name");
-      setThemes(result);
-    };
-    asyncEffect();
-  }, []);
-
-  const [status, setStatus] = useState(null);
-
-  useEffect(() => {
-    const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/status", "number");
-      
-      let arr = []
-      for (let i = 0; i < result.length; i++) {
-        arr[i + 1] = result[i].name;
-      }
-
-      setStatus(arr);
-    };
-    asyncEffect();
-  }, []);
-
-  return (
-    (books && events && themes && status) &&
-    <form onSubmit={submitAddWork} className="formAddWork">
-      <input className="formAddWork__input" name="name" placeholder="Название" />
-      <select className="formAddWork__select" name="book" id="books-select">
-        <option value="">--Выберите сборник--</option>
-          {Array(books.length).fill().map((_, i) =>
-            <option value={books[i].name}>{books[i].name}</option>
-          )}
-      </select>
-      <input className="formAddWork__input" name="number" placeholder="Номер" />
-      <input className="formAddWork__input" name="page" placeholder="Страница" />
-      <select className="formAddWork__select" name="theme" id="themes-select">
-        <option value="">--Выберите тему--</option>
-          {Array(themes.length).fill().map((_, i) =>
-            <option value={themes[i].name}>{themes[i].name}</option>
-          )}
-      </select>
-      <select className="formAddWork__select" name="event" id="events-select">
-        <option value="">--Выберите событие--</option>
-          {Array(events.length).fill().map((_, i) =>
-            <option value={events[i].name}>{events[i].name}</option>
-          )}
-      </select>
-      <select className="formAddWork__select" name="status" id="status-select">
-        <option value="">--Выберите статус--</option>
-          {Array(status.length - 1).fill().map((_, i) =>
-            <option value={i + 1}>{status[i + 1]}</option>
-          )}
-      </select>
-      <input className="formAddWork__input" name="comment" placeholder="Комментарий" />
-
-      <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>Сохранить</Button>
-    </form>
-  );
-}
+import { GetElements } from "../services/firestore";
+import FormAddWorkComponent from "../components/FormAddWork";
 
 export default function UserAddWork() {
 
@@ -152,12 +48,10 @@ export default function UserAddWork() {
     }
   }
 
-  let form = FormAddWork(connect, navigate);
-
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
       <h1>Добавить произведение</h1>
-      <div>{form}</div>
+      <FormAddWorkComponent connect={connect} navigate={navigate} />
     </Container>
   )
 }
