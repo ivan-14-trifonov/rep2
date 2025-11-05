@@ -42,7 +42,7 @@ spec:
         - name: NEXT_AUTH_URL
           value: "https://imarketplacefront-main.iconicompany.icncd.ru/v2/api/auth"
         - name: AUTH_TRUST_HOST
-          value: true
+          value: "true"
         # {{- range $name, $value := .Values.env }}
         # - name: {{ $name }}
         #   value: {{ $value | quote }}
