@@ -31,9 +31,10 @@ export const authOptions = {
             };
           }
           return null;
-        } catch (e) {
+        } catch (e: any) {
           console.error('authorize error', e);
-          return null;
+          const errorMessage = e.response?.data?.message || e.message || 'Invalid credentials';
+          throw new Error(errorMessage);
         }
       },
     }),
