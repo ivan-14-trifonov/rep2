@@ -1,9 +1,10 @@
-import { apiController } from '@/shared/api/ApiContainer';
 import { useSpecialistOffersGridStore } from '../store/useSpecialistOffersGridStore';
+import { useApiContainer } from '@/shared/hooks/useApiContainer';
 import type { getPaginatedOffersResult } from '@imarketplace/types/contracts/offer-contract';
 
 export const useFetchPaginatedOffers = () => {
   const { setPaginatedResult, setLoading, setError } = useSpecialistOffersGridStore();
+  const apiController = useApiContainer();
 
   const fetchOffers = async (params: { page: number }) => {
     setLoading(true);
