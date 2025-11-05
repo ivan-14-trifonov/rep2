@@ -1,24 +1,50 @@
 //import "./user-add-work.css";
 
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
-import { app } from "../firebase";
-import { GetElements, GetEl, AddPerform } from "../firestore";
+import { app } from "../config/firebase";
+import { GetElements, GetWorkInSections, AddPerform } from "../services/firestore";
 
-function formAddPerform(connect, navigate, id) {
+function FormAddPerform(connect, navigate, id) {
 
-  const work = GetEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", id);
-  const events = GetElements(connect, "event", "name");
+  const [works, setWorks] = useState();
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetWorkInSections(
+        connect,
+        {
+          name: "(Весь репертуар в одном списке)",
+          sort: "name",
+          include: { book: [], theme: [], event: [] },
+          exclude: { book: [], theme: [], event: [] },
+        }
+      );
+      setWorks(result);
+    };
+    asyncEffect();
+  }, []);
+
+  const [events, setEvents] = useState();
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "event", "name");
+      setEvents(result);
+    };
+    asyncEffect();
+  }, []);
 
   async function submitAddWork(e: React.FormEvent) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const fields = {
-      work: id,
+      work: formData.get("work"),
       date: formData.get("date"),
       time: formData.get("time"),
       event: formData.get("event"),
@@ -27,12 +53,20 @@ function formAddPerform(connect, navigate, id) {
     AddPerform(connect, fields);
     e.target.reset();
 
-    navigate("/user");
+    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    navigate(url);
   }
 
   return (
+    (works && events) &&
     <form onSubmit={submitAddWork} className="formAddWork">
-      <p>{work.name}</p>
+      <p>Произведение:</p>
+      <select className="formAddWork__select" name="work" id="works-select">
+        <option value="">--Не определено--</option>
+          {Array(works.length).fill().map((_, i) =>
+            <option value={works[i].id}>{works[i].name}</option>
+          )}
+      </select>
       <label for="date">Дата исполнения:</label>
       <input type="date" id="date" name="date" />
       <p>Собрание:</p>
@@ -68,27 +102,34 @@ export default function UserAddPerform() {
     navigate("/login");
   }
 
+  const db = getFirestore(app);
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
   const connect = {
-    db: getFirestore(app),
-    space: "Go2Aiju3Nuq9wuFqhFha",
-    musicalGroup: "IJQZkACyMCfYNoCjiHqS",
+    db: db,
+    space: queryParams.get('space'),
+    musicalGroup: queryParams.get('musicalGroup'),
   };
 
-  const users = GetElements(connect, "space/" + connect.space + "/users", "uid")
+  const [spaceUsers, setSpaceUsers] = useState(null);
 
-  if (user && (users.length != 0)) {
-    if (!users.map(i => i.uid).includes(user.uid)) {
-      return (
-        <Container maxWidth="xs" sx={{mt: 2}}>
-          <h1>Недостаточно прав</h1>
-          <p>У вас нет доступа к данному пространству.</p>
-        </Container>
-      )
-      
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const result = await GetElements(connect, "space/" + connect.space + "/users", "uid");
+      setSpaceUsers(result);
+    };
+    asyncEffect();
+  }, []);
+
+  if (user && spaceUsers) {
+    if (!spaceUsers.map(i => i.uid).includes(user.uid)) {
+      navigate("/user-rights"); 
     }
   }
 
-  let form = formAddPerform(connect, navigate, id);
+  let form = FormAddPerform(connect, navigate, id);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>

@@ -1,4 +1,4 @@
-import "./user.css";
+import "../styles/user.css";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -7,11 +7,11 @@ import { getAuth, signOut } from "firebase/auth";
 import { Button, Container, Card, TextField, Modal, Box } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
-import { app } from "../firebase";
-import { GetElements, GetEl, GetWorkInSections, Status4, AddWork, updateEl, deleteEl } from "../firestore";
+import { app } from "../config/firebase";
+import { GetElements, GetEl, GetWorkInSections, Status4, AddWork, updateEl, deleteEl } from "../services/firestore";
 
-import edit from './images/edit.png';
-import del from './images/delete.png';
+import edit from '../assets/images/edit.png';
+import del from '../assets/images/delete.png';
 
 // Модальное окно редактирования произведения
 const EditWorkModal = ({ connect, work_id, isOpen, onClose }) => {

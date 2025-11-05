@@ -1,4 +1,4 @@
-import "./user-add-work.css";
+import "../styles/user-add-work.css";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -7,8 +7,8 @@ import { getAuth } from "firebase/auth";
 import { Button, Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
-import { app } from "../firebase";
-import { AddWork, GetElements } from "../firestore";
+import { app } from "../config/firebase";
+import { AddWork, GetElements } from "../services/firestore";
 
 function FormAddWork(connect, navigate) {
 

@@ -6,13 +6,13 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
-import Login from "./routes/login";
-import User from "./routes/user";
-import UserWorksList from "./routes/user-works-list";
-import UserAddWork from "./routes/user-add-work";
-import UserAddPerform from "./routes/user-add-perform";
-import UserRights from "./routes/user-rights";
-import ErrorPage from "./error-page";
+import Login from "./pages/login";
+import User from "./pages/user";
+import UserWorksList from "./pages/user-works-list";
+import UserAddWork from "./pages/user-add-work";
+import UserAddPerform from "./pages/user-add-perform";
+import UserRights from "./pages/user-rights";
+import ErrorPage from "./components/error-page";
 
 const router = createBrowserRouter([
   {

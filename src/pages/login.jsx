@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { app } from "../firebase";
+import { app } from "../config/firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Button, Container, Snackbar, Alert } from "@mui/material";
 

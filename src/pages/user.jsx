@@ -1,4 +1,4 @@
-import "./user.css";
+import "../styles/user.css";
 
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,8 +6,8 @@ import { getAuth, signOut } from "firebase/auth";
 import { Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
-import { app } from "../firebase";
-import { GetElements, SyncGetElements } from "../firestore";
+import { app } from "../config/firebase";
+import { GetElements, SyncGetElements } from "../services/firestore";
 
 // worksList ЗАМЕНИТЬ!!!!!!
 function chooseSpace(spaces, onSpace) {
