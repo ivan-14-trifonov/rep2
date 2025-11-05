@@ -1,4 +1,4 @@
-import type { Job } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
 import { Badge } from '@ui/badge';
 import { Button } from '@ui/button';
 import { Card, CardContent } from '@ui/card';
@@ -17,28 +17,28 @@ export function JobProfileHeader({ job }: { job: Job }) {
           <div className="flex flex-col md:flex-row md:items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-2">
-                <h1 className="text-3xl font-bold">{job.title}</h1>
-                <div className={`px-3 py-1 rounded-lg text-sm font-medium border ${getJobTypeColor(job.type)}`}>{job.type}</div>
+                <h1 className="text-3xl font-bold">{job.name}</h1>
+                <div className={`px-3 py-1 rounded-lg text-sm font-medium border ${getJobTypeColor(job.employmentType)}`}>
+                  {job.employmentType}
+                </div>
               </div>
 
               <div className="flex items-center space-x-2 mb-4">
                 <Building className="h-5 w-5 text-muted-foreground" />
-                <span className="text-xl text-muted-foreground">{job.company}</span>
+                <span className="text-xl text-muted-foreground">
+                  {typeof job.company === 'object' && job.company !== null ? job.company.name : job.company}
+                </span>
               </div>
 
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 mr-1" />
-                  {job.location}
+                  {typeof job.city === 'object' && job.city !== null ? job.city.name : job.city}
                 </div>
-                {job.remote && <Badge variant="outline">{t('jobProfile.remote')}</Badge>}
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-1" />
-                  {job.experience.min}-{job.experience.max} {t('jobProfile.experience')}
-                </div>
+                {job.workFormat === 'remote' && <Badge variant="outline">{t('jobProfile.remote')}</Badge>}
                 <div className="flex items-center">
                   <Users className="h-4 w-4 mr-1" />
-                  {job.applicants} {t('jobProfile.applicants')}
+                  {job.numberOfSpecialists} {t('jobProfile.applicants')}
                 </div>
               </div>
 

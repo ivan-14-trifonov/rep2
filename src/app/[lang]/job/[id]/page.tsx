@@ -2,12 +2,13 @@
 
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useAppStore } from '@/shared/lib/store';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
 import { mockJobs } from '@/shared/lib/mock-jobs';
 import { JobProfile } from '@/widgets/jobProfile';
 import { BackButton } from '@/shared/components/BackButton';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useAppStore } from '@/shared/lib/store';
 
 export default function JobPage() {
   const params = useParams<{ id: string }>();

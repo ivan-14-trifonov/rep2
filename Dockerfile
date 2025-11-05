@@ -1,4 +1,4 @@
-ARG NODE_REPO=docker.io/oven/bun:1.2.19-alpine
+ARG NODE_REPO=docker.io/oven/bun:1.3-alpine
 ARG NODE_LOCK=bun.lock
 ARG NPM=bun
 ARG NODE=bun
@@ -14,6 +14,7 @@ ARG NODE_LOCK
 ARG NPM
 WORKDIR /app
 COPY package.json ${NODE_LOCK} ./
+COPY @imarketplace/ @imarketplace/
 RUN ${NPM} install --frozen-lockfile
 
 

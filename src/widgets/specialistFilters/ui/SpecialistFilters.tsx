@@ -5,13 +5,13 @@ import { Button } from '@ui/button';
 import { Separator } from '@ui/separator';
 import { Filter } from 'lucide-react';
 import { useState } from 'react';
-import { useAppStore } from '@/shared/lib/store';
+import { useCandidateStore } from '@/entities/candidate/hooks/useCandidateStore';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { SpecialistFilterSection } from './SpecialistFilterSection';
 import { SpecialistSkillInput } from './SpecialistSkillInput';
 
 export function SpecialistFilters() {
-  const { searchQuery, filters, setSearchQuery, setFilters, filteredCandidates } = useAppStore();
+  const { searchQuery, filters, setSearchQuery, setFilters, filteredCandidates } = useCandidateStore();
   const { t } = useTranslation();
 
   const [skillInput, setSkillInput] = useState('');

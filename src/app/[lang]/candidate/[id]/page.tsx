@@ -3,11 +3,12 @@
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { PageLayout } from '@/shared/components/layout/PageLayout';
-import { useAppStore } from '@/shared/lib/store';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { mockCandidates } from '@/shared/lib/mock-data';
 import { SpecialistProfile } from '@/widgets/specialistProfile';
 import { BackButton } from '@/shared/components/BackButton';
+import { useAppStore } from '@/shared/lib/store';
+import { useAuth } from '@/shared/hooks/use-auth';
 
 export default function CandidatePage() {
   const params = useParams<{ id: string }>();

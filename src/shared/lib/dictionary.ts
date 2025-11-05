@@ -1,4 +1,7 @@
 export type Dictionary = {
+  common: {
+    loading: string;
+  };
   header: {
     signIn: string;
     getStarted: string;
@@ -69,13 +72,23 @@ export type Dictionary = {
     copyright: string;
   };
   candidateCard: {
-    yearsExperience: string;
+    experience: string;
+    year_one?: string;
+    year_few?: string;
+    year_many?: string;
+    month_one?: string;
+    month_few?: string;
+    month_many?: string;
+    years: string;
+    candidate: string;
     more: string;
     viewProfile: string;
+    viewResume?: string;
   };
   specialistGrid: {
     noCandidatesFound: string;
     tryAdjustingSearch: string;
+    loadingCandidates: string;
   };
   specialistProfile: {
     match: string;

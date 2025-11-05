@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppStore } from '@/shared/lib/store';
 import { mockJobs } from '@/shared/lib/mock-jobs';
+import { useAppStore } from '@/shared/lib/store';
 
 export const useJobsData = () => {
   const { filteredJobs, setJobs, isLoading, setLoading } = useAppStore();
@@ -22,8 +22,8 @@ export const useJobsData = () => {
   }, [setJobs, setLoading, filteredJobs.length]);
 
   const totalJobs = mockJobs.length;
-  const openJobs = mockJobs.filter((job) => job.status === 'Open').length;
-  const remoteJobs = mockJobs.filter((job) => job.remote).length;
+  const openJobs = mockJobs.filter((job) => job.status === 'selection').length;
+  const remoteJobs = mockJobs.filter((job) => job.workFormat === 'remote').length;
 
   return {
     filteredJobs,

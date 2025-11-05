@@ -11,7 +11,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/c
 import { Badge } from '@ui/badge';
 import { X, Plus } from 'lucide-react';
 import { useState } from 'react';
-import { useAppStore } from '@/shared/lib/store';
+import { useAuthStore } from '@/shared/hooks/useAuthStore';
+import { useUIStore } from '@/shared/hooks/useUIStore';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';
 
@@ -28,7 +29,8 @@ type JobDescriptionFormData = z.infer<typeof jobDescriptionSchema>;
 export function JobDescriptionForm() {
   const [skills, setSkills] = useState<string[]>([]);
   const [skillInput, setSkillInput] = useState('');
-  const { setJobDescription, isLoading, setLoading } = useAppStore();
+  const { setJobDescription } = useAuthStore();
+  const { isLoading, setLoading } = useUIStore();
   const router = useRouter();
   const { t } = useTranslation();
 

@@ -4,12 +4,12 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { JobProfileHeader } from './JobProfileHeader';
 import { JobDescriptionCard } from './JobDescriptionCard';
 import { RequirementsCard } from './RequirementsCard';
-import { BenefitsCard } from './BenefitsCard';
+
 import { JobDetailsCard } from './JobDetailsCard';
 import { RequiredSkillsCard } from './RequiredSkillsCard';
 import { CompanyInfoCard } from './CompanyInfoCard';
 import { ApplyCard } from './ApplyCard';
-import type { Job } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
 
 interface JobProfileProps {
   job: Job;
@@ -27,13 +27,13 @@ export function JobProfile({ job }: JobProfileProps) {
         <div className="md:col-span-2 space-y-6">
           <JobDescriptionCard job={job} />
           <RequirementsCard requirements={job.requirements} />
-          <BenefitsCard benefits={job.benefits} />
+
         </div>
 
         {/* Right Column */}
         <div className="space-y-6">
           <JobDetailsCard job={job} />
-          <RequiredSkillsCard skills={job.skills} />
+          <RequiredSkillsCard skills={job.requiredSkills} />
           <CompanyInfoCard job={job} />
           <ApplyCard />
         </div>

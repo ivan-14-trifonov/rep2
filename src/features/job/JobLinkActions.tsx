@@ -4,15 +4,15 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { Button } from '@/shared/ui/button';
 import { ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useAppStore } from '@/shared/lib/store';
-import type { Job } from '@/types';
+import { useJobStore } from '@/entities/job/hooks/useJobStore';
+import type { Job } from '@imarketplace/types/entities';
 
 interface JobLinkActionsProps {
   job: Job;
 }
 
 export function JobLinkActions({ job }: JobLinkActionsProps) {
-  const { setSelectedJob } = useAppStore();
+  const { setSelectedJob } = useJobStore();
   const { t } = useTranslation();
   const router = useRouter();
 

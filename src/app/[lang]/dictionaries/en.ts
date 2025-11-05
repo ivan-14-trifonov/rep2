@@ -1,6 +1,9 @@
 import type { Dictionary } from '@/shared/lib/dictionary';
 
 const dictionary: Dictionary = {
+  common: {
+    loading: 'Loading...',
+  },
   header: {
     signIn: 'Sign In',
     getStarted: 'Get Started',
@@ -71,13 +74,23 @@ const dictionary: Dictionary = {
     copyright: '© 2025 TalentFind. All rights reserved.',
   },
   candidateCard: {
-    yearsExperience: 'years exp.',
+    experience: 'Experience',
+    year_one: 'year',
+    year_few: 'years',
+    year_many: 'years',
+    month_one: 'month',
+    month_few: 'months',
+    month_many: 'months',
+    years: 'years',
+    candidate: 'Candidate',
     more: 'more',
-    viewProfile: 'View Profile',
+    viewProfile: 'View application',
+    viewResume: 'View resume',
   },
   specialistGrid: {
     noCandidatesFound: 'No candidates found',
     tryAdjustingSearch: 'Try adjusting your search criteria or filters to find more candidates.',
+    loadingCandidates: 'Please wait while we load the candidates',
   },
   specialistProfile: {
     match: 'Match',

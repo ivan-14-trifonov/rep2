@@ -9,7 +9,6 @@ import { Label } from '@ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
 import { Alert, AlertDescription } from '@ui/alert';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { SVGProps } from 'react';
 import { useState } from 'react';
 
 import { signIn } from 'next-auth/react';
@@ -46,9 +45,9 @@ export function LoginForm() {
       const result = await signIn('credentials', {
         email: data.email,
         password: data.password,
-        redirect: false
+        redirect: false,
       });
-      if ((result === undefined) || (result?.error)) {
+      if (result === undefined || result?.error) {
         setError('Authentication failed. Please check your credentials.');
       } else {
         // Redirect to home page after successful authentication
@@ -117,13 +116,7 @@ export function LoginForm() {
           </div>
 
           {/* Google Sign-In Button */}
-          <Button 
-            type="button" 
-            className="w-full flex items-center gap-2" 
-            onClick={() => signIn('google', { callbackUrl: '/' })} 
-            variant="outline"
-            size="lg"
-          >
+          <Button type="button" className="w-full flex items-center gap-2" onClick={() => signIn('google', { callbackUrl: '/' })} variant="outline" size="lg">
             <GoogleIcon className="h-5 w-5" />
             {t('loginForm.signInWithGoogle')}
           </Button>
@@ -146,15 +139,7 @@ export function LoginForm() {
 }
 
 const GoogleIcon = ({ className, ...props }: SVGProps<SVGSVGElement>) => (
-  <svg
-    className={className}
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+  <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.79 15.71 17.57V20.34H19.28C21.36 18.42 22.56 15.59 22.56 12.25Z"
       fill="#4285F4"
