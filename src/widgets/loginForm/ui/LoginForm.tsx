@@ -9,8 +9,7 @@ import { Label } from '@ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
 import { Alert, AlertDescription } from '@ui/alert';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { useState } from 'react';
-
+import { useState, type SVGProps } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/shared/hooks/use-translation';

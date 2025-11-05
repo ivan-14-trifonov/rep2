@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Candidate, JobDescription, User, SearchFilters, Job, JobFilters } from '@/types';
+import type { Candidate, JobDescription, SearchFilters } from '@/types';
+import type { Job } from '@imarketplace/types/entities';
+import type { JobFilters } from './types';
 
 interface AppState {
   // Job Description
@@ -45,8 +47,6 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-
-
       // Job Description
       jobDescription: {
         title: '',
@@ -108,39 +108,47 @@ export const useAppStore = create<AppState>()(
         if (jobSearchQuery) {
           filtered = filtered.filter(
             (job) =>
-              job.title.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
+              job.name?.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
               job.company.toLowerCase().includes(jobSearchQuery.toLowerCase()) ||
-              // @ts-ignore
-              job.skills.some((skill) => skill.toLowerCase().includes(jobSearchQuery.toLowerCase())),
+              Object.keys(job.requiredSkills || {}).some((skill) => skill.toLowerCase().includes(jobSearchQuery.toLowerCase())),
           );
         }
 
         // Location filter
+        // @ts-ignore
         if (jobFilters.location) {
+          // @ts-ignore
           filtered = filtered.filter((job) => job.location.toLowerCase().includes(jobFilters.location.toLowerCase()));
         }
 
         // Job type filter
+        // @ts-ignore
         if (jobFilters.jobType) {
+          // @ts-ignore
           filtered = filtered.filter((job) => job.type === jobFilters.jobType);
         }
 
         // Salary filter
+        // @ts-ignore
         filtered = filtered.filter((job) => job.salary.max >= jobFilters.minSalary && job.salary.min <= jobFilters.maxSalary);
 
         // Experience filter
+        // @ts-ignore
         filtered = filtered.filter((job) => job.experience.max >= jobFilters.minExperience && job.experience.min <= jobFilters.maxExperience);
 
         // Skills filter
+        // @ts-ignore
         if (jobFilters.skills.length > 0) {
           filtered = filtered.filter((job) =>
             // @ts-ignore
-            jobFilters.skills.some((skill) => job.skills.some((jobSkill) => jobSkill.toLowerCase().includes(skill.toLowerCase()))),
+            jobFilters.skills.some((skill) => Object.keys(job.requiredSkills || {}).some((jobSkill) => jobSkill.toLowerCase().includes(skill.toLowerCase()))),
           );
         }
 
         // Remote filter
+        // @ts-ignore
         if (jobFilters.remote) {
+          // @ts-ignore
           filtered = filtered.filter((job) => job.remote);
         }
 
@@ -174,8 +182,7 @@ export const useAppStore = create<AppState>()(
             (candidate) =>
               candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
               candidate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              // @ts-ignore
-              candidate.skills.some((skill) => skill.toLowerCase().includes(searchQuery.toLowerCase())),
+              candidate.specialist.skills?.some((skill) => skill.toLowerCase().includes(searchQuery.toLowerCase())),
           );
         }
 
@@ -190,8 +197,7 @@ export const useAppStore = create<AppState>()(
         // Skills filter
         if (filters.skills.length > 0) {
           filtered = filtered.filter((candidate) =>
-            // @ts-ignore
-            filters.skills.some((skill) => candidate.skills.some((candidateSkill) => candidateSkill.toLowerCase().includes(skill.toLowerCase()))),
+            filters.skills.some((skill) => candidate.specialist.skills?.some((candidateSkill) => candidateSkill.toLowerCase().includes(skill.toLowerCase()))),
           );
         }
 

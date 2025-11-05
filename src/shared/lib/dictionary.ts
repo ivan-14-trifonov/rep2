@@ -123,6 +123,7 @@ export type Dictionary = {
     signingIn: string;
     dontHaveAccount: string;
     contactSales: string;
+    signInWithGoogle: string;
   };
   jobFilters: {
     title: string;

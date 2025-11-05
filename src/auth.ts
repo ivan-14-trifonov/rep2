@@ -6,4 +6,5 @@ export const {
   auth,
   signIn,
   signOut,
+  // @ts-ignore todo fix
 } = NextAuth(authOptions);

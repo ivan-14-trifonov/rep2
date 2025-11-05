@@ -26,7 +26,7 @@ export const authOptions = {
             return {
               id: res.data.user?.id || '1',
               email: credentials?.email || '',
-              name: res.data.user?.name || credentials?.email?.split('@')[0] || 'User',
+              name: res.data.user?.name || 'User',
               accessToken: res.data.token,
             };
           }
