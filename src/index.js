@@ -12,6 +12,7 @@ import UserWorksList from "./pages/user-works-list";
 import UserAddWork from "./pages/user-add-work";
 import UserAddPerform from "./pages/user-add-perform";
 import UserRights from "./pages/user-rights";
+import StatusConfiguration from "./pages/status-configuration";
 import ErrorPage from "./components/error-page";
 
 const router = createBrowserRouter([
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: "/user-rights",
     element: <UserRights/>,
+  },
+  {
+    path: "/status-configuration",
+    element: <StatusConfiguration/>,
   },
 ]);
 
