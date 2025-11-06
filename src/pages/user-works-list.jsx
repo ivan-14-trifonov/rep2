@@ -141,7 +141,7 @@ export default function UserWorksList() {
       for (let i = 0; i < result.length; i++) {
         const statusNumber = parseInt(result[i].number);
         if (!isNaN(statusNumber)) {
-          arr[statusNumber] = result[i].name;
+          arr[statusNumber] = result[i];
         }
       }
 

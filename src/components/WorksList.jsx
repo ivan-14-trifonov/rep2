@@ -66,9 +66,9 @@ export default function WorksList({ works, status, navigate, connect, openModal,
   return (
     <div>
       {Array(works.length).fill().map((_, i) =>
-        <Card variant="outlined" className={`workCard ${works[i].status && 'status' + works[i].status}`} name={works[i][0]}>
+        <Card variant="outlined" className="workCard" style={works[i].status ? { backgroundColor: status[works[i].status].color } : {}} name={works[i][0]}>
           <div className="workCard__panel">
-            {works[i].status && <p className="status">{status[works[i].status]}</p>}
+            {works[i].status && <p className="status">{status[works[i].status].name}</p>}
             <p className="workCard__edit">
               <img
                 //value={seminars[i].title}
