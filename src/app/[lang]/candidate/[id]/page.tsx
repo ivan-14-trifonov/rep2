@@ -8,35 +8,24 @@ import { mockCandidates } from '@/shared/lib/mock-data';
 import { SpecialistProfile } from '@/widgets/specialistProfile';
 import { BackButton } from '@/shared/components/BackButton';
 import { useAppStore } from '@/shared/lib/store';
-import { useAuth } from '@/shared/hooks/use-auth';
 
 export default function CandidatePage() {
   const params = useParams<{ id: string }>();
-  const { selectedCandidate, setSelectedCandidate } = useAppStore(); // Remove isAuthenticated from destructure
-  const { isAuthenticated, isLoading } = useAuth();
+  const { selectedCandidate, setSelectedCandidate } = useAppStore();
   const router = useRouter();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/login');
-      return;
-    }
-
     // If no selected candidate, try to find by ID
     if (!selectedCandidate) {
       const candidate = mockCandidates.find((c) => c.id === params.id);
       if (candidate) {
         setSelectedCandidate(candidate);
       } else {
-        router.push('/dashboard');
+        router.push('/candidates');
       }
     }
-  }, [isAuthenticated, isLoading, selectedCandidate, params.id, router, setSelectedCandidate]);
-
-  if (!isAuthenticated && !isLoading) {
-    return null;
-  }
+  }, [selectedCandidate, params.id, router, setSelectedCandidate]);
 
   if (!selectedCandidate) {
     return null;
