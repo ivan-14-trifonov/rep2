@@ -17,8 +17,7 @@ export const useFetchPaginatedOffers = () => {
       })
       .catch((error) => {
         if (error instanceof Error) {
-          // @ts-ignore
-          setError({ code: error.code || 'UNKNOWN', message: error.message, name: error.name });
+          setError({ code: 'UNKNOWN', message: error.message });
         }
       })
       .finally(() => {
