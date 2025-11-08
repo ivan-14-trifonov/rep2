@@ -8,6 +8,7 @@ import { mockCandidates } from '@/shared/lib/mock-data';
 import { SpecialistProfile } from '@/widgets/specialistProfile';
 import { BackButton } from '@/shared/components/BackButton';
 import { useAppStore } from '@/shared/lib/store';
+import type { Candidate } from '@/types';
 
 export default function CandidatePage() {
   const params = useParams<{ id: string }>();
@@ -31,11 +32,12 @@ export default function CandidatePage() {
     return null;
   }
 
+  // Cast to any to pass to SpecialistProfile which expects Offer type
   return (
     <PageLayout>
       <div className="space-y-6">
         <BackButton t={t} router={router} />
-        <SpecialistProfile candidate={selectedCandidate} />
+        <SpecialistProfile candidate={selectedCandidate as any} />
       </div>
     </PageLayout>
   );

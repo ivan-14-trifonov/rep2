@@ -2,9 +2,17 @@ import { useTranslation } from '@/shared/hooks/use-translation';
 import { Badge } from '@ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { GraduationCap } from 'lucide-react';
-import type { Eductation } from '@/types';
+import type { Specialist } from '@imarketplace/types/entities';
 
-export function EducationCard({ educations }: { educations: Eductation[] }) {
+interface EducationItem {
+  name?: string | null;
+  level: 'secondaryGeneral' | 'CandidateOfSciences' | 'masterOfScience' | 'higher' | 'unfinishedHigher' | 'secondary' | 'other';
+  major?: string | null;
+  year?: number | null;
+  id?: string | null;
+}
+
+export function EducationCard({ educations }: { educations: EducationItem[] }) {
   const { t } = useTranslation();
 
   return (
@@ -16,13 +24,13 @@ export function EducationCard({ educations }: { educations: Eductation[] }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {educations.map((edu: Eductation, index: number) => (
-          <div key={index} className="flex items-center justify-between">
+        {educations.map((edu, index) => (
+          <div key={edu.id || index} className="flex items-center justify-between">
             <div>
-              <h4 className="font-semibold">{edu.degree}</h4>
-              <p className="text-muted-foreground">{edu.institution}</p>
+              <h4 className="font-semibold">{edu.name || 'Education'}</h4>
+              <p className="text-muted-foreground">{edu.major}</p>
             </div>
-            <Badge variant="outline">{edu.year}</Badge>
+            <Badge variant="outline">{edu.year || 'N/A'}</Badge>
           </div>
         ))}
       </CardContent>

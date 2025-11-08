@@ -180,19 +180,23 @@ export const useAppStore = create<AppState>()(
         if (searchQuery) {
           filtered = filtered.filter(
             (candidate) =>
-              candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              candidate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              candidate.specialist.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              candidate.specialist.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              candidate.specialist.specialization?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
               candidate.specialist.skills?.some((skill) => skill.toLowerCase().includes(searchQuery.toLowerCase())),
           );
         }
 
         // Location filter
         if (filters.location) {
-          filtered = filtered.filter((candidate) => candidate.location.toLowerCase().includes(filters.location.toLowerCase()));
+          filtered = filtered.filter((candidate) => 
+            (candidate.specialist.city?.name || '').toLowerCase().includes(filters.location.toLowerCase()));
         }
 
         // Experience filter
-        filtered = filtered.filter((candidate) => candidate.experience >= filters.minExperience && candidate.experience <= filters.maxExperience);
+        filtered = filtered.filter((candidate) => 
+          (candidate.specialist.experience?.length || 0) >= filters.minExperience && 
+          (candidate.specialist.experience?.length || 0) <= filters.maxExperience);
 
         // Skills filter
         if (filters.skills.length > 0) {
@@ -202,7 +206,8 @@ export const useAppStore = create<AppState>()(
         }
 
         // Match score filter
-        filtered = filtered.filter((candidate) => candidate.matchScore >= filters.minMatchScore);
+        filtered = filtered.filter((candidate) => 
+          Math.round((candidate.matched || 0) * 100) >= filters.minMatchScore);
 
         set({ filteredCandidates: filtered });
       },

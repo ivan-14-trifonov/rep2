@@ -9,14 +9,16 @@ import { EducationCard } from './EducationCard';
 import { ContactInfoCard } from './ContactInfoCard';
 import { SkillsCard } from './SkillsCard';
 import { QuickStatsCard } from './QuickStatsCard';
-import type { Candidate } from '@/types';
+import type { Offer, Specialist } from '@imarketplace/types/entities';
 
 interface SpecialistProfileProps {
-  candidate: Candidate;
+  candidate: Offer<{ specialist: Specialist }>;
 }
 
 export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
   const { t } = useTranslation();
+  // Access the specialist data from the offer object
+  const specialist = candidate.specialist;
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -25,16 +27,16 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
       <div className="grid md:grid-cols-3 gap-6">
         {/* Left Column */}
         <div className="md:col-span-2 space-y-6">
-          <MatchAnalysisCard description={candidate.matchDescription} />
-          <ProfessionalSummaryCard summary={candidate.summary} />
+          <MatchAnalysisCard description={candidate.comment || ''} />
+          <ProfessionalSummaryCard summary={specialist.aboutMe || ''} />
           <WorkExperienceCard candidate={candidate} />
-          <EducationCard educations={candidate.education} />
+          <EducationCard educations={specialist.educations || []} />
         </div>
 
         {/* Right Column */}
         <div className="space-y-6">
           <ContactInfoCard candidate={candidate} />
-          <SkillsCard skills={candidate.skills} />
+          <SkillsCard skills={specialist.skills || []} />
           <QuickStatsCard candidate={candidate} />
         </div>
       </div>
