@@ -8,12 +8,10 @@ import { useFetchPaginatedOffers } from '../hooks/useFetchPaginatedOffers';
 import { useSpecialistOffersGridStore } from '../store/useSpecialistOffersGridStore';
 import { ErrorMessage } from '@/shared/components/ErrorMessage';
 import { Pagination } from '@/shared/components/Pagination';
-import { useSession } from 'next-auth/react';
 
 export function SpecialistOffersGrid() {
   const { offers, loading, error, page, pagesCount, hasMore } = useSpecialistOffersGridStore();
   const { fetchOffers } = useFetchPaginatedOffers();
-  const { status } = useSession();
   const searchParams = useSearchParams();
   const currentPage = searchParams.get('page') ? parseInt(searchParams.get('page') as string, 10) : 1;
 
@@ -21,10 +19,10 @@ export function SpecialistOffersGrid() {
     const pageChanged = page !== currentPage;
     const isInitialLoad = offers.length === 0 && page === 1;
 
-    if (status === 'authenticated' && !loading && !error && (isInitialLoad || pageChanged)) {
+    if (!loading && !error && (isInitialLoad || pageChanged)) {
       fetchOffers({ page: currentPage });
     }
-  }, [currentPage, offers.length, loading, error, page, status, fetchOffers]);
+  }, [currentPage, offers.length, loading, error, page, fetchOffers]);
 
   if (error) {
     return <ErrorMessage error={error} />;
