@@ -17,16 +17,14 @@ export default function CandidatePage() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // If no selected candidate, try to find by ID
-    if (!selectedCandidate) {
-      const candidate = mockCandidates.find((c) => c.id === params.id);
-      if (candidate) {
-        setSelectedCandidate(candidate);
-      } else {
-        router.push('/candidates');
-      }
+    // Always find and set candidate by the current ID in URL params
+    const candidate = mockCandidates.find((c) => c.id === params.id);
+    if (candidate) {
+      setSelectedCandidate(candidate);
+    } else {
+      router.push('/candidates');
     }
-  }, [selectedCandidate, params.id, router, setSelectedCandidate]);
+  }, [params.id, setSelectedCandidate, router]);
 
   if (!selectedCandidate) {
     return null;
