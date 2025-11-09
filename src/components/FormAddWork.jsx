@@ -79,28 +79,28 @@ export default function FormAddWork({ connect, navigate }) {
       <input className="formAddWork__input" name="name" placeholder="Название" />
       <select className="formAddWork__select" name="book" id="books-select">
         <option value="">--Выберите сборник--</option>
-          {Array(books.length).fill().map((_, i) =>
-            <option value={books[i].name}>{books[i].name}</option>
+          {books && books.length > 0 && Array.from({ length: books.length }, (_, i) =>
+            <option key={i} value={books[i].name}>{books[i].name}</option>
           )}
       </select>
       <input className="formAddWork__input" name="number" placeholder="Номер" />
       <input className="formAddWork__input" name="page" placeholder="Страница" />
       <select className="formAddWork__select" name="theme" id="themes-select">
         <option value="">--Выберите тему--</option>
-          {Array(themes.length).fill().map((_, i) =>
-            <option value={themes[i].name}>{themes[i].name}</option>
+          {themes && themes.length > 0 && Array.from({ length: themes.length }, (_, i) =>
+            <option key={i} value={themes[i].name}>{themes[i].name}</option>
           )}
       </select>
       <select className="formAddWork__select" name="event" id="events-select">
         <option value="">--Выберите событие--</option>
-          {Array(events.length).fill().map((_, i) =>
-            <option value={events[i].name}>{events[i].name}</option>
+          {events && events.length > 0 && Array.from({ length: events.length }, (_, i) =>
+            <option key={i} value={events[i].name}>{events[i].name}</option>
           )}
       </select>
       <select className="formAddWork__select" name="status" id="status-select">
         <option value="">--Выберите статус--</option>
-          {Array(status.length - 1).fill().map((_, i) =>
-            <option value={i + 1}>{status[i + 1]}</option>
+          {status && status.length > 1 && Array.from({ length: status.length - 1 }, (_, i) =>
+            <option key={i} value={i + 1}>{status[i + 1]}</option>
           )}
       </select>
       <input className="formAddWork__input" name="comment" placeholder="Комментарий" />
