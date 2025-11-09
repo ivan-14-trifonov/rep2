@@ -219,6 +219,24 @@ export default function UserWorksList() {
     });
   }
 
+  const [sortedByNumber, setSortedByNumber] = useState(false);
+  
+  const sortByNumber = () => {
+    const sortedWorks = [...workInSections].sort((a, b) => {
+      const numA = parseInt(a.number) || 0;
+      const numB = parseInt(b.number) || 0;
+      return numA - numB;
+    });
+    
+    setWorkInSections(sortedWorks);
+    setSortedByNumber(true);
+  };
+
+  // Reset the sorted state when workInSections changes
+  useEffect(() => {
+    setSortedByNumber(false);
+  }, [workInSections]);
+
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
       {user &&
@@ -234,6 +252,7 @@ export default function UserWorksList() {
       }
       <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
       <Button className="addWork" variant="contained" onClick={onAddPerform} sx={{mt: 3}} fullWidth>Добавить исполнение</Button>
+      <Button className="addWork" variant="outlined" onClick={sortByNumber} sx={{mt: 2}} fullWidth>Отсортировать по номерам</Button>
       {sections &&
         <div className="sections">
           {Array(sections.length).fill().map((_, i) =>
