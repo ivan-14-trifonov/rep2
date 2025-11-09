@@ -9,6 +9,7 @@ import { EducationCard } from './EducationCard';
 import { ContactInfoCard } from './ContactInfoCard';
 import { SkillsCard } from './SkillsCard';
 import { QuickStatsCard } from './QuickStatsCard';
+import { RequirementsMatchCard } from './RequirementsMatchCard';
 import type { Offer, Specialist } from '@imarketplace/types/entities';
 
 interface SpecialistProfileProps {
@@ -31,6 +32,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
           <ProfessionalSummaryCard summary={specialist.aboutMe || ''} />
           <WorkExperienceCard candidate={candidate} />
           <EducationCard educations={specialist.educations || []} />
+          <RequirementsMatchCard candidate={candidate} />
         </div>
 
         {/* Right Column */}

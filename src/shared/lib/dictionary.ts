@@ -107,6 +107,17 @@ export type Dictionary = {
     experience: string;
     matchScore: string;
     skills: string;
+    requirementsMatch: string;
+    matched: string;
+    total: string;
+    mandatory: string;
+    mandatoryMatched: string;
+    matchedRequirements: string;
+    mandatoryRequirement: string;
+    comment: string;
+    questions: string;
+    partialMatch: string;
+    notMatched: string;
   };
   loginForm: {
     welcomeBack: string;
