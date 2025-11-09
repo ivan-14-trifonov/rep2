@@ -6,6 +6,9 @@ import { Mail, Phone, ExternalLink, Star, MapPin, Award } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/use-translation';
 import { Card, CardContent } from '@ui/card';
 import { getMatchScoreColor } from '@/entities/offer/lib/getMatchScoreColor';
+import { computeExperience } from '@/entities/candidate/lib/computeExperience';
+import { formatSpecialistDuration } from '@/entities/specialist/lib/formatSpecialistDuration';
+import { useLanguage } from '@/shared/hooks/use-language';
 import type { Offer, Specialist } from '@imarketplace/types/entities';
 
 interface SpecialistProfileHeaderProps {
@@ -14,13 +17,19 @@ interface SpecialistProfileHeaderProps {
 
 export function SpecialistProfileHeader({ candidate }: SpecialistProfileHeaderProps) {
   const { t } = useTranslation();
+  const lang = useLanguage();
   const specialist = candidate.specialist;
 
   // Extract information from the specialist object
   const name = specialist.name || `${specialist.firstName || ''} ${specialist.lastName || ''}`.trim();
   const title = specialist.title || specialist.specialization?.name || '';
-  const location = specialist.city?.name || '';
-  const experience = specialist.experience?.length || 0;
+  const location = (() => {
+    const city = specialist.city?.name ?? '';
+    const country = specialist.country && typeof specialist?.country === 'object' ? specialist.country.name : (specialist.country as any) ?? '';
+    if (city && country) return `${city}, ${country}`;
+    return city || country || '';
+  })();
+  const experience = computeExperience(specialist?.experience || []);
   const avatar = specialist.img || '';
   const email = specialist.contacts?.email || '';
   const phone = specialist.contacts?.phone || '';
@@ -59,7 +68,7 @@ export function SpecialistProfileHeader({ candidate }: SpecialistProfileHeaderPr
               </div>
               <div className="flex items-center">
                 <Award className="h-4 w-4 mr-1" />
-                {experience} {t('specialistProfile.yearsExperience')}
+                {formatSpecialistDuration(experience, { lang, t })}
               </div>
             </div>
 
