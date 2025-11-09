@@ -8,7 +8,6 @@ import { WorkExperienceCard } from './WorkExperienceCard';
 import { EducationCard } from './EducationCard';
 import { ContactInfoCard } from './ContactInfoCard';
 import { SkillsCard } from './SkillsCard';
-import { QuickStatsCard } from './QuickStatsCard';
 import { RequirementsMatchCard } from './RequirementsMatchCard';
 import type { Offer, Specialist } from '@imarketplace/types/entities';
 
@@ -36,8 +35,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
         {/* Right Column */}
         <div className="space-y-6">
           <ContactInfoCard candidate={candidate} />
-          <SkillsCard skills={specialist.skills || []} />
-          <QuickStatsCard candidate={candidate} />
+          <SkillsCard skills={specialist.formattedExperienceSkills ? Object.keys(specialist.formattedExperienceSkills) : []} />
         </div>
       </div>
     </div>
