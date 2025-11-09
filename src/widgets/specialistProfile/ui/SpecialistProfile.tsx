@@ -29,9 +29,7 @@ export function SpecialistProfile({ candidate }: SpecialistProfileProps) {
         {/* Left Column */}
         <div className="md:col-span-2 space-y-6">
           <MatchAnalysisCard description={candidate.comment || ''} />
-          <ProfessionalSummaryCard summary={specialist.aboutMe || ''} />
           <WorkExperienceCard candidate={candidate} />
-          <EducationCard educations={specialist.educations || []} />
           <RequirementsMatchCard candidate={candidate} />
         </div>
 
