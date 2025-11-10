@@ -58,7 +58,7 @@ export default function FormAddWork({ connect, navigate }) {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/status", "number");
+      const result = await GetElements(connect, "status", "number");
       
       let arr = []
       for (let i = 0; i < result.length; i++) {
