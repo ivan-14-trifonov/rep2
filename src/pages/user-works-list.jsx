@@ -197,7 +197,7 @@ export default function UserWorksList() {
   }
 
   const onSection = event => {
-    let section = event.currentTarget.getAttribute("value");
+    let section = parseInt(event.currentTarget.getAttribute("value"));
     setNumberSection(section);
   }
 
