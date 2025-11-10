@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
-import { AddWork, GetElements, GetEl, updateEl } from "../services/firestore";
+import { Button, Box, Card, Typography } from "@mui/material";
+import { AddWork, GetElements, GetEl, updateEl, deleteEl } from "../services/firestore";
+import editIcon from '../assets/images/edit.png';
+import deleteIcon from '../assets/images/delete.png';
 
 export default function FormWork({ connect, navigate, workId = null, initialWorkData = null }) {
   const isEditing = workId !== null;
@@ -15,9 +17,14 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
   const [status, setStatus] = useState("");
   const [comment, setComment] = useState("");
 
+  // Performance-related state
+  const [performances, setPerformances] = useState([]);
+  const [editingPerformanceId, setEditingPerformanceId] = useState(null);
+  const [editingPerformanceData, setEditingPerformanceData] = useState({});
+  const [allEvents, setAllEvents] = useState(null);
+
   // Fetch data for dropdowns
   const [books, setBooks] = useState(null);
-  const [events, setEvents] = useState(null);
   const [themes, setThemes] = useState(null);
   const [allStatuses, setAllStatuses] = useState(null);
 
@@ -66,7 +73,7 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
       
       // Fetch events
       const eventsResult = await GetElements(connect, "event", "name");
-      setEvents(eventsResult);
+      setAllEvents(eventsResult);
       
       // Fetch themes
       const themesResult = await GetElements(connect, "theme", "name");
@@ -85,6 +92,25 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
     };
     fetchData();
   }, [connect]);
+
+  // Fetch performances when editing a work
+  useEffect(() => {
+    if (isEditing) {
+      const fetchPerformances = async () => {
+        // Get all performances for this space and musical group
+        const allPerforms = await GetElements(
+          connect, 
+          `space/${connect.space}/musical_group/${connect.musicalGroup}/perform`, 
+          "date"
+        );
+        
+        // Filter to only performances for this specific work
+        const workPerformances = allPerforms.filter(perform => perform.work === workId);
+        setPerformances(workPerformances);
+      };
+      fetchPerformances();
+    }
+  }, [isEditing, workId, connect]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,8 +144,72 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
     navigate(url);
   };
 
+
+
+  // Start editing a performance
+  const startEditingPerformance = (perform) => {
+    setEditingPerformanceId(perform.id);
+    setEditingPerformanceData({
+      date: perform.date || "",
+      time: perform.time || "",
+      event: perform.event || "",
+      note: perform.note || ""
+    });
+  };
+
+  // Cancel editing a performance
+  const cancelEditingPerformance = () => {
+    setEditingPerformanceId(null);
+    setEditingPerformanceData({});
+  };
+
+  // Handle updating an existing performance
+  const handleUpdatePerformance = async (perfId, updatedPerf) => {
+    // Update in Firestore
+    await updateEl(
+      connect,
+      `space/${connect.space}/musical_group/${connect.musicalGroup}/perform`,
+      perfId,
+      updatedPerf
+    );
+    
+    // Refresh the performances list
+    const allPerforms = await GetElements(
+      connect, 
+      `space/${connect.space}/musical_group/${connect.musicalGroup}/perform`, 
+      "date"
+    );
+    
+    // Filter to only performances for this specific work
+    const workPerformances = allPerforms.filter(perform => perform.work === workId);
+    setPerformances(workPerformances);
+    
+    // Exit edit mode
+    setEditingPerformanceId(null);
+    setEditingPerformanceData({});
+  };
+
+  // Handle deleting a performance
+  const handleDeletePerformance = async (perfId) => {
+    try {
+      // Delete from Firestore
+      await deleteEl(
+        connect,
+        `space/${connect.space}/musical_group/${connect.musicalGroup}/perform`,
+        perfId
+      );
+      
+      // Update local state
+      setPerformances(performances.filter(perform => perform.id !== perfId));
+    } catch (error) {
+      console.error("Error deleting performance:", error);
+    }
+  };
+
+
+
   // Show loading state until all data is loaded
-  if (!books || !events || !themes || !allStatuses) {
+  if (!books || !allEvents || !themes || !allStatuses) {
     return <div>Загрузка...</div>;
   }
 
@@ -178,7 +268,7 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
         onChange={(e) => setEvent(e.target.value)}
       >
         <option value="">--Выберите событие--</option>
-        {events && events.length > 0 && events.map((eventItem, i) =>
+        {allEvents && allEvents.length > 0 && allEvents.map((eventItem, i) =>
           <option key={i} value={eventItem.name}>{eventItem.name}</option>
         )}
       </select>
@@ -201,6 +291,109 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
         onChange={(e) => setComment(e.target.value)} 
         placeholder="Комментарий" 
       />
+      
+      {/* Performances section */}
+      {isEditing && (
+        <Box sx={{ mt: 3, mb: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            Исполнения
+          </Typography>
+          
+          {/* Existing performances list */}
+          {performances.length > 0 ? (
+            performances.map((perform, index) => (
+              <Card key={perform.id || index} variant="outlined" sx={{ p: 2, mb: 1 }}>
+                {editingPerformanceId === perform.id ? (
+                  // Editing mode for this performance
+                  <Box>
+                    <input 
+                      type="date" 
+                      value={editingPerformanceData.date} 
+                      onChange={(e) => setEditingPerformanceData({...editingPerformanceData, date: e.target.value})}
+                      className="formAddWork__input"
+                      style={{ width: '100%', marginBottom: '8px' }}
+                    />
+                    <select 
+                      className="formAddWork__select"
+                      value={editingPerformanceData.time}
+                      onChange={(e) => setEditingPerformanceData({...editingPerformanceData, time: e.target.value})}
+                      style={{ width: '100%', marginBottom: '8px' }}
+                    >
+                      <option value="">--Время--</option>
+                      <option value="утро">утро</option>
+                      <option value="вечер">вечер</option>
+                    </select>
+                    <select 
+                      className="formAddWork__select"
+                      value={editingPerformanceData.event}
+                      onChange={(e) => setEditingPerformanceData({...editingPerformanceData, event: e.target.value})}
+                      style={{ width: '100%', marginBottom: '8px' }}
+                    >
+                      <option value="">--Событие--</option>
+                      {allEvents && allEvents.length > 0 && allEvents.map((eventItem, i) =>
+                        <option key={i} value={eventItem.name}>{eventItem.name}</option>
+                      )}
+                    </select>
+                    <input 
+                      className="formAddWork__input"
+                      placeholder="Примечание"
+                      value={editingPerformanceData.note}
+                      onChange={(e) => setEditingPerformanceData({...editingPerformanceData, note: e.target.value})}
+                      style={{ width: '100%', marginBottom: '8px' }}
+                    />
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Button 
+                        variant="contained" 
+                        size="small"
+                        onClick={() => handleUpdatePerformance(perform.id, editingPerformanceData)}
+                      >
+                        Сохранить
+                      </Button>
+                      <Button 
+                        variant="outlined" 
+                        size="small"
+                        onClick={cancelEditingPerformance}
+                      >
+                        Отменить
+                      </Button>
+                    </Box>
+                  </Box>
+                ) : (
+                  // View mode for this performance
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+                    <Box sx={{ flex: 1, marginRight: 1 }}>
+                      {perform.date && <Typography variant="body2">Дата: {perform.date}</Typography>}
+                      {perform.time && <Typography variant="body2">Время: {perform.time}</Typography>}
+                      {perform.event && <Typography variant="body2">Событие: {perform.event}</Typography>}
+                      {perform.note && <Typography variant="body2">Примечание: {perform.note}</Typography>}
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <img
+                        onClick={() => startEditingPerformance(perform)}
+                        className="workCard__button"
+                        src={editIcon}
+                        alt="Изменить"
+                        style={{ width: '20px', height: '20px', cursor: 'pointer', marginRight: '8px' }}
+                      />
+                      <img
+                        onClick={() => handleDeletePerformance(perform.id)}
+                        className="workCard__button"
+                        src={deleteIcon}
+                        alt="Удалить"
+                        style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                      />
+                    </Box>
+                  </Box>
+                )}
+              </Card>
+            ))
+          ) : (
+            <Typography variant="body2" color="textSecondary">
+              Нет исполнений
+            </Typography>
+          )}
+        </Box>
+      )}
       
       <Button variant="contained" type="submit" sx={{mt: 3}} fullWidth>
         {isEditing ? "Сохранить" : "Сохранить"}
