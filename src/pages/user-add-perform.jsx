@@ -1,6 +1,6 @@
 //import "./user-add-work.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
@@ -13,9 +13,9 @@ import FormAddPerformComponent from "../components/FormAddPerform";
 
 export default function UserAddPerform() {
 
-  const urlSearchString = window.location.search;
-  const params = new URLSearchParams(urlSearchString);
-  const id = params.get('id');
+  // const urlSearchString = window.location.search;
+  // const params = new URLSearchParams(urlSearchString);
+  // const id = params.get('id'); // Currently unused
 
   const auth = getAuth();
   let navigate = useNavigate();
@@ -29,12 +29,14 @@ export default function UserAddPerform() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const spaceParam = queryParams.get('space');
+  const musicalGroupParam = queryParams.get('musicalGroup');
 
-  const connect = {
+  const connect = useMemo(() => ({
     db: db,
-    space: queryParams.get('space'),
-    musicalGroup: queryParams.get('musicalGroup'),
-  };
+    space: spaceParam,
+    musicalGroup: musicalGroupParam,
+  }), [db, spaceParam, musicalGroupParam]);
 
   const [spaceUsers, setSpaceUsers] = useState(null);
 
@@ -44,7 +46,7 @@ export default function UserAddPerform() {
       setSpaceUsers(result);
     };
     asyncEffect();
-  }, []);
+  }, [connect]);
 
   if (user && spaceUsers) {
     if (!spaceUsers.map(i => i.uid).includes(user.uid)) {

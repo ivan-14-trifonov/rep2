@@ -1,6 +1,6 @@
 import "../styles/user-add-work.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
@@ -25,12 +25,14 @@ export default function UserAddWork() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const spaceParam = queryParams.get('space');
+  const musicalGroupParam = queryParams.get('musicalGroup');
 
-  const connect = {
+  const connect = useMemo(() => ({
     db: db,
-    space: queryParams.get('space'),
-    musicalGroup: queryParams.get('musicalGroup'),
-  };
+    space: spaceParam,
+    musicalGroup: musicalGroupParam,
+  }), [db, spaceParam, musicalGroupParam]);
 
   const [spaceUsers, setSpaceUsers] = useState(null);
 
@@ -40,7 +42,7 @@ export default function UserAddWork() {
       setSpaceUsers(result);
     };
     asyncEffect();
-  }, []);
+  }, [connect]);
 
   if (user && spaceUsers) {
     if (!spaceUsers.map(i => i.uid).includes(user.uid)) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Modal, Box } from "@mui/material";
+import { Button, Modal, Box } from "@mui/material";
 import { GetElements, GetEl, updateEl } from "../services/firestore";
 
 export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {

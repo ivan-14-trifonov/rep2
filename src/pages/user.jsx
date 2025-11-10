@@ -1,13 +1,13 @@
 import "../styles/user.css";
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../config/firebase";
-import { GetElements, SyncGetElements } from "../services/firestore";
+import { GetElements } from "../services/firestore";
 
 // worksList ЗАМЕНИТЬ!!!!!!
 function chooseSpace(spaces, onSpace) {
@@ -63,9 +63,9 @@ export default function User() {
 
   const db = getFirestore(app);
 
-  const connect = {
+  const connect = useMemo(() => ({
     db: db,
-  };
+  }), [db]);
 
   /*
     выбор "пространства"
@@ -81,7 +81,7 @@ export default function User() {
       }
     };
     asyncEffect();
-  }, [user]); // что будет, если убрать setTimeout(() => setUser... ?
+  }, [user, connect]); // что будет, если убрать setTimeout(() => setUser... ?
 
   // выбранное пространство
   const [spaceUid, setSpaceUid] = useState();
@@ -93,7 +93,7 @@ export default function User() {
       let result = [];
       for (let el of userSpace) {
         let response = await GetElements(connect, "space/" + el.uid + "/users", "uid");
-        if (response.map((r) => r.uid == user.uid).includes(true)) {
+        if (response.map((r) => r.uid === user.uid).includes(true)) {
           result.push(el);
         }
       }
@@ -101,7 +101,7 @@ export default function User() {
       setSpaces(result);
     };
     asyncEffect();
-  }, [userSpace]);
+  }, [userSpace, connect, user.uid]);
 
   /*
     выбор музыкальной группы
@@ -123,7 +123,7 @@ export default function User() {
       }
     };
     asyncEffect();
-  }, [spaceUid]);
+  }, [spaceUid, connect, navigate]);
 
   // события
 
@@ -135,34 +135,34 @@ export default function User() {
     });
   }
 
-  const onMusGr = event => {
+  const onMusGr = useCallback(event => {
     let selectedMusGr = event.currentTarget.getAttribute("musGrId");;
     let url = `/user-works-list?space=${spaceUid}&musicalGroup=${selectedMusGr}`;
     navigate(url);
     // setSpaceUid(selectedSpace);
     // chooseMusicalGroup(musicalGroups, onMusGr)
-  }
+  }, [spaceUid, navigate]);
 
-  const onSpace = event => {
+  const onSpace = useCallback(event => {
     let selectedSpace = event.currentTarget.getAttribute("spaceUid");;
     setSpaceUid(selectedSpace);
     // alert(JSON.stringify(musicalGroups));
 
     // ТОЧКА ОСТАНОВА: как изменять, когда musicalGroups подгрузится???
     // setContent(chooseMusicalGroup(musicalGroups, onMusGr));
-  }
+  }, []);
 
   const [content, setContent] = useState([]);
   useEffect(() => {
     if (spaces) {
     setContent(chooseSpace(spaces, onSpace));
   }
-  }, [spaces]);
+  }, [spaces, onSpace, connect]);
   useEffect(() => {
     if (musicalGroups) {
       setContent(chooseMusicalGroup(musicalGroups, onMusGr));
     }
-  }, [musicalGroups]);
+  }, [musicalGroups, onMusGr]);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>

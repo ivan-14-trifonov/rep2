@@ -1,6 +1,6 @@
 import "../styles/user.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { Button, Container } from "@mui/material";
@@ -25,14 +25,14 @@ export default function UserWorksList() {
       const result = await auth.currentUser;
 
       // если перешли по ссылке без авторизации
-      if (result == null) {
+      if (result === null) {
         navigate("/login");
       }
 
       setUser(result);
     };
     asyncEffect();
-  }, []);
+  }, [auth.currentUser, navigate]);
 
   const db = getFirestore(app);
 
@@ -40,12 +40,14 @@ export default function UserWorksList() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const spaceParam = queryParams.get('space');
+  const musicalGroupParam = queryParams.get('musicalGroup');
 
-  const connect = {
+  const connect = useMemo(() => ({
     db: db,
-    space: queryParams.get('space'),
-    musicalGroup: queryParams.get('musicalGroup'),
-  };
+    space: spaceParam,
+    musicalGroup: musicalGroupParam,
+  }), [db, spaceParam, musicalGroupParam]);
 
   const [spaceUsers, setSpaceUsers] = useState(null);
 
@@ -55,7 +57,7 @@ export default function UserWorksList() {
       setSpaceUsers(result);
     };
     asyncEffect();
-  }, []);
+  }, [connect]);
 
   /*if (spaceUsers.length == 0) {
     navigate("/user-rights");
@@ -79,7 +81,7 @@ export default function UserWorksList() {
       setSections(result);
     };
     asyncEffect();
-  }, []);
+  }, [connect]);
 
   /*
      реализовать работу с секциями
@@ -100,7 +102,7 @@ export default function UserWorksList() {
       setSpace(result);
     };
     asyncEffect();
-  }, []);
+  }, [connect]);
 
   const [musicalGroup, setMusicalGroup] = useState([]);
   
@@ -110,7 +112,7 @@ export default function UserWorksList() {
       setMusicalGroup(result);
     };
     asyncEffect();
-  }, []);
+  }, [connect]);
 
   const connectInfo = {
     space: space.name,
@@ -129,7 +131,7 @@ export default function UserWorksList() {
       }
     };
     asyncEffect();
-  }, [numberSection, sections, changeFlag]);
+  }, [numberSection, sections, changeFlag, connect]);
 
   const [status, setStatus] = useState(null);
 
@@ -148,7 +150,7 @@ export default function UserWorksList() {
       setStatus(arr);
     };
     asyncEffect();
-  }, []);
+  }, [connect]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idWorkEdit, setIdWorkEdit] = useState(false);
@@ -178,18 +180,6 @@ export default function UserWorksList() {
       // по сути, это заглушка, без которой пока не работает...
       setTimeout(() => setChangeFlag(!changeFlag), 10000);
     }
-  };
-
-  // Пример // НЕ РЕАЛИЗОВАНО
-  const handleSave_ = (updatedSeminar) => {
-    const res = true; // updateSeminar(updatedSeminar.id, updatedSeminar);
-    if (res) {
-      alert('Запись успешно обновлена');
-      // setFlag(!flag);
-    }
-    else {
-      alert('Ошибка при обновлении записи');
-    };
   };
 
   // события
@@ -238,8 +228,8 @@ export default function UserWorksList() {
         <div className="sections">
           {Array(sections.length).fill().map((_, i) =>
             <p className="sections__p">
-              <button className="sections__button" className={(i == numberSection) ? "sections__button_active" : "sections__button"} value={i} onClick={onSection}>{sections[i].name}</button>
-              {(i != sections.length - 1) &&
+              <button className={(i === numberSection) ? "sections__button_active sections__button" : "sections__button"} value={i} onClick={onSection}>{sections[i].name}</button>
+              {(i !== sections.length - 1) &&
                 <b> | </b>
               }
             </p> 

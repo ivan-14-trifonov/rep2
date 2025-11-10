@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { collection, addDoc, getDocs, doc, getDoc, updateDoc, query, orderBy, deleteDoc } from "firebase/firestore";
 
 export async function AddWork(connect, fields) {
   try {
-    const docRef = await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musicalGroup, "work"), fields);
+    await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musicalGroup, "work"), fields);
   } catch (e) {
     // An error happened.
     // console.error("Error adding document: ", e);
@@ -12,7 +11,7 @@ export async function AddWork(connect, fields) {
 
 export async function AddPerform(connect, fields) {
   try {
-    const docRef = await addDoc(collection(connect.db, "/space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform"), fields);
+    await addDoc(collection(connect.db, "/space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/perform"), fields);
   } catch (e) {
     // An error happened.
     // console.error("Error adding document: ", e);
@@ -59,14 +58,14 @@ export function WorksFilter(works, include, exclude) {
   function flag(el, include, exclude) {
     for (let key in include) {
       if (include[key].length > 0) {
-        if (include[key].findIndex((i) => i === el[key]) == -1) {
+        if (include[key].findIndex((i) => i === el[key]) === -1) {
           return false;
         }
       }
     }
     for (let key in exclude) {
       if (exclude[key].length > 0) {
-        if (exclude[key].findIndex((i) => i === el[key]) != -1) {
+        if (exclude[key].findIndex((i) => i === el[key]) !== -1) {
           return false;
         }
       }

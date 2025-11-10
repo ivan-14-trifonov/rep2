@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { app } from "../config/firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
-import { Button, Container, Snackbar, Alert, TextField, Box, Typography, Link } from "@mui/material";
+import { Button, Container, Snackbar, Alert, TextField, Box } from "@mui/material";
 
 export default function Login() {
 
