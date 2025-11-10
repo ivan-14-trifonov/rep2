@@ -209,8 +209,6 @@ export default function UserWorksList() {
     });
   }
 
-  const [sortedByNumber, setSortedByNumber] = useState(false);
-  
   const sortByNumber = () => {
     const sortedWorks = [...workInSections].sort((a, b) => {
       const numA = parseInt(a.number) || 0;
@@ -219,13 +217,9 @@ export default function UserWorksList() {
     });
     
     setWorkInSections(sortedWorks);
-    setSortedByNumber(true);
   };
 
   // Reset the sorted state when workInSections changes
-  useEffect(() => {
-    setSortedByNumber(false);
-  }, [workInSections]);
 
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
