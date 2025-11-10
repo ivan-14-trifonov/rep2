@@ -11,6 +11,7 @@ import Register from "./pages/register";
 import User from "./pages/user";
 import UserWorksList from "./pages/user-works-list";
 import UserAddWork from "./pages/user-add-work";
+import UserEditWork from "./pages/user-edit-work";
 import UserAddPerform from "./pages/user-add-perform";
 import UserRights from "./pages/user-rights";
 import ErrorPage from "./pages/error-page";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/user-add-work",
     element: <UserAddWork/>,
+  },
+  {
+    path: "/user-edit-work/:workId",
+    element: <UserEditWork/>,
   },
   {
     path: "/user-add-perform",

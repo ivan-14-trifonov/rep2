@@ -2,7 +2,7 @@ import { Card } from "@mui/material";
 import edit from '../assets/images/edit.png';
 import del from '../assets/images/delete.png';
 
-export default function WorksList({ works, status, navigate, connect, openModal, onDelete }) {
+export default function WorksList({ works, status, navigate, connect, onEdit, onDelete }) {
 
   function inBook(work) {
     if (work.number) {
@@ -82,7 +82,7 @@ export default function WorksList({ works, status, navigate, connect, openModal,
               />
               <img
                 work_id={works[i].id}
-                onClick={openModal}
+                onClick={(event) => onEdit(event.currentTarget.getAttribute("work_id"))}
                 className="workCard__button"
                 src={edit}
                 alt="Изменить"

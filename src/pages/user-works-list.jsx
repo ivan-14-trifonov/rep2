@@ -8,7 +8,6 @@ import { Button, Container } from "@mui/material";
 import { getFirestore } from "firebase/firestore";
 import { app } from "../config/firebase";
 import { GetElements, GetEl, GetWorkInSections, deleteEl } from "../services/firestore";
-import EditWorkModal from "../components/EditWorkModal";
 import WorksList from "../components/WorksList";
 
 export default function UserWorksList() {
@@ -152,21 +151,9 @@ export default function UserWorksList() {
     asyncEffect();
   }, [connect]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [idWorkEdit, setIdWorkEdit] = useState(false);
-  
-  const openModal = (event) => {
-    setIdWorkEdit(event.currentTarget.getAttribute("work_id"));
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setIdWorkEdit(false);
-    setChangeFlag(!changeFlag);
-
-    // по сути, это заглушка, без которой пока не работает...
-    setTimeout(() => setChangeFlag(!changeFlag), 10000);
+  const onEdit = (workId) => {
+    let url = `/user-edit-work/${workId}?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    navigate(url);
   };
 
   const onDelete = (event) => {
@@ -255,16 +242,10 @@ export default function UserWorksList() {
           status={status} 
           navigate={navigate} 
           connect={connect} 
-          openModal={openModal} 
+          onEdit={onEdit}
           onDelete={onDelete}
         />
       </div>
-      {idWorkEdit && <EditWorkModal
-        connect={connect}
-        work_id={idWorkEdit}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />}
     </Container>
   )
 }
