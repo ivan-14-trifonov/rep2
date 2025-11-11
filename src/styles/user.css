@@ -119,10 +119,15 @@
 .workCard__panel {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .workCard__edit {
   margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  align-items: center;
 }
 
 .workCard__button {
