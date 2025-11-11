@@ -27,6 +27,7 @@ export default function UserAddWork() {
   const queryParams = new URLSearchParams(location.search);
   const spaceParam = queryParams.get('space');
   const musicalGroupParam = queryParams.get('musicalGroup');
+  const sectionParam = queryParams.get('section') || '0';
 
   const connect = useMemo(() => ({
     db: db,

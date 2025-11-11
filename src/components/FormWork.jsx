@@ -139,8 +139,10 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
       await AddWork(connect, fields);
     }
     
-    // Redirect back to works list
-    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    // Redirect back to works list with section parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const sectionParam = urlParams.get('section') || '0';
+    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${sectionParam}`;
     navigate(url);
   };
 
@@ -403,7 +405,9 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
         sx={{mt: 2}} 
         fullWidth 
         onClick={() => {
-          let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+          const urlParams = new URLSearchParams(window.location.search);
+          const sectionParam = urlParams.get('section') || '0';
+          let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${sectionParam}`;
           navigate(url);
         }}
       >

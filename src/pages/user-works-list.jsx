@@ -41,6 +41,7 @@ export default function UserWorksList() {
   const queryParams = new URLSearchParams(location.search);
   const spaceParam = queryParams.get('space');
   const musicalGroupParam = queryParams.get('musicalGroup');
+  const sectionParam = queryParams.get('section') || '0'; // default to first section (index 0)
 
   const connect = useMemo(() => ({
     db: db,
@@ -78,16 +79,23 @@ export default function UserWorksList() {
         result[i].exclude = JSON.parse(result[i].exclude);
       }
       setSections(result);
+      
+      // If the section parameter is out of bounds, default to first section
+      if (result.length > 0 && parseInt(sectionParam) >= result.length) {
+        setNumberSection(0);
+        // Update URL to default to first section
+        navigate(`/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=0`);
+      }
     };
     asyncEffect();
-  }, [connect]);
+  }, [connect, sectionParam, navigate]);
 
   /*
      реализовать работу с секциями
   */
 
 
-  const [numberSection, setNumberSection] = useState(0);
+  const [numberSection, setNumberSection] = useState(parseInt(sectionParam));
 
   // СДЕЛАТЬ:
   // реализовать для пользователя возможность получить права на пространство
@@ -152,7 +160,7 @@ export default function UserWorksList() {
   }, [connect]);
 
   const onEdit = (workId) => {
-    let url = `/user-edit-work/${workId}?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    let url = `/user-edit-work/${workId}?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${numberSection}`;
     navigate(url);
   };
 
@@ -172,20 +180,22 @@ export default function UserWorksList() {
   // события
 
   const onAdd = () => {
-    let url = `/user-add-work?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    let url = `/user-add-work?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${numberSection}`;
     navigate(url);
   }
 
   const onAddPerform = event => {
     //let idWork = event.currentTarget.getAttribute("idWork");
     //navigate(`/user-add-perform?id=${idWork}`);
-    let url = `/user-add-perform?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    let url = `/user-add-perform?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${numberSection}`;
     navigate(url);
   }
 
   const onSection = event => {
     let section = parseInt(event.currentTarget.getAttribute("value"));
     setNumberSection(section);
+    // Update URL with the selected section
+    navigate(`/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${section}`);
   }
 
   const onLogout = () => {

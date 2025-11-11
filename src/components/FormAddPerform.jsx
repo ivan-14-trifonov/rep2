@@ -45,7 +45,9 @@ export default function FormAddPerform({ connect, navigate }) {
     AddPerform(connect, fields);
     e.target.reset();
 
-    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    const urlParams = new URLSearchParams(window.location.search);
+    const sectionParam = urlParams.get('section') || '0';
+    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${sectionParam}`;
     navigate(url);
   }
 

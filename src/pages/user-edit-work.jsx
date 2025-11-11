@@ -27,6 +27,7 @@ export default function UserEditWork() {
   const queryParams = new URLSearchParams(location.search);
   const spaceParam = queryParams.get('space');
   const musicalGroupParam = queryParams.get('musicalGroup');
+  const sectionParam = queryParams.get('section') || '0';
   
   // Get work ID from URL parameter
   const { workId } = useParams();
