@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { GetElements, GetWorkInSections, AddPerform } from "../services/firestore";
 
-export default function FormAddPerform({ connect, navigate }) {
+export default function FormAddPerform({ connect, navigate, section }) {
 
   const [works, setWorks] = useState();
 
@@ -45,9 +45,7 @@ export default function FormAddPerform({ connect, navigate }) {
     AddPerform(connect, fields);
     e.target.reset();
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const sectionParam = urlParams.get('section') || '0';
-    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${sectionParam}`;
+    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${section}`;
     navigate(url);
   }
 

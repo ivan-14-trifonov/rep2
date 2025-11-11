@@ -54,7 +54,7 @@ export default function UserAddWork() {
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
       <h1>Добавить произведение</h1>
-      <FormWork connect={connect} navigate={navigate} />
+      <FormWork connect={connect} navigate={navigate} section={sectionParam} />
     </Container>
   )
 }

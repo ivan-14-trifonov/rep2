@@ -4,7 +4,7 @@ import { AddWork, GetElements, GetEl, updateEl, deleteEl } from "../services/fir
 import editIcon from '../assets/images/edit.png';
 import deleteIcon from '../assets/images/delete.png';
 
-export default function FormWork({ connect, navigate, workId = null, initialWorkData = null }) {
+export default function FormWork({ connect, navigate, section = '0', workId = null, initialWorkData = null }) {
   const isEditing = workId !== null;
 
   // Form state for work fields
@@ -140,9 +140,7 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
     }
     
     // Redirect back to works list with section parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const sectionParam = urlParams.get('section') || '0';
-    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${sectionParam}`;
+    let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${section}`;
     navigate(url);
   };
 
@@ -405,9 +403,7 @@ export default function FormWork({ connect, navigate, workId = null, initialWork
         sx={{mt: 2}} 
         fullWidth 
         onClick={() => {
-          const urlParams = new URLSearchParams(window.location.search);
-          const sectionParam = urlParams.get('section') || '0';
-          let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${sectionParam}`;
+          let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${section}`;
           navigate(url);
         }}
       >

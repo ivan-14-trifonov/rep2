@@ -80,6 +80,7 @@ export default function UserEditWork() {
       <FormWork 
         connect={connect} 
         navigate={navigate} 
+        section={sectionParam}
         workId={workId}
         initialWorkData={initialWorkData}
       />
