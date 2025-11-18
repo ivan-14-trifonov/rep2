@@ -104,42 +104,53 @@ export default function WorksList({ works, status, navigate, connect, onEdit, on
 
   return (
     <div>
-      {works.map((work, i) =>
-        <Card variant="outlined" className="workCard" style={works[i].status ? { backgroundColor: status[works[i].status].color } : {}} data-name={works[i][0]}>
-          <div className="workCard__panel">
-            {works[i].status && <p className="status">{status[works[i].status].name}</p>}
-            <p className="workCard__edit">
-              <img
-                //value={seminars[i].title}
-                //id={seminars[i].id}
-                //onClick={onDelete}
-                data-work-id={works[i].id}
-                onClick={onDelete}
-                className="workCard__button"
-                src={del}
-                alt="Удалить"
-              />
-              <img
-                data-work-id={works[i].id}
-                onClick={(event: React.MouseEvent) => onEdit((event.currentTarget as HTMLElement).getAttribute("data-work-id") || "")}
-                className="workCard__button"
-                src={edit}
-                alt="Изменить"
-              />
-            </p>
-          </div>
-          <p className="workCard__name">{works[i].name}</p>
-          {ifBook(works[i])}
-          {ifEvent(works[i])}
-          {ifTheme(works[i])}
-          {ifComment(works[i])}
-          {works[i].perform && works[i].perform!.map((perform, j) => 
-            performs(perform)
-          )}
-          {/*}<button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
-          <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>{*/}
-      </Card>
-      )}
+      {works.map((work, i) => {
+        const workStatus = works[i].status;
+        const statusObj = workStatus && typeof workStatus === 'string' && status ? status[workStatus] : null;
+        
+        return (
+          <Card 
+            key={work.id} /* Add key for proper React rendering */
+            variant="outlined" 
+            className="workCard" 
+            style={statusObj ? { backgroundColor: statusObj.color } : {}} 
+            data-name={works[i][0]}
+          >
+            <div className="workCard__panel">
+              {statusObj && <p className="status">{statusObj.name}</p>}
+              <p className="workCard__edit">
+                <img
+                  //value={seminars[i].title}
+                  //id={seminars[i].id}
+                  //onClick={onDelete}
+                  data-work-id={works[i].id}
+                  onClick={onDelete}
+                  className="workCard__button"
+                  src={del}
+                  alt="Удалить"
+                />
+                <img
+                  data-work-id={works[i].id}
+                  onClick={(event: React.MouseEvent) => onEdit((event.currentTarget as HTMLElement).getAttribute("data-work-id") || "")}
+                  className="workCard__button"
+                  src={edit}
+                  alt="Изменить"
+                />
+              </p>
+            </div>
+            <p className="workCard__name">{works[i].name}</p>
+            {ifBook(works[i])}
+            {ifEvent(works[i])}
+            {ifTheme(works[i])}
+            {ifComment(works[i])}
+            {works[i].perform && works[i].perform!.map((perform, j) => 
+              performs(perform)
+            )}
+            {/*}<button idWork={works[i].id} onClick={onAddPerform}>Исполнение</button>
+            <button idWork={works[i].id} onClick={onStatus4}>Статус 4</button>{*/}
+          </Card>
+        )
+      })}
     </div>
   );
 }
