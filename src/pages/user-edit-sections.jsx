@@ -208,17 +208,15 @@ export default function UserEditSections() {
   };
 
   return (
-    <Container maxWidth="md" sx={{mt: 2}}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <h1>Настроить секции</h1>
-        <Button variant="contained" onClick={handleAddSection}>
-          Добавить секцию
-        </Button>
-      </div>
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <Container maxWidth="xs" sx={{mt: 2}}>
+      <h1>Настроить секции</h1>
+      <Button variant="contained" onClick={handleAddSection} sx={{mb: 3}}>
+        Добавить секцию
+      </Button>
+
+      <div className="formAddWork">
         {sections.map((section, index) => (
-          <div key={section.id} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '4px' }}>
+          <div key={section.id} style={{ marginBottom: '20px', paddingBottom: '15px', borderBottom: '1px solid #ccc' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <h3 style={{ margin: '0 0 10px 0' }}>Секция {index + 1}: {section.name}</h3>
               <Button 
@@ -231,163 +229,165 @@ export default function UserEditSections() {
               </Button>
             </div>
             
-            <div style={{ marginBottom: '10px' }}>
-              <label>Название секции:</label>
-              <input
-                type="text"
-                value={section.name}
-                onChange={(e) => handleInputChange(section.id, 'name', e.target.value)}
-                style={{ width: '100%', padding: '8px', marginTop: '5px', marginBottom: '15px' }}
-              />
-            </div>
+            <input
+              className="formAddWork__input"
+              type="text"
+              value={section.name}
+              onChange={(e) => handleInputChange(section.id, 'name', e.target.value)}
+              placeholder="Название секции"
+            />
             
-            <div style={{ marginBottom: '10px' }}>
-              <label>Поле сортировки:</label>
-              <input
-                type="text"
-                value={section.sort}
-                onChange={(e) => handleInputChange(section.id, 'sort', e.target.value)}
-                style={{ width: '100%', padding: '8px', marginTop: '5px', marginBottom: '15px' }}
-              />
-            </div>
+            <input
+              className="formAddWork__input"
+              type="text"
+              value={section.sort}
+              onChange={(e) => handleInputChange(section.id, 'sort', e.target.value)}
+              placeholder="Поле сортировки"
+            />
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '15px' }}>
-              <div style={{ width: '100%' }}>
-                <h4>Включать (Include)</h4>
-                <p>Формат: ключ=значение (например: theme=Рождество)</p>
-                
-                {Object.keys(section.include).map((key, idx) => (
-                  <div key={idx} style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
-                    <input
-                      type="text"
-                      value={key}
-                      onChange={(e) => {
-                        const newKey = e.target.value;
-                        const value = section.include[key];
-                        handleFilterChange(section.id, 'include', newKey, value);
-                        // Remove old key
-                        if (newKey !== key) {
-                          const newInclude = { ...section.include };
-                          delete newInclude[key];
-                          newInclude[newKey] = value;
-                          setSections(prevSections => 
-                            prevSections.map(s => 
-                              s.id === section.id ? { ...s, include: newInclude } : s
-                            )
-                          );
-                        }
-                      }}
-                      style={{ flex: 1, padding: '5px' }}
-                      placeholder="Ключ"
-                    />
-                    <input
-                      type="text"
-                      value={section.include[key] || ''}
-                      onChange={(e) => handleFilterChange(section.id, 'include', key, e.target.value)}
-                      style={{ flex: 1, padding: '5px' }}
-                      placeholder="Значение"
-                    />
-                  </div>
-                ))}
-                
-                <div style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
-                  <input
-                    type="text"
-                    id={`new-include-key-${section.id}`}
-                    placeholder="Добавить ключ"
-                    style={{ flex: 1, padding: '5px' }}
-                  />
-                  <input
-                    type="text"
-                    id={`new-include-value-${section.id}`}
-                    placeholder="Добавить значение"
-                    style={{ flex: 1, padding: '5px' }}
-                  />
-                  <Button 
-                    variant="outlined" 
-                    size="small"
-                    onClick={() => {
-                      const newKey = document.getElementById(`new-include-key-${section.id}`).value;
-                      const newValue = document.getElementById(`new-include-value-${section.id}`).value;
-                      if (newKey && newValue) {
-                        handleFilterChange(section.id, 'include', newKey, newValue);
-                        document.getElementById(`new-include-key-${section.id}`).value = '';
-                        document.getElementById(`new-include-value-${section.id}`).value = '';
-                      }
-                    }}
-                  >
-                    +
-                  </Button>
-                </div>
-              </div>
+            <div style={{ marginTop: '15px', marginBottom: '15px' }}>
+              <h4>Включать (Include)</h4>
+              <p style={{ fontSize: '0.8em', color: '#666', margin: '5px 0' }}>Формат: ключ=значение (например: theme=Рождество)</p>
               
-              <div style={{ width: '100%' }}>
-                <h4>Исключать (Exclude)</h4>
-                <p>Формат: ключ=значение (например: status=1)</p>
-                
-                {Object.keys(section.exclude).map((key, idx) => (
-                  <div key={idx} style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
-                    <input
-                      type="text"
-                      value={key}
-                      onChange={(e) => {
-                        const newKey = e.target.value;
-                        const value = section.exclude[key];
-                        handleFilterChange(section.id, 'exclude', newKey, value);
-                        // Remove old key
-                        if (newKey !== key) {
-                          const newExclude = { ...section.exclude };
-                          delete newExclude[key];
-                          newExclude[newKey] = value;
-                          setSections(prevSections => 
-                            prevSections.map(s => 
-                              s.id === section.id ? { ...s, exclude: newExclude } : s
-                            )
-                          );
-                        }
-                      }}
-                      style={{ flex: 1, padding: '5px' }}
-                      placeholder="Ключ"
-                    />
-                    <input
-                      type="text"
-                      value={section.exclude[key] || ''}
-                      onChange={(e) => handleFilterChange(section.id, 'exclude', key, e.target.value)}
-                      style={{ flex: 1, padding: '5px' }}
-                      placeholder="Значение"
-                    />
-                  </div>
-                ))}
-                
-                <div style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
+              {Object.keys(section.include).map((key, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: '5px', marginBottom: '5px', flexWrap: 'wrap' }}>
                   <input
+                    className="formAddWork__input"
                     type="text"
-                    id={`new-exclude-key-${section.id}`}
-                    placeholder="Добавить ключ"
-                    style={{ flex: 1, padding: '5px' }}
-                  />
-                  <input
-                    type="text"
-                    id={`new-exclude-value-${section.id}`}
-                    placeholder="Добавить значение"
-                    style={{ flex: 1, padding: '5px' }}
-                  />
-                  <Button 
-                    variant="outlined" 
-                    size="small"
-                    onClick={() => {
-                      const newKey = document.getElementById(`new-exclude-key-${section.id}`).value;
-                      const newValue = document.getElementById(`new-exclude-value-${section.id}`).value;
-                      if (newKey && newValue) {
-                        handleFilterChange(section.id, 'exclude', newKey, newValue);
-                        document.getElementById(`new-exclude-key-${section.id}`).value = '';
-                        document.getElementById(`new-exclude-value-${section.id}`).value = '';
+                    value={key}
+                    onChange={(e) => {
+                      const newKey = e.target.value;
+                      const value = section.include[key];
+                      handleFilterChange(section.id, 'include', newKey, value);
+                      // Remove old key
+                      if (newKey !== key) {
+                        const newInclude = { ...section.include };
+                        delete newInclude[key];
+                        newInclude[newKey] = value;
+                        setSections(prevSections => 
+                          prevSections.map(s => 
+                            s.id === section.id ? { ...s, include: newInclude } : s
+                          )
+                        );
                       }
                     }}
-                  >
-                    +
-                  </Button>
+                    style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                    placeholder="Ключ"
+                  />
+                  <input
+                    className="formAddWork__input"
+                    type="text"
+                    value={section.include[key] || ''}
+                    onChange={(e) => handleFilterChange(section.id, 'include', key, e.target.value)}
+                    style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                    placeholder="Значение"
+                  />
                 </div>
+              ))}
+              
+              <div style={{ display: 'flex', gap: '5px', marginTop: '5px', flexWrap: 'wrap' }}>
+                <input
+                  className="formAddWork__input"
+                  type="text"
+                  id={`new-include-key-${section.id}`}
+                  placeholder="Добавить ключ"
+                  style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                />
+                <input
+                  className="formAddWork__input"
+                  type="text"
+                  id={`new-include-value-${section.id}`}
+                  placeholder="Добавить значение"
+                  style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                />
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  onClick={() => {
+                    const newKey = document.getElementById(`new-include-key-${section.id}`).value;
+                    const newValue = document.getElementById(`new-include-value-${section.id}`).value;
+                    if (newKey && newValue) {
+                      handleFilterChange(section.id, 'include', newKey, newValue);
+                      document.getElementById(`new-include-key-${section.id}`).value = '';
+                      document.getElementById(`new-include-value-${section.id}`).value = '';
+                    }
+                  }}
+                >
+                  +
+                </Button>
+              </div>
+            </div>
+            
+            <div style={{ marginTop: '15px', marginBottom: '15px' }}>
+              <h4>Исключать (Exclude)</h4>
+              <p style={{ fontSize: '0.8em', color: '#666', margin: '5px 0' }}>Формат: ключ=значение (например: status=1)</p>
+              
+              {Object.keys(section.exclude).map((key, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: '5px', marginBottom: '5px', flexWrap: 'wrap' }}>
+                  <input
+                    className="formAddWork__input"
+                    type="text"
+                    value={key}
+                    onChange={(e) => {
+                      const newKey = e.target.value;
+                      const value = section.exclude[key];
+                      handleFilterChange(section.id, 'exclude', newKey, value);
+                      // Remove old key
+                      if (newKey !== key) {
+                        const newExclude = { ...section.exclude };
+                        delete newExclude[key];
+                        newExclude[newKey] = value;
+                        setSections(prevSections => 
+                          prevSections.map(s => 
+                            s.id === section.id ? { ...s, exclude: newExclude } : s
+                          )
+                        );
+                      }
+                    }}
+                    style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                    placeholder="Ключ"
+                  />
+                  <input
+                    className="formAddWork__input"
+                    type="text"
+                    value={section.exclude[key] || ''}
+                    onChange={(e) => handleFilterChange(section.id, 'exclude', key, e.target.value)}
+                    style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                    placeholder="Значение"
+                  />
+                </div>
+              ))}
+              
+              <div style={{ display: 'flex', gap: '5px', marginTop: '5px', flexWrap: 'wrap' }}>
+                <input
+                  className="formAddWork__input"
+                  type="text"
+                  id={`new-exclude-key-${section.id}`}
+                  placeholder="Добавить ключ"
+                  style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                />
+                <input
+                  className="formAddWork__input"
+                  type="text"
+                  id={`new-exclude-value-${section.id}`}
+                  placeholder="Добавить значение"
+                  style={{ flex: 1, minWidth: '0', padding: '5px' }}
+                />
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  onClick={() => {
+                    const newKey = document.getElementById(`new-exclude-key-${section.id}`).value;
+                    const newValue = document.getElementById(`new-exclude-value-${section.id}`).value;
+                    if (newKey && newValue) {
+                      handleFilterChange(section.id, 'exclude', newKey, newValue);
+                      document.getElementById(`new-exclude-key-${section.id}`).value = '';
+                      document.getElementById(`new-exclude-value-${section.id}`).value = '';
+                    }
+                  }}
+                >
+                  +
+                </Button>
               </div>
             </div>
             
@@ -399,20 +399,22 @@ export default function UserEditSections() {
                 include: section.include,
                 exclude: section.exclude
               })}
+              fullWidth
+              sx={{ mt: 2 }}
             >
               Сохранить изменения
             </Button>
           </div>
         ))}
-      </div>
-      
-      <div style={{ marginTop: '20px' }}>
+        
         <Button 
           variant="outlined" 
           onClick={() => {
             let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
             navigate(url);
           }}
+          fullWidth
+          sx={{ mt: 3 }}
         >
           Назад к списку
         </Button>
