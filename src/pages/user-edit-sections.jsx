@@ -216,7 +216,7 @@ export default function UserEditSections() {
         </Button>
       </div>
       
-      <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {sections.map((section, index) => (
           <div key={section.id} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '4px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
@@ -251,8 +251,8 @@ export default function UserEditSections() {
               />
             </div>
             
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '15px' }}>
-              <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '15px' }}>
+              <div style={{ width: '100%' }}>
                 <h4>Включать (Include)</h4>
                 <p>Формат: ключ=значение (например: theme=Рождество)</p>
                 
@@ -321,7 +321,7 @@ export default function UserEditSections() {
                 </div>
               </div>
               
-              <div style={{ flex: 1 }}>
+              <div style={{ width: '100%' }}>
                 <h4>Исключать (Exclude)</h4>
                 <p>Формат: ключ=значение (например: status=1)</p>
                 
