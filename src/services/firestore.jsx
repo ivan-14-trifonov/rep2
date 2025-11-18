@@ -18,6 +18,15 @@ export async function AddPerform(connect, fields) {
   }
 }
 
+export async function AddSection(connect, fields) {
+  try {
+    await addDoc(collection(connect.db, "space", connect.space, "musical_group", connect.musicalGroup, "sections"), fields);
+  } catch (e) {
+    // An error happened.
+    // console.error("Error adding document: ", e);
+  }
+}
+
 export async function GetElements(connect, tadle, sort) {
   const elRef = collection(connect.db, tadle);
   const q = query(elRef, orderBy(sort));

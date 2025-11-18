@@ -14,6 +14,7 @@ import UserAddWork from "./pages/user-add-work";
 import UserEditWork from "./pages/user-edit-work";
 import UserAddPerform from "./pages/user-add-perform";
 import UserRights from "./pages/user-rights";
+import UserEditSections from "./pages/user-edit-sections";
 import ErrorPage from "./pages/error-page";
 
 const router = createBrowserRouter([
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: "/user-edit-work/:workId",
     element: <UserEditWork/>,
+  },
+  {
+    path: "/user-edit-sections",
+    element: <UserEditSections/>,
   },
   {
     path: "/user-add-perform",

@@ -155,7 +155,8 @@ export default function UserWorksList() {
   };
 
   const handleConfigureSections = () => {
-    // Functionality to be implemented later
+    let url = `/user-edit-sections?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
+    navigate(url);
     handleMenuClose();
   };
 
