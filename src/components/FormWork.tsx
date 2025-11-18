@@ -1,10 +1,73 @@
 import { useState, useEffect } from "react";
 import { Button, Box, Card, Typography } from "@mui/material";
-import { AddWork, GetElements, GetEl, updateEl, deleteEl } from "../services/firestore";
+import { AddWork, GetElements, GetEl, updateEl, deleteEl, Connect } from "../services/firestore";
 import editIcon from '../assets/images/edit.png';
 import deleteIcon from '../assets/images/delete.png';
 
-export default function FormWork({ connect, navigate, section = '0', workId = null, initialWorkData = null }) {
+interface Book {
+  id: string;
+  name: string;
+  [key: string]: any;
+}
+
+interface Theme {
+  id: string;
+  name: string;
+  [key: string]: any;
+}
+
+interface Status {
+  id: string;
+  name: string;
+  number: string;
+  [key: string]: any;
+}
+
+interface Event {
+  id: string;
+  name: string;
+  [key: string]: any;
+}
+
+interface Perform {
+  id: string;
+  date?: string;
+  time?: string;
+  event?: string;
+  note?: string;
+  work: string;
+  [key: string]: any;
+}
+
+interface Work {
+  id: string;
+  name: string;
+  book?: string;
+  number?: string;
+  page?: string;
+  theme?: string;
+  event?: string;
+  status?: string;
+  comment?: string;
+  [key: string]: any;
+}
+
+interface FormWorkProps {
+  connect: Connect;
+  navigate: (path: string) => void;
+  section?: string;
+  workId?: string | null;
+  initialWorkData?: Work | null;
+}
+
+interface PerformanceData {
+  date: string;
+  time: string;
+  event: string;
+  note: string;
+}
+
+export default function FormWork({ connect, navigate, section = '0', workId = null, initialWorkData = null }: FormWorkProps) {
   const isEditing = workId !== null;
 
   // Form state for work fields
@@ -18,15 +81,20 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
   const [comment, setComment] = useState("");
 
   // Performance-related state
-  const [performances, setPerformances] = useState([]);
-  const [editingPerformanceId, setEditingPerformanceId] = useState(null);
-  const [editingPerformanceData, setEditingPerformanceData] = useState({});
-  const [allEvents, setAllEvents] = useState(null);
+  const [performances, setPerformances] = useState<Perform[]>([]);
+  const [editingPerformanceId, setEditingPerformanceId] = useState<string | null>(null);
+  const [editingPerformanceData, setEditingPerformanceData] = useState<PerformanceData>({
+    date: "",
+    time: "",
+    event: "",
+    note: ""
+  });
+  const [allEvents, setAllEvents] = useState<Event[] | null>(null);
 
   // Fetch data for dropdowns
-  const [books, setBooks] = useState(null);
-  const [themes, setThemes] = useState(null);
-  const [allStatuses, setAllStatuses] = useState(null);
+  const [books, setBooks] = useState<Book[] | null>(null);
+  const [themes, setThemes] = useState<Theme[] | null>(null);
+  const [allStatuses, setAllStatuses] = useState<Status[] | null>(null);
 
   // Fetch initial work data if editing
   useEffect(() => {
@@ -35,7 +103,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
         const workResult = await GetEl(
           connect, 
           `space/${connect.space}/musical_group/${connect.musicalGroup}/work`, 
-          workId
+          workId as string
         );
         setName(workResult.name || "");
         setBook(workResult.book || "");
@@ -81,7 +149,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
       
       // Fetch statuses
       const statusResult = await GetElements(connect, "status", "number");
-      let statusArr = [];
+      const statusArr: Status[] = [];
       for (let i = 0; i < statusResult.length; i++) {
         const statusNumber = parseInt(statusResult[i].number);
         if (!isNaN(statusNumber)) {
@@ -112,9 +180,9 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
     }
   }, [isEditing, workId, connect]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
     const fields = {
       name: formData.get("name"),
       book: formData.get("book"),
@@ -131,7 +199,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
       await updateEl(
         connect, 
         `space/${connect.space}/musical_group/${connect.musicalGroup}/work`, 
-        workId, 
+        workId as string, 
         fields
       );
     } else {
@@ -147,7 +215,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
 
 
   // Start editing a performance
-  const startEditingPerformance = (perform) => {
+  const startEditingPerformance = (perform: Perform) => {
     setEditingPerformanceId(perform.id);
     setEditingPerformanceData({
       date: perform.date || "",
@@ -160,11 +228,16 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
   // Cancel editing a performance
   const cancelEditingPerformance = () => {
     setEditingPerformanceId(null);
-    setEditingPerformanceData({});
+    setEditingPerformanceData({
+      date: "",
+      time: "",
+      event: "",
+      note: ""
+    });
   };
 
   // Handle updating an existing performance
-  const handleUpdatePerformance = async (perfId, updatedPerf) => {
+  const handleUpdatePerformance = async (perfId: string, updatedPerf: PerformanceData) => {
     // Update in Firestore
     await updateEl(
       connect,
@@ -186,11 +259,16 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
     
     // Exit edit mode
     setEditingPerformanceId(null);
-    setEditingPerformanceData({});
+    setEditingPerformanceData({
+      date: "",
+      time: "",
+      event: "",
+      note: ""
+    });
   };
 
   // Handle deleting a performance
-  const handleDeletePerformance = async (perfId) => {
+  const handleDeletePerformance = async (perfId: string) => {
     try {
       // Delete from Firestore
       await deleteEl(
@@ -231,7 +309,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
       >
         <option value="">--Выберите сборник--</option>
         {books && books.length > 0 && books.map((bookItem, i) =>
-          <option key={i} value={bookItem.name}>{bookItem.name}</option>
+          <option key={bookItem.id || i} value={bookItem.name}>{bookItem.name}</option>
         )}
       </select>
       <input 
@@ -257,7 +335,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
       >
         <option value="">--Выберите тему--</option>
         {themes && themes.length > 0 && themes.map((themeItem, i) =>
-          <option key={i} value={themeItem.name}>{themeItem.name}</option>
+          <option key={themeItem.id || i} value={themeItem.name}>{themeItem.name}</option>
         )}
       </select>
       <select 
@@ -269,7 +347,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
       >
         <option value="">--Выберите событие--</option>
         {allEvents && allEvents.length > 0 && allEvents.map((eventItem, i) =>
-          <option key={i} value={eventItem.name}>{eventItem.name}</option>
+          <option key={eventItem.id || i} value={eventItem.name}>{eventItem.name}</option>
         )}
       </select>
       <select 
@@ -331,7 +409,7 @@ export default function FormWork({ connect, navigate, section = '0', workId = nu
                     >
                       <option value="">--Событие--</option>
                       {allEvents && allEvents.length > 0 && allEvents.map((eventItem, i) =>
-                        <option key={i} value={eventItem.name}>{eventItem.name}</option>
+                        <option key={eventItem.id || i} value={eventItem.name}>{eventItem.name}</option>
                       )}
                     </select>
                     <input 

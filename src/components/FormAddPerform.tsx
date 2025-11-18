@@ -1,10 +1,34 @@
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
-import { GetElements, GetWorkInSections, AddPerform } from "../services/firestore";
+import { GetElements, GetWorkInSections, AddPerform, Connect } from "../services/firestore";
 
-export default function FormAddPerform({ connect, navigate, section }) {
+interface Work {
+  id: string;
+  name: string;
+  [key: string]: any;
+}
 
-  const [works, setWorks] = useState();
+interface Event {
+  name: string;
+  [key: string]: any;
+}
+
+interface Section {
+  name: string;
+  sort: string;
+  include: Record<string, any[]>;
+  exclude: Record<string, any[]>;
+}
+
+interface FormAddPerformProps {
+  connect: Connect;
+  navigate: (path: string) => void;
+  section: string;
+}
+
+export default function FormAddPerform({ connect, navigate, section }: FormAddPerformProps) {
+
+  const [works, setWorks] = useState<Work[] | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -15,14 +39,14 @@ export default function FormAddPerform({ connect, navigate, section }) {
           sort: "name",
           include: { book: [], theme: [], event: [] },
           exclude: { book: [], theme: [], event: [] },
-        }
+        } as Section
       );
       setWorks(result);
     };
     asyncEffect();
   }, [connect]);
 
-  const [events, setEvents] = useState();
+  const [events, setEvents] = useState<Event[] | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -32,9 +56,9 @@ export default function FormAddPerform({ connect, navigate, section }) {
     asyncEffect();
   }, [connect]);
 
-  async function submitAddWork(e) {
+  async function submitAddWork(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
     const fields = {
       work: formData.get("work"),
       date: formData.get("date"),
@@ -43,7 +67,7 @@ export default function FormAddPerform({ connect, navigate, section }) {
       note: formData.get("note"),
     }
     AddPerform(connect, fields);
-    e.target.reset();
+    (e.target as HTMLFormElement).reset();
 
     let url = `/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${section}`;
     navigate(url);
@@ -55,11 +79,11 @@ export default function FormAddPerform({ connect, navigate, section }) {
       <p>Произведение:</p>
       <select className="formAddWork__select" name="work" id="works-select">
         <option value="">--Не определено--</option>
-          {Array(works.length).fill().map((_, i) =>
-            <option value={works[i].id}>{works[i].name}</option>
+          {works.map((work, i) =>
+            <option key={i} value={work.id}>{work.name}</option>
           )}
       </select>
-      <label for="date">Дата исполнения:</label>
+      <label htmlFor="date">Дата исполнения:</label>
       <input type="date" id="date" name="date" />
       <p>Собрание:</p>
       <select className="formAddWork__select" name="time" id="time-select">
@@ -70,8 +94,8 @@ export default function FormAddPerform({ connect, navigate, section }) {
       <p>Событие:</p>
       <select className="formAddWork__select" name="event" id="events-select">
         <option value="">--Не определено--</option>
-          {Array(events.length).fill().map((_, i) =>
-            <option value={events[i].name}>{events[i].name}</option>
+          {events.map((event, i) =>
+            <option key={i} value={event.name}>{event.name}</option>
           )}
       </select>
       <input className="formAddWork__input" name="note" placeholder="Примечание" />

@@ -10,14 +10,14 @@ export default function Register() {
 
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const errorClose = (event, reason) => {
+  const errorClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
     setError(false);
   };
 
-  const successClose = (event, reason) => {
+  const successClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -31,7 +31,7 @@ export default function Register() {
 
   const auth = getAuth();
 
-  const handleRegister = (e) => {
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {

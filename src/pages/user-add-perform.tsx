@@ -39,7 +39,7 @@ export default function UserAddPerform() {
     musicalGroup: musicalGroupParam,
   }), [db, spaceParam, musicalGroupParam]);
 
-  const [spaceUsers, setSpaceUsers] = useState(null);
+  const [spaceUsers, setSpaceUsers] = useState<any[] | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {

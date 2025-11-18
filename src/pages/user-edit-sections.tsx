@@ -33,8 +33,18 @@ export default function UserEditSections() {
     musicalGroup: musicalGroupParam,
   }), [db, spaceParam, musicalGroupParam]);
 
-  const [spaceUsers, setSpaceUsers] = useState(null);
-  const [sections, setSections] = useState([]);
+  const [spaceUsers, setSpaceUsers] = useState<any[] | null>(null);
+  
+  interface Section {
+    id: string;
+    name: string;
+    sort: string;
+    include: Record<string, any>;
+    exclude: Record<string, any>;
+    [key: string]: any;
+  }
+  
+  const [sections, setSections] = useState<Section[]>([]);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -94,7 +104,7 @@ export default function UserEditSections() {
   }, [connect]);
 
   // Handle saving section changes
-  const handleSaveSection = async (sectionId, updatedFields) => {
+  const handleSaveSection = async (sectionId: string, updatedFields: Section) => {
     try {
       // Prepare data - ensure include/exclude are stored as JSON strings
       const sectionData = {
@@ -157,7 +167,7 @@ export default function UserEditSections() {
   };
 
   // Handle deleting a section
-  const handleDeleteSection = async (sectionId) => {
+  const handleDeleteSection = async (sectionId: string) => {
     if (window.confirm("Вы действительно хотите удалить эту секцию?")) {
       try {
         await updateEl(
@@ -178,7 +188,7 @@ export default function UserEditSections() {
   };
 
   // Handle input change for section fields
-  const handleInputChange = (sectionId, field, value) => {
+  const handleInputChange = (sectionId: string, field: string, value: string) => {
     setSections(prevSections => 
       prevSections.map(section => 
         section.id === sectionId 
@@ -189,7 +199,7 @@ export default function UserEditSections() {
   };
 
   // Handle include/exclude field changes
-  const handleFilterChange = (sectionId, filterType, field, value) => {
+  const handleFilterChange = (sectionId: string, filterType: 'include' | 'exclude', field: string, value: string) => {
     setSections(prevSections => 
       prevSections.map(section => {
         if (section.id === sectionId) {
@@ -304,12 +314,16 @@ export default function UserEditSections() {
                   variant="outlined" 
                   size="small"
                   onClick={() => {
-                    const newKey = document.getElementById(`new-include-key-${section.id}`).value;
-                    const newValue = document.getElementById(`new-include-value-${section.id}`).value;
-                    if (newKey && newValue) {
-                      handleFilterChange(section.id, 'include', newKey, newValue);
-                      document.getElementById(`new-include-key-${section.id}`).value = '';
-                      document.getElementById(`new-include-value-${section.id}`).value = '';
+                    const newKeyElement = document.getElementById(`new-include-key-${section.id}`) as HTMLInputElement;
+                    const newValueElement = document.getElementById(`new-include-value-${section.id}`) as HTMLInputElement;
+                    if (newKeyElement && newValueElement) {
+                      const newKey = newKeyElement.value;
+                      const newValue = newValueElement.value;
+                      if (newKey && newValue) {
+                        handleFilterChange(section.id, 'include', newKey, newValue);
+                        newKeyElement.value = '';
+                        newValueElement.value = '';
+                      }
                     }
                   }}
                 >
@@ -377,12 +391,16 @@ export default function UserEditSections() {
                   variant="outlined" 
                   size="small"
                   onClick={() => {
-                    const newKey = document.getElementById(`new-exclude-key-${section.id}`).value;
-                    const newValue = document.getElementById(`new-exclude-value-${section.id}`).value;
-                    if (newKey && newValue) {
-                      handleFilterChange(section.id, 'exclude', newKey, newValue);
-                      document.getElementById(`new-exclude-key-${section.id}`).value = '';
-                      document.getElementById(`new-exclude-value-${section.id}`).value = '';
+                    const newKeyElement = document.getElementById(`new-exclude-key-${section.id}`) as HTMLInputElement;
+                    const newValueElement = document.getElementById(`new-exclude-value-${section.id}`) as HTMLInputElement;
+                    if (newKeyElement && newValueElement) {
+                      const newKey = newKeyElement.value;
+                      const newValue = newValueElement.value;
+                      if (newKey && newValue) {
+                        handleFilterChange(section.id, 'exclude', newKey, newValue);
+                        newKeyElement.value = '';
+                        newValueElement.value = '';
+                      }
                     }
                   }}
                 >
@@ -394,6 +412,7 @@ export default function UserEditSections() {
             <Button 
               variant="contained" 
               onClick={() => handleSaveSection(section.id, {
+                id: section.id,
                 name: section.name,
                 sort: section.sort,
                 include: section.include,

@@ -9,7 +9,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [error, setError] = useState(false);
-  const errorClose = (event, reason) => {
+  const errorClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -39,7 +39,7 @@ export default function Login() {
       });
   };
 
-  const handleEmailLogin = (e) => {
+  const handleEmailLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
@@ -70,7 +70,7 @@ export default function Login() {
       {!showEmailForm ? (
         <>
           <h1>Войдите для начала работы</h1>
-          <Button variant="contained" loading={isLoading} onClick={handleGoogleAuth} sx={{mt: 3, mb: 2}} fullWidth>
+          <Button variant="contained" onClick={handleGoogleAuth} sx={{mt: 3, mb: 2}} fullWidth>
             Войти через Google
           </Button>
           <Button 

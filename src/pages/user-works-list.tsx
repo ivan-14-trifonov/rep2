@@ -17,7 +17,7 @@ export default function UserWorksList() {
   const auth = getAuth();
   let navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -49,7 +49,7 @@ export default function UserWorksList() {
     musicalGroup: musicalGroupParam,
   }), [db, spaceParam, musicalGroupParam]);
 
-  const [spaceUsers, setSpaceUsers] = useState(null);
+  const [spaceUsers, setSpaceUsers] = useState<any[] | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -69,7 +69,7 @@ export default function UserWorksList() {
     }
   }
 
-  const [sections, setSections] = useState(null);
+  const [sections, setSections] = useState<any[] | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -101,34 +101,49 @@ export default function UserWorksList() {
   // реализовать для пользователя возможность получить права на пространство
   // или создать своё
 
-  const [space, setSpace] = useState([]);
+  interface SpaceInfo {
+    name: string;
+    [key: string]: any;
+  }
+  
+  interface Status {
+    name: string;
+    color: string;
+    [key: string]: any;
+  }
+
+  const [space, setSpace] = useState<SpaceInfo | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetEl(connect, "space", connect.space);
-      setSpace(result);
+      if (connect.space) {
+        const result = await GetEl(connect, "space", connect.space as string);
+        setSpace(result);
+      }
     };
     asyncEffect();
   }, [connect]);
 
-  const [musicalGroup, setMusicalGroup] = useState([]);
+  const [musicalGroup, setMusicalGroup] = useState<SpaceInfo | null>(null);
   
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetEl(connect, "space/" + connect.space + "/musical_group", connect.musicalGroup);
-      setMusicalGroup(result);
+      if (connect.space && connect.musicalGroup) {
+        const result = await GetEl(connect, "space/" + connect.space + "/musical_group", connect.musicalGroup as string);
+        setMusicalGroup(result);
+      }
     };
     asyncEffect();
   }, [connect]);
 
   const connectInfo = {
-    space: space.name,
-    musicalGroup: musicalGroup.name,
+    space: space?.name || '',
+    musicalGroup: musicalGroup?.name || '',
   };
 
   const [changeFlag, setChangeFlag] = useState(false);
 
-  const [workInSections, setWorkInSections] = useState([]);
+  const [workInSections, setWorkInSections] = useState<any[]>([]);
   
   useEffect(() => {
     const asyncEffect = async () => {
@@ -140,13 +155,13 @@ export default function UserWorksList() {
     asyncEffect();
   }, [numberSection, sections, changeFlag, connect]);
 
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState<Record<string, Status> | null>(null);
 
   // State for the settings dropdown menu
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
 
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -164,28 +179,28 @@ export default function UserWorksList() {
     const asyncEffect = async () => {
       const result = await GetElements(connect, "status", "number");
       
-      let arr = []
+      const statusObj: Record<string, Status> = {};
       for (let i = 0; i < result.length; i++) {
         const statusNumber = parseInt(result[i].number);
         if (!isNaN(statusNumber)) {
-          arr[statusNumber] = result[i];
+          statusObj[statusNumber] = result[i];
         }
       }
 
-      setStatus(arr);
+      setStatus(statusObj);
     };
     asyncEffect();
   }, [connect]);
 
-  const onEdit = (workId) => {
+  const onEdit = (workId: string) => {
     let url = `/user-edit-work/${workId}?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${numberSection}`;
     navigate(url);
   };
 
-  const onDelete = (event) => {
-    let idWorkDelete = event.currentTarget.getAttribute("work_id");
+  const onDelete = (event: React.MouseEvent) => {
+    let idWorkDelete = (event.currentTarget as HTMLElement).getAttribute("data-work-id");
     if (window.confirm("Вы действительно хотите удалить запись о данном произведении?")) {
-      deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", idWorkDelete);
+      deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", idWorkDelete!);
       alert("Запись удалена.");
 
       setChangeFlag(!changeFlag);
@@ -202,15 +217,15 @@ export default function UserWorksList() {
     navigate(url);
   }
 
-  const onAddPerform = event => {
+  const onAddPerform = (event: React.MouseEvent) => {
     //let idWork = event.currentTarget.getAttribute("idWork");
     //navigate(`/user-add-perform?id=${idWork}`);
     let url = `/user-add-perform?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${numberSection}`;
     navigate(url);
   }
 
-  const onSection = event => {
-    let section = parseInt(event.currentTarget.getAttribute("value"));
+  const onSection = (event: React.MouseEvent) => {
+    let section = parseInt((event.currentTarget as HTMLElement).getAttribute("value") || "0");
     setNumberSection(section);
     // Update URL with the selected section
     navigate(`/user-works-list?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${section}`);
@@ -276,9 +291,9 @@ export default function UserWorksList() {
       <Button className="addWork" variant="outlined" onClick={sortByNumber} sx={{mt: 2}} fullWidth>Отсортировать по номерам</Button>
       {sections &&
         <div className="sections">
-          {Array(sections.length).fill().map((_, i) =>
-            <p className="sections__p">
-              <button className={(i === numberSection) ? "sections__button_active sections__button" : "sections__button"} value={i} onClick={onSection}>{sections[i].name}</button>
+          {sections.map((section, i) =>
+            <p className="sections__p" key={i}>
+              <button className={(i === numberSection) ? "sections__button_active sections__button" : "sections__button"} value={i} onClick={onSection}>{section.name}</button>
               {(i !== sections.length - 1) &&
                 <b> | </b>
               }
@@ -289,7 +304,7 @@ export default function UserWorksList() {
       <div>
         <WorksList 
           works={workInSections} 
-          status={status} 
+          status={status || {}} 
           navigate={navigate} 
           connect={connect} 
           onEdit={onEdit}

@@ -1,12 +1,52 @@
 import { useState, useEffect } from "react";
 import { Button, Modal, Box } from "@mui/material";
-import { GetElements, GetEl, updateEl } from "../services/firestore";
+import { GetElements, GetEl, updateEl, Connect } from "../services/firestore";
 
-export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
+interface EditWorkModalProps {
+  connect: Connect;
+  work_id: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-  async function submitEditWork(e) {
+interface Book {
+  name: string;
+  [key: string]: any;
+}
+
+interface Event {
+  name: string;
+  [key: string]: any;
+}
+
+interface Theme {
+  name: string;
+  [key: string]: any;
+}
+
+interface Status {
+  number: string;
+  name: string;
+  [key: string]: any;
+}
+
+interface Work {
+  name: string;
+  book?: string;
+  number?: string;
+  page?: string;
+  theme?: string;
+  event?: string;
+  status?: string;
+  comment?: string;
+  [key: string]: any;
+}
+
+export default function EditWorkModal({ connect, work_id, isOpen, onClose }: EditWorkModalProps) {
+
+  async function submitEditWork(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
     const fields = {
       name: formData.get("name"),
       book: formData.get("book"),
@@ -18,7 +58,7 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
       comment: formData.get("comment"),
     }
     updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", work_id, fields);
-    e.target.reset();
+    (e.target as HTMLFormElement).reset();
 
     onClose();
 
@@ -26,7 +66,7 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
     //navigate(url);
   }
 
-  const [books, setBooks] = useState();
+  const [books, setBooks] = useState<Book[] | undefined>(undefined);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -36,7 +76,7 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
     asyncEffect();
   }, [connect]);
 
-  const [events, setEvents] = useState();
+  const [events, setEvents] = useState<Event[] | undefined>(undefined);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -46,7 +86,7 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
     asyncEffect();
   }, [connect]);
 
-  const [themes, setThemes] = useState();
+  const [themes, setThemes] = useState<Theme[] | undefined>(undefined);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -56,13 +96,13 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
     asyncEffect();
   }, [connect]);
 
-  const [allStatuses, setAllStatuses] = useState(null);
+  const [allStatuses, setAllStatuses] = useState<string[] | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
       const result = await GetElements(connect, "status", "number");
       
-      let arr = []
+      const arr: string[] = []
       for (let i = 0; i < result.length; i++) {
         const statusNumber = parseInt(result[i].number);
         if (!isNaN(statusNumber)) {
@@ -84,7 +124,7 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
   const [status, setStatus] = useState("");
   const [comment, setComment] = useState("");
 
-  const [work, setWork] = useState();
+  const [work, setWork] = useState<Work | undefined>(undefined);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -97,13 +137,13 @@ export default function EditWorkModal({ connect, work_id, isOpen, onClose }) {
   useEffect(() => {
     if (work) {
       setName(work.name);
-      setBook(work.book);
-      setNumber(work.number);
-      setPage(work.page);
-      setTheme(work.theme);
-      setEvent(work.event);
-      setStatus(work.status);
-      setComment(work.comment);
+      setBook(work.book || "");
+      setNumber(work.number || "");
+      setPage(work.page || "");
+      setTheme(work.theme || "");
+      setEvent(work.event || "");
+      setStatus(work.status || "");
+      setComment(work.comment || "");
     }
   }, [work]);
 

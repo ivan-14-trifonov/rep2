@@ -1,17 +1,17 @@
 import "../styles/user-add-work.css";
 
 import { useState, useEffect, useMemo } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { Container } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../config/firebase";
-import { GetElements, GetEl } from "../services/firestore";
+import { GetElements } from "../services/firestore";
 import FormWork from "../components/FormWork";
 
-export default function UserEditWork() {
+export default function UserAddWork() {
 
   const auth = getAuth();
   let navigate = useNavigate();
@@ -28,9 +28,6 @@ export default function UserEditWork() {
   const spaceParam = queryParams.get('space');
   const musicalGroupParam = queryParams.get('musicalGroup');
   const sectionParam = queryParams.get('section') || '0';
-  
-  // Get work ID from URL parameter
-  const { workId } = useParams();
 
   const connect = useMemo(() => ({
     db: db,
@@ -38,8 +35,7 @@ export default function UserEditWork() {
     musicalGroup: musicalGroupParam,
   }), [db, spaceParam, musicalGroupParam]);
 
-  const [spaceUsers, setSpaceUsers] = useState(null);
-  const [initialWorkData, setInitialWorkData] = useState(null);
+  const [spaceUsers, setSpaceUsers] = useState<any[] | null>(null);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -55,35 +51,10 @@ export default function UserEditWork() {
     }
   }
 
-  // Load initial work data for editing
-  useEffect(() => {
-    const fetchWorkData = async () => {
-      if (workId) {
-        const workResult = await GetEl(
-          connect, 
-          "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/work", 
-          workId
-        );
-        setInitialWorkData(workResult);
-      }
-    };
-    fetchWorkData();
-  }, [connect, workId]);
-
-  if (!initialWorkData) {
-    return <Container maxWidth="xs" sx={{mt: 2}}>Загрузка...</Container>;
-  }
-
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
-      <h1>Редактировать произведение</h1>
-      <FormWork 
-        connect={connect} 
-        navigate={navigate} 
-        section={sectionParam}
-        workId={workId}
-        initialWorkData={initialWorkData}
-      />
+      <h1>Добавить произведение</h1>
+      <FormWork connect={connect} navigate={navigate} section={sectionParam} />
     </Container>
-  );
+  )
 }
