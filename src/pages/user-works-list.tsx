@@ -170,8 +170,7 @@ export default function UserWorksList() {
   };
 
   const handleConfigureSections = () => {
-    let url = `/user-edit-sections?space=${connect.space}&musicalGroup=${connect.musicalGroup}`;
-    navigate(url);
+    // Page has been removed
     handleMenuClose();
   };
 
