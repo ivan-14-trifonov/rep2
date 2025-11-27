@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# 🎵 Repertoire Manager
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Удобный цифровой архив для вашего музыкального коллектива!** 🎶
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📖 О проекте
 
-### `npm start`
+Наше приложение — это удобный цифровой архив для вашего коллектива. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### ✨ Что вы получите:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 🎼 **Все произведения всегда под рукой** — быстро посмотрите, что у вас есть в запасе, чтобы составить программу для выступления или план работы на репетиции.
 
-### `npm test`
+- 🏷️ **Гибкая система статусов** — присваивайте произведениям статусы:
+1. "В репертуаре"
+2. "Актуализировать"
+3. "Переучить"
+4. "Без подготовки"
+5. "Наизусть"
+6. "В плане". 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Вы всегда будете видеть, в каком состоянии находится каждая композиция.
 
-### `npm run build`
+- 📊 **История исполнений** — записи об исполнениях покажут, что вы играли часто, а что давно не звучало. Это поможет принять взвешенное решение, что исполнять в следующий раз, чтобы ваш репертуар всегда оставался свежим и разнообразным.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Установка и запуск
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+# Клонируйте репозиторий
+git clone https://github.com/ivan-14-trifonov/rep2/
 
-### `npm run eject`
+# Перейдите в папку проекта
+cd rep2
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Установите зависимости
+npm install
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Запустите приложение
+npm start
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 💡 Как использовать
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 👤 Регистрация
+- Создайте аккаунт для доступа ко всем функциям приложения
 
-## Learn More
+### 🎷 Создание коллективов
+- Вы можете создать на своём аккаунте несколько музыкальных коллективов
+- Переключайтесь между ними в один клик!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 📑 Организация репертуара
+- **Настройка секций** — организуйте произведения в логические разделы
+- Группируйте композиции по жанрам, сложности или любому другому принципу
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 🎼 Управление произведениями
+- **Добавляйте** новые композиции в репертуар
+- **Редактируйте** информацию о произведениях
+- **Организуйте** композиции с помощью удобной системы тегов и статусов
 
-### Code Splitting
+### 📅 Управление исполнениями
+- **Добавляйте** информацию о каждом исполнении
+- **Отслеживайте** историю выступлений
+- **Анализируйте** статистику — что играли часто, а что пора вспомнить!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🛠 Технологии
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **TypeScript** — статическая типизация для надёжности
+- **React** — современный UI
+- **React Router DOM** — навигация между страницами
+- **Material-UI** — красивый и удобный интерфейс
+- **Firebase** — безопасное хранение данных и аутентификация
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Сделайте ваш репертуар идеальным!** 🎹
