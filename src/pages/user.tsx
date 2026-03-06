@@ -2,7 +2,7 @@ import "../styles/user.css";
 
 import { useState, useEffect, useMemo, useCallback, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signOut, User as FirebaseUser, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, User as FirebaseUser } from "firebase/auth";
 import { Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
@@ -64,23 +64,8 @@ export default function User() {
   const auth = getAuth();
   let navigate = useNavigate();
 
-  const [user, setUser] = useState<FirebaseUser | null | undefined>(undefined);
+  const [user, setUser] = useState<FirebaseUser | null>(auth.currentUser);
   const [userName, setUserName] = useState<string | null>(null);
-
-  // Отслеживание состояния авторизации
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, [auth]);
-
-  // Редирект если не авторизован
-  useEffect(() => {
-    if (user === null) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
 
   // этот код всё равно не работает
   // ПОЧИНИТЬ!!!

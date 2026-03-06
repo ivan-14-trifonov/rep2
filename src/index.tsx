@@ -16,6 +16,7 @@ import UserAddPerform from "./pages/user-add-perform";
 import UserRights from "./pages/user-rights";
 import UserAdd from "./pages/user-add";
 import ErrorPage from "./pages/error-page";
+import PrivateRoute from "./components/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -37,31 +38,31 @@ const router = createBrowserRouter([
   },
   {
     path: "/user",
-    element: <User/>,
+    element: <PrivateRoute><User/></PrivateRoute>,
   },
   {
     path: "/user-works-list",
-    element: <UserWorksList/>,
+    element: <PrivateRoute><UserWorksList/></PrivateRoute>,
   },
   {
     path: "/user-add-work",
-    element: <UserAddWork/>,
+    element: <PrivateRoute><UserAddWork/></PrivateRoute>,
   },
   {
     path: "/user-edit-work/:workId",
-    element: <UserEditWork/>,
+    element: <PrivateRoute><UserEditWork/></PrivateRoute>,
   },
   {
     path: "/user-add-perform",
-    element: <UserAddPerform/>,
+    element: <PrivateRoute><UserAddPerform/></PrivateRoute>,
   },
   {
     path: "/user-rights",
-    element: <UserRights/>,
+    element: <PrivateRoute><UserRights/></PrivateRoute>,
   },
   {
     path: "/user-add",
-    element: <UserAdd/>,
+    element: <PrivateRoute><UserAdd/></PrivateRoute>,
   },
 ]);
 
