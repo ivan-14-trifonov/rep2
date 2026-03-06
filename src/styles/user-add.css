@@ -1,0 +1,8 @@
+.userAddForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.spaceFields {
+  margin-bottom: 1em;
+}

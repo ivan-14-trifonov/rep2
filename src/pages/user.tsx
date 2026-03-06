@@ -177,7 +177,7 @@ export default function User() {
   }, []);
 
   const addUser = () => {
-    // пустая функция
+    navigate("/user-add");
   }
 
   const [content, setContent] = useState<ReactNode>([]);
