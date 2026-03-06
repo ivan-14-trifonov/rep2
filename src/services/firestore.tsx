@@ -156,7 +156,7 @@ export interface UserAddData {
 export async function SetUser(connect: Connect, data: UserAddData) {
   const userRef = doc(connect.db, "user", data.email);
   
-  setDoc(userRef, {
+  await setDoc(userRef, {
     email: data.email,
     name: data.userId
   });
@@ -164,13 +164,13 @@ export async function SetUser(connect: Connect, data: UserAddData) {
   for (const space of data.spaces) {
     if (space.name && space.id) {
       const spaceRef = collection(connect.db, "user", data.email, "space");
-      addDoc(spaceRef, {
+      await addDoc(spaceRef, {
         name: space.name,
         uid: space.id
       });
       
       const usersRef = collection(connect.db, "space", space.id, "users");
-      addDoc(usersRef, {
+      await addDoc(usersRef, {
         uid: data.userId
       });
     }
