@@ -176,6 +176,10 @@ export default function User() {
     // setContent(chooseMusicalGroup(musicalGroups, onMusGr));
   }, []);
 
+  const addUser = () => {
+    // пустая функция
+  }
+
   const [content, setContent] = useState<ReactNode>([]);
   useEffect(() => {
     if (spaces) {
@@ -201,6 +205,7 @@ export default function User() {
         <div className="userBox">
           <p className="userBox_name">{user.displayName}</p>
           <p className="userBox_email">{user.email}</p>
+          <p className="userBox_add" onClick={addUser}>Add user</p>
           <p className="userBox_exit" onClick={onLogout}>Выйти</p>
         </div>
       }

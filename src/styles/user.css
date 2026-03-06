@@ -17,6 +17,7 @@
 	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
+.userBox_add,
 .userBox_exit {
 	margin: 0.5em 0;
 	font-size: 1em;
