@@ -28,9 +28,14 @@ export default function UserAdd() {
   }), [db]);
 
   const handleSubmit = async () => {
-    await SetUser(connect, { userId, userName, email, spaces });
-    alert("Пользователь успешно добавлен.");
-    navigate("/user");
+    try {
+      await SetUser(connect, { userId, userName, email, spaces });
+      alert("Пользователь успешно добавлен.");
+      navigate("/user");
+    } catch (error) {
+      console.error("Error adding user:", error);
+      alert("Ошибка при добавлении пользователя: " + error);
+    }
   };
 
   const handleAddSpace = () => {
@@ -122,6 +127,7 @@ export default function UserAdd() {
           color="primary"
           fullWidth
           onClick={handleSubmit}
+          type="button"
           sx={{ mt: 2 }}
         >
           добавить
