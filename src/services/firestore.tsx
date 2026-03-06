@@ -164,8 +164,8 @@ export interface UserAddData {
   spaces: SpaceData[];
 }
 
-export function SetUser(db: Firestore, data: UserAddData) {
-  const userRef = doc(db, "user", data.email);
+export function SetUser(connect: Connect, data: UserAddData) {
+  const userRef = doc(connect.db, "user", data.email);
   
   setDoc(userRef, {
     email: data.email,
@@ -174,7 +174,7 @@ export function SetUser(db: Firestore, data: UserAddData) {
 
   for (const space of data.spaces) {
     if (space.name && space.id) {
-      const spaceRef = collection(db, "user", data.email, "space");
+      const spaceRef = collection(connect.db, "user", data.email, "space");
       addDoc(spaceRef, {
         name: space.name,
         uid: space.id
