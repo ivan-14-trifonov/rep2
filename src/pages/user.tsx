@@ -64,19 +64,23 @@ export default function User() {
   const auth = getAuth();
   let navigate = useNavigate();
 
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [user, setUser] = useState<FirebaseUser | null | undefined>(undefined);
   const [userName, setUserName] = useState<string | null>(null);
 
   // Отслеживание состояния авторизации
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      if (!currentUser) {
-        navigate("/login");
-      }
     });
     return () => unsubscribe();
-  }, [auth, navigate]);
+  }, [auth]);
+
+  // Редирект если не авторизован
+  useEffect(() => {
+    if (user === null) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   // этот код всё равно не работает
   // ПОЧИНИТЬ!!!
