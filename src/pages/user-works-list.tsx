@@ -261,8 +261,18 @@ export default function UserWorksList() {
       }
       <h1 className="worksList">Cписок произведений</h1>
       {(connectInfo.space && connectInfo.musicalGroup) &&
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <p className="spaceInfo">{connectInfo.space} &bull; {connectInfo.musicalGroup}</p>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+          <p 
+            className="spaceInfo" 
+            onClick={() => navigate("/user")}
+            style={{ textDecoration: 'underline', cursor: 'pointer', marginRight: '8px' }}
+          >
+            мои пространства
+          </p>
+          <p className="spaceInfo" style={{ margin: '0 4px' }}>&bull;</p>
+          <p className="spaceInfo" style={{ margin: '0 4px' }}>{connectInfo.space}</p>
+          <p className="spaceInfo" style={{ margin: '0 4px' }}>&bull;</p>
+          <p className="spaceInfo" style={{ margin: '0 4px' }}>{connectInfo.musicalGroup}</p>
           <IconButton 
             aria-label="settings" 
             onClick={handleMenuOpen}
