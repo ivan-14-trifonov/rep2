@@ -2,7 +2,7 @@ import "../styles/user.css";
 
 import { useState, useEffect, useMemo, useCallback, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signOut, User as FirebaseUser } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
