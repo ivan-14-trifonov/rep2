@@ -152,3 +152,18 @@ export async function GetWorkInSections(connect: Connect, section: Section) {
 
   return workInSection;
 }
+
+export interface SpaceData {
+  name: string;
+  id: string;
+}
+
+export interface UserAddData {
+  userId: string;
+  email: string;
+  spaces: SpaceData[];
+}
+
+export function SetUser(data: UserAddData) {
+  // alert(JSON.stringify(data));
+}

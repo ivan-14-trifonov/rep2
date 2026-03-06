@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { Container, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { SetUser } from "../services/firestore";
 
 export default function UserAdd() {
   const auth = getAuth();
@@ -18,12 +19,8 @@ export default function UserAdd() {
   const [email, setEmail] = useState("");
   const [spaces, setSpaces] = useState<{ name: string; id: string }[]>([{ name: "", id: "" }]);
 
-  const userAdd = (data: { userId: string; email: string; spaces: { name: string; id: string }[] }) => {
-    alert(JSON.stringify(data));
-  };
-
   const handleSubmit = () => {
-    userAdd({ userId, email, spaces });
+    SetUser({ userId, email, spaces });
   };
 
   const handleAddSpace = () => {
