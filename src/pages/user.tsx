@@ -2,7 +2,7 @@ import "../styles/user.css";
 
 import { useState, useEffect, useMemo, useCallback, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signOut, User as FirebaseUser } from "firebase/auth";
+import { getAuth, signOut, User as FirebaseUser, onAuthStateChanged } from "firebase/auth";
 import { Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
@@ -64,14 +64,19 @@ export default function User() {
   const auth = getAuth();
   let navigate = useNavigate();
 
-  const [user, setUser] = useState<FirebaseUser | null>(auth.currentUser);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
 
-  // по сути, это заглушка, без которой пока не работает...
-  setTimeout(() => setUser(auth.currentUser), 400);
-  setTimeout(() => setUser(auth.currentUser), 1000);
-  setTimeout(() => setUser(auth.currentUser), 2000);
-  setTimeout(() => setUser(auth.currentUser), 5000);
+  // Отслеживание состояния авторизации
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (!currentUser) {
+        navigate("/login");
+      }
+    });
+    return () => unsubscribe();
+  }, [auth, navigate]);
 
   // Загрузка имени пользователя из Firestore
   useEffect(() => {
@@ -90,9 +95,9 @@ export default function User() {
   // этот код всё равно не работает
   // ПОЧИНИТЬ!!!
   // проблема в том, что auth.currentUser возвращает сначала null!!!
-  /*if (user == null) {
-    navigate("/login");
-  }*/
+  // if (user == null) {
+  //   navigate("/login");
+  // }
 
   const db = getFirestore(app);
 
