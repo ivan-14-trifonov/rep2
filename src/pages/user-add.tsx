@@ -2,12 +2,14 @@ import "../styles/user-add.css";
 
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { Container, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { SetUser } from "../services/firestore";
 
 export default function UserAdd() {
   const auth = getAuth();
+  const db = getFirestore();
   let navigate = useNavigate();
 
   const user = auth.currentUser;
@@ -20,7 +22,7 @@ export default function UserAdd() {
   const [spaces, setSpaces] = useState<{ name: string; id: string }[]>([{ name: "", id: "" }]);
 
   const handleSubmit = () => {
-    SetUser({ userId, email, spaces });
+    SetUser(db, { userId, email, spaces });
   };
 
   const handleAddSpace = () => {

@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, getDoc, updateDoc, query, orderBy, deleteDoc, Firestore } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, getDoc, updateDoc, query, orderBy, deleteDoc, setDoc, Firestore } from "firebase/firestore";
 
 export interface Connect {
   db: Firestore;
@@ -164,6 +164,21 @@ export interface UserAddData {
   spaces: SpaceData[];
 }
 
-export function SetUser(data: UserAddData) {
-  // alert(JSON.stringify(data));
+export function SetUser(db: Firestore, data: UserAddData) {
+  const userRef = doc(db, "user", data.email);
+  
+  setDoc(userRef, {
+    email: data.email,
+    name: data.userId
+  });
+
+  for (const space of data.spaces) {
+    if (space.name && space.id) {
+      const spaceRef = collection(db, "user", data.email, "space");
+      addDoc(spaceRef, {
+        name: space.name,
+        uid: space.id
+      });
+    }
+  }
 }
