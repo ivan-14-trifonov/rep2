@@ -78,6 +78,19 @@ export default function User() {
     return () => unsubscribe();
   }, [auth, navigate]);
 
+  // этот код всё равно не работает
+  // ПОЧИНИТЬ!!!
+  // проблема в том, что auth.currentUser возвращает сначала null!!!
+  // if (user == null) {
+  //   navigate("/login");
+  // }
+
+  const db = getFirestore(app);
+
+  const connect: Connect = useMemo(() => ({
+    db: db,
+  }), [db]);
+
   // Загрузка имени пользователя из Firestore
   useEffect(() => {
     const asyncEffect = async () => {
@@ -91,19 +104,6 @@ export default function User() {
     };
     asyncEffect();
   }, [connect]);
-
-  // этот код всё равно не работает
-  // ПОЧИНИТЬ!!!
-  // проблема в том, что auth.currentUser возвращает сначала null!!!
-  // if (user == null) {
-  //   navigate("/login");
-  // }
-
-  const db = getFirestore(app);
-
-  const connect: Connect = useMemo(() => ({
-    db: db,
-  }), [db]);
 
   /*
     выбор "пространства"
@@ -119,8 +119,7 @@ export default function User() {
       }
     };
     asyncEffect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connect]);
+  }, [connect, user]);
 
   // выбранное пространство
   const [spaceUid, setSpaceUid] = useState<string | undefined>();
