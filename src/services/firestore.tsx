@@ -61,6 +61,10 @@ export async function GetEl(connect: Connect, table: string, id: string): Promis
   return docSnap.data();
 }
 
+export async function GetUser(connect: Connect, email: string): Promise<any | undefined> {
+  return GetEl(connect, "user", email);
+}
+
 export async function updateEl(connect: Connect, table: string, id: string, fields: Record<string, any>) {
   const washingtonRef = doc(connect.db, table, id);
 

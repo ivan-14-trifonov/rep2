@@ -7,7 +7,7 @@ import { Container, Card } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../config/firebase";
-import { GetElements } from "../services/firestore";
+import { GetElements, GetUser } from "../services/firestore";
 
 interface Space {
   uid: string;
@@ -65,12 +65,25 @@ export default function User() {
   let navigate = useNavigate();
 
   const [user, setUser] = useState<FirebaseUser | null>(auth.currentUser);
+  const [userName, setUserName] = useState<string | null>(null);
 
   // по сути, это заглушка, без которой пока не работает...
   setTimeout(() => setUser(auth.currentUser), 400);
   setTimeout(() => setUser(auth.currentUser), 1000);
   setTimeout(() => setUser(auth.currentUser), 2000);
   setTimeout(() => setUser(auth.currentUser), 5000);
+
+  // Загрузка имени пользователя из Firestore
+  useEffect(() => {
+    const asyncEffect = async () => {
+      if (user?.email) {
+        const userData = await GetUser(connect, user.email);
+        setUserName(userData?.name || null);
+      }
+    };
+    asyncEffect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.email]);
 
   // этот код всё равно не работает
   // ПОЧИНИТЬ!!!
@@ -201,7 +214,7 @@ export default function User() {
       }
       {user &&
         <div className="userBox">
-          <p className="userBox_name">{user.displayName}</p>
+          <p className="userBox_name">{userName || user.displayName}</p>
           <p className="userBox_email">{user.email}</p>
           <p className="userBox_add" onClick={addUser}>Add user</p>
           <p className="userBox_exit" onClick={onLogout}>Выйти</p>
