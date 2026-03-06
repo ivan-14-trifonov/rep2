@@ -94,16 +94,15 @@ export default function User() {
   // Загрузка имени пользователя из Firestore
   useEffect(() => {
     const asyncEffect = async () => {
-      const currentUser = auth.currentUser;
-      if (currentUser?.email) {
-        const userData = await GetUser(connect, currentUser.email);
+      if (user?.email) {
+        const userData = await GetUser(connect, user.email);
         if (userData?.name) {
           setUserName(userData.name);
         }
       }
     };
     asyncEffect();
-  }, [connect]);
+  }, [connect, user]);
 
   /*
     выбор "пространства"
