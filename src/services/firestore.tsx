@@ -153,7 +153,7 @@ export interface UserAddData {
   spaces: SpaceData[];
 }
 
-export function SetUser(connect: Connect, data: UserAddData) {
+export async function SetUser(connect: Connect, data: UserAddData) {
   const userRef = doc(connect.db, "user", data.email);
   
   setDoc(userRef, {
@@ -167,6 +167,11 @@ export function SetUser(connect: Connect, data: UserAddData) {
       addDoc(spaceRef, {
         name: space.name,
         uid: space.id
+      });
+      
+      const usersRef = collection(connect.db, "space", space.id, "users");
+      addDoc(usersRef, {
+        uid: data.userId
       });
     }
   }
