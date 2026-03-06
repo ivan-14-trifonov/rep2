@@ -122,6 +122,7 @@ export default function User() {
       setSpaces(result);
     };
     asyncEffect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSpace, connect, user?.uid]);
 
   /*
