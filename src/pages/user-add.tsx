@@ -19,6 +19,7 @@ export default function UserAdd() {
   }
 
   const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [spaces, setSpaces] = useState<{ name: string; id: string }[]>([{ name: "", id: "" }]);
 
@@ -27,7 +28,7 @@ export default function UserAdd() {
   }), [db]);
 
   const handleSubmit = () => {
-    SetUser(connect, { userId, email, spaces });
+    SetUser(connect, { userId, userName, email, spaces });
   };
 
   const handleAddSpace = () => {
@@ -58,6 +59,14 @@ export default function UserAdd() {
           margin="normal"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
+        />
+        <TextField
+          label="user_name"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
         />
         <TextField
           label="email"

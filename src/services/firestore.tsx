@@ -149,6 +149,7 @@ export interface SpaceData {
 
 export interface UserAddData {
   userId: string;
+  userName: string;
   email: string;
   spaces: SpaceData[];
 }
@@ -158,7 +159,7 @@ export async function SetUser(connect: Connect, data: UserAddData) {
   
   await setDoc(userRef, {
     email: data.email,
-    name: data.userId
+    name: data.userName
   });
 
   for (const space of data.spaces) {
