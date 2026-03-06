@@ -6,17 +6,6 @@ export interface Connect {
   musicalGroup?: string | null;
 }
 
-interface Work {
-  id: string;
-  [key: string]: any;
-}
-
-interface Perform {
-  id: string;
-  work: string;
-  [key: string]: any;
-}
-
 interface Section {
   sort: string;
   include: Record<string, any[]>;

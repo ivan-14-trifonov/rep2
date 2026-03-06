@@ -23,10 +23,6 @@ interface Connect {
   db: any;
 }
 
-interface SpaceElement {
-  uid: string;
-}
-
 interface UserElement {
   uid: string;
 }
@@ -103,7 +99,8 @@ export default function User() {
       }
     };
     asyncEffect();
-  }, [user, connect]); // что будет, если убрать setTimeout(() => setUser... ?
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connect]);
 
   // выбранное пространство
   const [spaceUid, setSpaceUid] = useState<string | undefined>();
