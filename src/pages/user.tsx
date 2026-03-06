@@ -76,14 +76,16 @@ export default function User() {
   // Загрузка имени пользователя из Firestore
   useEffect(() => {
     const asyncEffect = async () => {
-      if (user?.email) {
-        const userData = await GetUser(connect, user.email);
-        setUserName(userData?.name || null);
+      const currentUser = auth.currentUser;
+      if (currentUser?.email) {
+        const userData = await GetUser(connect, currentUser.email);
+        if (userData?.name) {
+          setUserName(userData.name);
+        }
       }
     };
     asyncEffect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.email]);
+  }, [connect]);
 
   // этот код всё равно не работает
   // ПОЧИНИТЬ!!!
