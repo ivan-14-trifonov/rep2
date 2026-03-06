@@ -27,8 +27,10 @@ export default function UserAdd() {
     db: db,
   }), [db]);
 
-  const handleSubmit = () => {
-    SetUser(connect, { userId, userName, email, spaces });
+  const handleSubmit = async () => {
+    await SetUser(connect, { userId, userName, email, spaces });
+    alert("Пользователь успешно добавлен.");
+    navigate("/user");
   };
 
   const handleAddSpace = () => {
