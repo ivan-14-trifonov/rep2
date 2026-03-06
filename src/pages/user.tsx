@@ -64,7 +64,7 @@ export default function User() {
   const auth = getAuth();
   let navigate = useNavigate();
 
-  const [user, setUser] = useState<FirebaseUser | null>(auth.currentUser);
+  const user = auth.currentUser;
   const [userName, setUserName] = useState<string | null>(null);
 
   // этот код всё равно не работает
