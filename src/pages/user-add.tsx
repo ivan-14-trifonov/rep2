@@ -18,8 +18,12 @@ export default function UserAdd() {
   const [email, setEmail] = useState("");
   const [spaces, setSpaces] = useState<{ name: string; id: string }[]>([{ name: "", id: "" }]);
 
-  const userAdd = () => {
-    alert("запущено");
+  const userAdd = (data: { userId: string; email: string; spaces: { name: string; id: string }[] }) => {
+    alert(JSON.stringify(data));
+  };
+
+  const handleSubmit = () => {
+    userAdd({ userId, email, spaces });
   };
 
   const handleAddSpace = () => {
@@ -102,7 +106,7 @@ export default function UserAdd() {
           variant="contained"
           color="primary"
           fullWidth
-          onClick={userAdd}
+          onClick={handleSubmit}
           sx={{ mt: 2 }}
         >
           добавить
