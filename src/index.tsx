@@ -15,6 +15,7 @@ import UserEditWork from "./pages/user-edit-work";
 import UserAddPerform from "./pages/user-add-perform";
 import UserRights from "./pages/user-rights";
 import UserAdd from "./pages/user-add";
+import UserSections from "./pages/user-sections";
 import ErrorPage from "./pages/error-page";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: "/user-add",
     element: <PrivateRoute><UserAdd/></PrivateRoute>,
+  },
+  {
+    path: "/user-sections",
+    element: <PrivateRoute><UserSections/></PrivateRoute>,
   },
 ]);
 

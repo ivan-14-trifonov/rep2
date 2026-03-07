@@ -170,8 +170,7 @@ export default function UserWorksList() {
   };
 
   const handleConfigureSections = () => {
-    // Page has been removed
-    handleMenuClose();
+    navigate(`/user-sections?space=${connect.space}&musicalGroup=${connect.musicalGroup}`);
   };
 
   useEffect(() => {
