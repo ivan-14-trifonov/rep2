@@ -202,7 +202,10 @@ export default function UserSections() {
       {sections.map((section, i) => (
         <Box key={section.firestoreId} sx={{ mb: 2, p: 2, border: '1px solid #ddd', borderRadius: 1 }}>
           <p><strong>{section.name}</strong></p>
+          <p style={{ fontSize: '0.9em', color: '#666' }}>Порядок: {section.displayOrder}</p>
           <p style={{ fontSize: '0.9em', color: '#666' }}>Сортировка: {section.sort}</p>
+          <p style={{ fontSize: '0.9em', color: '#666' }}>Include: {JSON.stringify(section.include)}</p>
+          <p style={{ fontSize: '0.9em', color: '#666' }}>Exclude: {JSON.stringify(section.exclude)}</p>
           <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
             <Button
               variant="outlined"
