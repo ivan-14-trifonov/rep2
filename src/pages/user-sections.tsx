@@ -45,7 +45,7 @@ export default function UserSections() {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "display_order");
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
       setSections(result);
     };
     asyncEffect();
@@ -87,7 +87,7 @@ export default function UserSections() {
     setInclude("");
     setExclude("");
 
-    const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "display_order");
+    const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
     setSections(result);
   };
 
@@ -104,7 +104,7 @@ export default function UserSections() {
     if (window.confirm("Вы действительно хотите удалить эту секцию?")) {
       await deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", firestoreId);
       
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "display_order");
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
       setSections(result);
     }
   };

@@ -73,7 +73,7 @@ export default function UserWorksList() {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "display_order");
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
       for (let i = 0; i < result.length; i++) {
         result[i].include = JSON.parse(result[i].include);
         result[i].exclude = JSON.parse(result[i].exclude);
