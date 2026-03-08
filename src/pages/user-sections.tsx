@@ -10,7 +10,8 @@ import { app } from "../config/firebase";
 import { GetElements, AddSection, updateEl, deleteEl, Connect } from "../services/firestore";
 
 interface Section {
-  id: string;
+  firestoreId: string;  // внутренний идентификатор Firestore
+  id: string;           // поле id из данных секции (для сортировки)
   name: string;
   sort: string;
   include: Record<string, any[]>;
@@ -50,6 +51,7 @@ export default function UserSections() {
     asyncEffect();
   }, [connect]);
 
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [sort, setSort] = useState("");
   const [include, setInclude] = useState("");
@@ -62,6 +64,7 @@ export default function UserSections() {
 
     if (editingId) {
       await updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", editingId, {
+        id,
         name,
         sort,
         include: includeObj,
@@ -70,6 +73,7 @@ export default function UserSections() {
       setEditingId(null);
     } else {
       await AddSection(connect, {
+        id,
         name,
         sort,
         include: includeObj,
@@ -77,6 +81,7 @@ export default function UserSections() {
       });
     }
 
+    setId("");
     setName("");
     setSort("");
     setInclude("");
@@ -87,16 +92,17 @@ export default function UserSections() {
   };
 
   const handleEdit = (section: Section) => {
-    setEditingId(section.id);
+    setEditingId(section.firestoreId);
+    setId(section.id);
     setName(section.name);
     setSort(section.sort);
     setInclude(JSON.stringify(section.include));
     setExclude(JSON.stringify(section.exclude));
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (firestoreId: string) => {
     if (window.confirm("Вы действительно хотите удалить эту секцию?")) {
-      await deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", id);
+      await deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", firestoreId);
       
       const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "id");
       setSections(result);
@@ -184,7 +190,7 @@ export default function UserSections() {
 
       <h2>Существующие секции</h2>
       {sections.map((section, i) => (
-        <Box key={section.id} sx={{ mb: 2, p: 2, border: '1px solid #ddd', borderRadius: 1 }}>
+        <Box key={section.firestoreId} sx={{ mb: 2, p: 2, border: '1px solid #ddd', borderRadius: 1 }}>
           <p><strong>{section.name}</strong></p>
           <p style={{ fontSize: '0.9em', color: '#666' }}>Сортировка: {section.sort}</p>
           <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
@@ -198,7 +204,7 @@ export default function UserSections() {
             <IconButton
               color="error"
               size="small"
-              onClick={() => handleDelete(section.id)}
+              onClick={() => handleDelete(section.firestoreId)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
