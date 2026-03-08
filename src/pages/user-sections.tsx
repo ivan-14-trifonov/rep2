@@ -10,8 +10,8 @@ import { app } from "../config/firebase";
 import { GetElements, AddSection, updateEl, deleteEl, Connect } from "../services/firestore";
 
 interface Section {
-  firestoreId: string;  // внутренний идентификатор Firestore
-  id: string;           // поле id из данных секции (для сортировки)
+  firestoreId: string;          // внутренний идентификатор Firestore
+  displayOrder: string;         // поле displayOrder из данных секции (для сортировки)
   name: string;
   sort: string;
   include: Record<string, any[]>;
@@ -45,13 +45,13 @@ export default function UserSections() {
 
   useEffect(() => {
     const asyncEffect = async () => {
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "id");
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
       setSections(result);
     };
     asyncEffect();
   }, [connect]);
 
-  const [id, setId] = useState("");
+  const [displayOrder, setDisplayOrder] = useState("");
   const [name, setName] = useState("");
   const [sort, setSort] = useState("");
   const [include, setInclude] = useState("");
@@ -64,7 +64,7 @@ export default function UserSections() {
 
     if (editingId) {
       await updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", editingId, {
-        id,
+        displayOrder,
         name,
         sort,
         include: includeObj,
@@ -73,7 +73,7 @@ export default function UserSections() {
       setEditingId(null);
     } else {
       await AddSection(connect, {
-        id,
+        displayOrder,
         name,
         sort,
         include: includeObj,
@@ -81,19 +81,19 @@ export default function UserSections() {
       });
     }
 
-    setId("");
+    setDisplayOrder("");
     setName("");
     setSort("");
     setInclude("");
     setExclude("");
 
-    const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "id");
+    const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
     setSections(result);
   };
 
   const handleEdit = (section: Section) => {
     setEditingId(section.firestoreId);
-    setId(section.id);
+    setDisplayOrder(section.displayOrder);
     setName(section.name);
     setSort(section.sort);
     setInclude(JSON.stringify(section.include));
@@ -104,13 +104,14 @@ export default function UserSections() {
     if (window.confirm("Вы действительно хотите удалить эту секцию?")) {
       await deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", firestoreId);
       
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "id");
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
       setSections(result);
     }
   };
 
   const handleCancel = () => {
     setEditingId(null);
+    setDisplayOrder("");
     setName("");
     setSort("");
     setInclude("");
@@ -133,6 +134,15 @@ export default function UserSections() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           margin="normal"
+        />
+        <TextField
+          label="Порядковый номер"
+          variant="outlined"
+          fullWidth
+          value={displayOrder}
+          onChange={(e) => setDisplayOrder(e.target.value)}
+          margin="normal"
+          placeholder="например: 1, 2, 3"
         />
         <TextField
           label="Поле для сортировки"

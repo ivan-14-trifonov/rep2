@@ -10,6 +10,7 @@ interface Section {
   sort: string;
   include: Record<string, any[]>;
   exclude: Record<string, any[]>;
+  displayOrder?: string;
 }
 
 export async function AddWork(connect: Connect, fields: Record<string, any>) {
