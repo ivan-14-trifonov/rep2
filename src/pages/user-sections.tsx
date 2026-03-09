@@ -63,26 +63,14 @@ export default function UserSections() {
       const includeObj = include ? JSON.parse(include) : {};
       const excludeObj = exclude ? JSON.parse(exclude) : {};
 
-      if (editingId) {
-        await updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", editingId, {
-          displayOrder,
-          name,
-          sort,
-          include: includeObj,
-          exclude: excludeObj
-        });
-        setEditingId(null);
-        alert("Секция успешно обновлена");
-      } else {
-        await AddSection(connect, {
-          displayOrder,
-          name,
-          sort,
-          include: includeObj,
-          exclude: excludeObj
-        });
-        alert("Секция успешно добавлена");
-      }
+      await AddSection(connect, {
+        displayOrder,
+        name,
+        sort,
+        include: includeObj,
+        exclude: excludeObj
+      });
+      alert("Секция успешно добавлена");
 
       setDisplayOrder("");
       setName("");
