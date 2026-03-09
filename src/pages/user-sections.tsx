@@ -10,7 +10,7 @@ import { app } from "../config/firebase";
 import { GetElements, AddSection, updateEl, deleteEl, Connect } from "../services/firestore";
 
 interface Section {
-  firestoreId: string;          // внутренний идентификатор Firestore
+  id: string;                   // внутренний идентификатор Firestore
   displayOrder: string;         // поле displayOrder из данных секции (для сортировки)
   name: string;
   sort: string;
@@ -86,7 +86,7 @@ export default function UserSections() {
   };
 
   const handleEdit = (section: Section) => {
-    setEditingId(section.firestoreId);
+    setEditingId(section.id);
     setDisplayOrder(section.displayOrder);
     setName(section.name);
     setSort(section.sort);
@@ -199,7 +199,7 @@ export default function UserSections() {
 
       <h2>Существующие секции</h2>
       {sections.map((section, i) => (
-        <Box key={section.firestoreId} sx={{ mb: 2, p: 2, border: '1px solid #ddd', borderRadius: 1 }}>
+        <Box key={section.id} sx={{ mb: 2, p: 2, border: '1px solid #ddd', borderRadius: 1 }}>
           <p><strong>{section.name}</strong></p>
           <p style={{ fontSize: '0.9em', color: '#666' }}>Порядок: {section.displayOrder}</p>
           <p style={{ fontSize: '0.9em', color: '#666' }}>Сортировка: {section.sort}</p>
@@ -216,7 +216,7 @@ export default function UserSections() {
             <IconButton
               color="error"
               size="small"
-              onClick={() => handleDelete(section.firestoreId)}
+              onClick={() => handleDelete(section.id)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
