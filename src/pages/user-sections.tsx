@@ -59,36 +59,42 @@ export default function UserSections() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const handleSubmit = async () => {
-    const includeObj = include ? JSON.parse(include) : {};
-    const excludeObj = exclude ? JSON.parse(exclude) : {};
+    try {
+      const includeObj = include ? JSON.parse(include) : {};
+      const excludeObj = exclude ? JSON.parse(exclude) : {};
 
-    if (editingId) {
-      await updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", editingId, {
-        displayOrder,
-        name,
-        sort,
-        include: includeObj,
-        exclude: excludeObj
-      });
-      setEditingId(null);
-    } else {
-      await AddSection(connect, {
-        displayOrder,
-        name,
-        sort,
-        include: includeObj,
-        exclude: excludeObj
-      });
+      if (editingId) {
+        await updateEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", editingId, {
+          displayOrder,
+          name,
+          sort,
+          include: includeObj,
+          exclude: excludeObj
+        });
+        setEditingId(null);
+        alert("Секция успешно обновлена");
+      } else {
+        await AddSection(connect, {
+          displayOrder,
+          name,
+          sort,
+          include: includeObj,
+          exclude: excludeObj
+        });
+        alert("Секция успешно добавлена");
+      }
+
+      setDisplayOrder("");
+      setName("");
+      setSort("");
+      setInclude("");
+      setExclude("");
+
+      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
+      setSections(result);
+    } catch (error) {
+      alert("Ошибка при сохранении секции: " + (error instanceof Error ? error.message : error));
     }
-
-    setDisplayOrder("");
-    setName("");
-    setSort("");
-    setInclude("");
-    setExclude("");
-
-    const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
-    setSections(result);
   };
 
   const handleEdit = (section: Section) => {
@@ -102,10 +108,15 @@ export default function UserSections() {
 
   const handleDelete = async (firestoreId: string) => {
     if (window.confirm("Вы действительно хотите удалить эту секцию?")) {
-      await deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", firestoreId);
-      
-      const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
-      setSections(result);
+      try {
+        await deleteEl(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", firestoreId);
+        alert("Секция успешно удалена");
+        
+        const result = await GetElements(connect, "space/" + connect.space + "/musical_group/" + connect.musicalGroup + "/sections", "displayOrder");
+        setSections(result);
+      } catch (error) {
+        alert("Ошибка при удалении секции: " + (error instanceof Error ? error.message : error));
+      }
     }
   };
 
