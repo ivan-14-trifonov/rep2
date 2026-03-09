@@ -7,7 +7,7 @@ import { Container, TextField, Button, IconButton, Box } from "@mui/material";
 
 import { getFirestore } from "firebase/firestore";
 import { app } from "../config/firebase";
-import { GetElements, AddSection, updateEl, deleteEl, Connect } from "../services/firestore";
+import { GetElements, AddSection, deleteEl, Connect } from "../services/firestore";
 
 interface Section {
   id: string;                   // внутренний идентификатор Firestore
