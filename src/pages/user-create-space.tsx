@@ -36,7 +36,7 @@ export default function UserCreateSpace() {
 
       // Создаём музыкальную группу внутри пространства
       const musicalGroupRef = collection(db, "space", spaceDoc.id, "musical_group");
-      await addDoc(musicalGroupRef, {
+      const musicalGroupDoc = await addDoc(musicalGroupRef, {
         name: musicalGroupName,
       });
 
@@ -47,7 +47,7 @@ export default function UserCreateSpace() {
       });
 
       alert("Пространство и музыкальная группа успешно созданы.");
-      navigate(`/user-works-list?space=${spaceDoc.id}&musicalGroup=${musicalGroupName}`);
+      navigate(`/user-works-list?space=${spaceDoc.id}&musicalGroup=${musicalGroupDoc.id}`);
     } catch (error) {
       console.error("Error creating space:", error);
       alert("Ошибка при создании: " + (error instanceof Error ? error.message : error));
