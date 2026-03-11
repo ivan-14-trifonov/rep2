@@ -17,6 +17,7 @@ import UserRights from "./pages/user-rights";
 import UserAdd from "./pages/user-add";
 import UserSections from "./pages/user-sections";
 import UserCreateSpace from "./pages/user-create-space";
+import UserCreateMusicalGroup from "./pages/user-create-musical-group";
 import ErrorPage from "./pages/error-page";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
   {
     path: "/user-create-space",
     element: <PrivateRoute><UserCreateSpace/></PrivateRoute>,
+  },
+  {
+    path: "/user-create-musical-group",
+    element: <PrivateRoute><UserCreateMusicalGroup/></PrivateRoute>,
   },
 ]);
 

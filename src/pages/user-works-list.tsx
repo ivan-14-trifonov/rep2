@@ -177,6 +177,10 @@ export default function UserWorksList() {
     navigate(`/user-create-space`);
   };
 
+  const handleCreateNewMusicalGroup = () => {
+    navigate(`/user-create-musical-group?space=${connect.space}`);
+  };
+
   useEffect(() => {
     const asyncEffect = async () => {
       const result = await GetElements(connect, "status", "number");
@@ -294,6 +298,9 @@ export default function UserWorksList() {
           >
             <MenuItem onClick={handleConfigureSections}>
               Настроить секции
+            </MenuItem>
+            <MenuItem onClick={handleCreateNewMusicalGroup}>
+              Добавить музыкальный коллектив
             </MenuItem>
             <MenuItem onClick={handleCreateNewSpace}>
               Создать новое пространство
