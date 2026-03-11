@@ -125,7 +125,7 @@ export default function FormAddPerform({ connect, navigate, section, workId = nu
       <label htmlFor="date">Дата исполнения:</label>
       <input type="date" id="date" name="date" onChange={handleDateChange} />
       <input type="text" id="weekday" name="weekday" readOnly placeholder="День недели" />
-      <p>Собрание:</p>
+      <p>Собрание (заполняем для воскресенья):</p>
       <select className="formAddWork__select" name="time" id="time-select">
         <option value="">--Не определено--</option>
         <option value="утро">утро</option>
