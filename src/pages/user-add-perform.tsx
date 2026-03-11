@@ -32,6 +32,8 @@ export default function UserAddPerform() {
   const spaceParam = queryParams.get('space');
   const musicalGroupParam = queryParams.get('musicalGroup');
   const sectionParam = queryParams.get('section') || '0';
+  const workParam = queryParams.get('work');
+  const dateParam = queryParams.get('date');
 
   const connect = useMemo(() => ({
     db: db,
@@ -58,7 +60,7 @@ export default function UserAddPerform() {
   return (
     <Container maxWidth="xs" sx={{mt: 2}}>
       <h1>Добавить исполнение</h1>
-      <FormAddPerformComponent connect={connect} navigate={navigate} section={sectionParam} />
+      <FormAddPerformComponent connect={connect} navigate={navigate} section={sectionParam} workId={workParam} date={dateParam} />
     </Container>
   )
 }

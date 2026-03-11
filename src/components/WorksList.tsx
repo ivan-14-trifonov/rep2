@@ -2,6 +2,7 @@ import { Card } from "@mui/material";
 import { ReactNode } from 'react';
 import edit from '../assets/images/edit.png';
 import del from '../assets/images/delete.png';
+import add from '../assets/images/add.svg';
 
 interface Work {
   id: string;
@@ -37,9 +38,10 @@ interface WorksListProps {
   connect: any;
   onEdit: (id: string) => void;
   onDelete: (e: React.MouseEvent) => void;
+  onAddPerform: (id: string) => void;
 }
 
-export default function WorksList({ works, status, navigate, connect, onEdit, onDelete }: WorksListProps) {
+export default function WorksList({ works, status, navigate, connect, onEdit, onDelete, onAddPerform }: WorksListProps) {
 
   function inBook(work: Work): string {
     if (work.number) {
@@ -126,9 +128,6 @@ export default function WorksList({ works, status, navigate, connect, onEdit, on
               {statusObj && <p className="status">{statusObj.name}</p>}
               <p className="workCard__edit">
                 <img
-                  //value={seminars[i].title}
-                  //id={seminars[i].id}
-                  //onClick={onDelete}
                   data-work-id={works[i].id}
                   onClick={onDelete}
                   className="workCard__button"
@@ -141,6 +140,13 @@ export default function WorksList({ works, status, navigate, connect, onEdit, on
                   className="workCard__button"
                   src={edit}
                   alt="Изменить"
+                />
+                <img
+                  data-work-id={works[i].id}
+                  onClick={(event: React.MouseEvent) => onAddPerform((event.currentTarget as HTMLElement).getAttribute("data-work-id") || "")}
+                  className="workCard__button"
+                  src={add}
+                  alt="Добавить исполнение"
                 />
               </p>
             </div>

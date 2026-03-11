@@ -223,12 +223,18 @@ export default function UserWorksList() {
     navigate(url);
   }
 
-  const onAddPerform = (event: React.MouseEvent) => {
-    //let idWork = event.currentTarget.getAttribute("idWork");
-    //navigate(`/user-add-perform?id=${idWork}`);
+  const onAddPerform = (workId?: string) => {
+    const today = new Date().toISOString().split('T')[0];
     let url = `/user-add-perform?space=${connect.space}&musicalGroup=${connect.musicalGroup}&section=${numberSection}`;
+    if (workId) {
+      url += `&work=${workId}&date=${today}`;
+    }
     navigate(url);
-  }
+  };
+
+  const handleAddPerform = () => {
+    onAddPerform();
+  };
 
   const onSection = (event: React.MouseEvent) => {
     let section = parseInt((event.currentTarget as HTMLElement).getAttribute("value") || "0");
@@ -309,7 +315,7 @@ export default function UserWorksList() {
         </div>
       }
       <Button className="addWork" variant="contained" onClick={onAdd} sx={{mt: 3}} fullWidth>Добавить произведение</Button>
-      <Button className="addWork" variant="contained" onClick={onAddPerform} sx={{mt: 3}} fullWidth>Добавить исполнение</Button>
+      <Button className="addWork" variant="contained" onClick={handleAddPerform} sx={{mt: 3}} fullWidth>Добавить исполнение</Button>
       <Button className="addWork" variant="outlined" onClick={sortByNumber} sx={{mt: 2}} fullWidth>Отсортировать по номерам</Button>
       {sections &&
         <div className="sections">
@@ -331,6 +337,7 @@ export default function UserWorksList() {
           connect={connect} 
           onEdit={onEdit}
           onDelete={onDelete}
+          onAddPerform={onAddPerform}
         />
       </div>
     </Container>

@@ -24,9 +24,11 @@ interface FormAddPerformProps {
   connect: Connect;
   navigate: (path: string) => void;
   section: string;
+  workId?: string | null;
+  date?: string | null;
 }
 
-export default function FormAddPerform({ connect, navigate, section }: FormAddPerformProps) {
+export default function FormAddPerform({ connect, navigate, section, workId = null, date = null }: FormAddPerformProps) {
 
   const [works, setWorks] = useState<Work[] | null>(null);
 
@@ -71,6 +73,22 @@ export default function FormAddPerform({ connect, navigate, section }: FormAddPe
     }
   };
 
+  // Устанавливаем дату при загрузке, если передана
+  useEffect(() => {
+    if (date) {
+      const dateInput = document.getElementById("date") as HTMLInputElement;
+      if (dateInput) {
+        dateInput.value = date;
+        // Trigger weekday update
+        const weekday = getWeekday(date);
+        const weekdayInput = document.getElementById("weekday") as HTMLInputElement;
+        if (weekdayInput) {
+          weekdayInput.value = weekday;
+        }
+      }
+    }
+  }, [date]);
+
   async function submitAddWork(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -96,7 +114,7 @@ export default function FormAddPerform({ connect, navigate, section }: FormAddPe
       <select className="formAddWork__select" name="work" id="works-select">
         <option value="">--Не определено--</option>
           {works.map((work, i) =>
-            <option key={i} value={work.id}>{work.name}</option>
+            <option key={i} value={work.id} selected={workId === work.id}>{work.name}</option>
           )}
       </select>
       <label htmlFor="date">Дата исполнения:</label>
