@@ -1,0 +1,102 @@
+import "../styles/user-add.css";
+
+import { useState, useMemo } from "react";
+import { getAuth } from "firebase/auth";
+import { Container, TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { getFirestore, collection, addDoc, doc } from "firebase/firestore";
+import { app } from "../config/firebase";
+import { Connect } from "../services/firestore";
+
+export default function UserCreateSpace() {
+  const auth = getAuth();
+  let navigate = useNavigate();
+  const db = getFirestore(app);
+
+  const [spaceName, setSpaceName] = useState("");
+  const [musicalGroupName, setMusicalGroupName] = useState("");
+
+  const connect: Connect = useMemo(() => ({
+    db: db,
+  }), [db]);
+
+  const handleSubmit = async () => {
+    const user = auth.currentUser;
+    if (user == null) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      // Создаём пространство
+      const spaceRef = collection(db, "space");
+      const spaceDoc = await addDoc(spaceRef, {
+        name: spaceName,
+      });
+
+      // Создаём музыкальную группу внутри пространства
+      const musicalGroupRef = collection(db, "space", spaceDoc.id, "musical_group");
+      await addDoc(musicalGroupRef, {
+        name: musicalGroupName,
+      });
+
+      // Добавляем текущего пользователя в users пространства
+      const usersRef = collection(db, "space", spaceDoc.id, "users");
+      await addDoc(usersRef, {
+        uid: user.uid,
+      });
+
+      alert("Пространство и музыкальная группа успешно созданы.");
+      navigate(`/user-works-list?space=${spaceDoc.id}&musicalGroup=${musicalGroupName}`);
+    } catch (error) {
+      console.error("Error creating space:", error);
+      alert("Ошибка при создании: " + (error instanceof Error ? error.message : error));
+    }
+  };
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  return (
+    <Container maxWidth="xs" sx={{ mt: 2 }}>
+      <h1>Создать новое пространство</h1>
+      <div className="userAddForm">
+        <TextField
+          label="Название пространства"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={spaceName}
+          onChange={(e) => setSpaceName(e.target.value)}
+        />
+        <TextField
+          label="Название музыкальной группы"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={musicalGroupName}
+          onChange={(e) => setMusicalGroupName(e.target.value)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleSubmit}
+          type="button"
+          sx={{ mt: 2 }}
+        >
+          Создать
+        </Button>
+        <Button
+          variant="outlined"
+          fullWidth
+          onClick={handleBack}
+          sx={{ mt: 2 }}
+        >
+          Назад
+        </Button>
+      </div>
+    </Container>
+  );
+}
