@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { getAuth } from "firebase/auth";
 import { Container, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, collection, addDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { app } from "../config/firebase";
 import { Connect } from "../services/firestore";
 
@@ -55,6 +55,15 @@ export default function UserCreateSpace() {
       await addDoc(usersRef, {
         uid: user.uid,
       });
+
+      // Добавляем пространство в коллекцию пользователя
+      if (user.email) {
+        const userSpaceRef = collection(db, "user", user.email, "space");
+        await addDoc(userSpaceRef, {
+          name: spaceName,
+          uid: spaceDoc.id,
+        });
+      }
 
       alert("Пространство и музыкальная группа успешно созданы.");
       navigate(`/user-works-list?space=${spaceDoc.id}&musicalGroup=${musicalGroupDoc.id}`);
