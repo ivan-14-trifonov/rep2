@@ -6,7 +6,6 @@ import { Container, TextField, Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { app } from "../config/firebase";
-import { Connect } from "../services/firestore";
 
 export default function UserCreateMusicalGroup() {
   const auth = getAuth();
@@ -18,10 +17,6 @@ export default function UserCreateMusicalGroup() {
   const spaceParam = queryParams.get('space') || '';
 
   const [musicalGroupName, setMusicalGroupName] = useState("");
-
-  const connect: Connect = useMemo(() => ({
-    db: db,
-  }), [db]);
 
   const handleSubmit = async () => {
     const user = auth.currentUser;
