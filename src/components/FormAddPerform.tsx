@@ -73,13 +73,12 @@ export default function FormAddPerform({ connect, navigate, section, workId = nu
     }
   };
 
-  // Устанавливаем дату при загрузке, если передана
+  // Устанавливаем дату и произведение при загрузке, если переданы
   useEffect(() => {
     if (date) {
       const dateInput = document.getElementById("date") as HTMLInputElement;
       if (dateInput) {
         dateInput.value = date;
-        // Trigger weekday update
         const weekday = getWeekday(date);
         const weekdayInput = document.getElementById("weekday") as HTMLInputElement;
         if (weekdayInput) {
@@ -87,7 +86,13 @@ export default function FormAddPerform({ connect, navigate, section, workId = nu
         }
       }
     }
-  }, [date]);
+    if (workId) {
+      const workSelect = document.getElementById("works-select") as HTMLSelectElement;
+      if (workSelect) {
+        workSelect.value = workId;
+      }
+    }
+  }, [date, workId, works]);
 
   async function submitAddWork(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
