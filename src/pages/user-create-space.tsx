@@ -40,6 +40,16 @@ export default function UserCreateSpace() {
         name: musicalGroupName,
       });
 
+      // Создаём секцию по умолчанию
+      const sectionsRef = collection(db, "space", spaceDoc.id, "musical_group", musicalGroupDoc.id, "sections");
+      await addDoc(sectionsRef, {
+        name: "(Весь репертуар в одном списке)",
+        displayOrder: 4,
+        sort: "name",
+        include: '{ "book": [], "theme": [], "event": [] }',
+        exclude: '{ "book": [], "theme": [], "event": [] }',
+      });
+
       // Добавляем текущего пользователя в users пространства
       const usersRef = collection(db, "space", spaceDoc.id, "users");
       await addDoc(usersRef, {
