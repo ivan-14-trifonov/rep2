@@ -19,6 +19,7 @@ interface Work {
 
 interface Perform {
   date?: string;
+  weekday?: string;
   time?: string;
   event?: string;
   note?: string;
@@ -84,6 +85,11 @@ export default function WorksList({ works, status, navigate, connect, onEdit, on
       date = " " + p.date;
     }
 
+    let weekday = "";
+    if (p.weekday) {
+      weekday = " " + p.weekday;
+    }
+
     let time = "";
     if (p.time) {
       time = " " + p.time;
@@ -99,7 +105,7 @@ export default function WorksList({ works, status, navigate, connect, onEdit, on
       note = " [" + p.note + "]";
     }
 
-    return <p className="perform">&#10149;<b>{date}{time}{event}{note}</b></p>;
+    return <p className="perform">&#10149;<b>{date}{weekday}{time}{event}{note}</b></p>;
   }
 
   return (

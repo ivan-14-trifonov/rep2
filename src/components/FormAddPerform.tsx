@@ -56,12 +56,28 @@ export default function FormAddPerform({ connect, navigate, section }: FormAddPe
     asyncEffect();
   }, [connect]);
 
+  const getWeekday = (dateString: string): string => {
+    if (!dateString) return "";
+    const days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+    const date = new Date(dateString);
+    return days[date.getDay()];
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const weekday = getWeekday(e.target.value);
+    const weekdayInput = document.getElementById("weekday") as HTMLInputElement;
+    if (weekdayInput) {
+      weekdayInput.value = weekday;
+    }
+  };
+
   async function submitAddWork(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const fields = {
       work: formData.get("work"),
       date: formData.get("date"),
+      weekday: formData.get("weekday"),
       time: formData.get("time"),
       event: formData.get("event"),
       note: formData.get("note"),
@@ -84,7 +100,8 @@ export default function FormAddPerform({ connect, navigate, section }: FormAddPe
           )}
       </select>
       <label htmlFor="date">Дата исполнения:</label>
-      <input type="date" id="date" name="date" />
+      <input type="date" id="date" name="date" onChange={handleDateChange} />
+      <input type="text" id="weekday" name="weekday" readOnly placeholder="День недели" />
       <p>Собрание:</p>
       <select className="formAddWork__select" name="time" id="time-select">
         <option value="">--Не определено--</option>
